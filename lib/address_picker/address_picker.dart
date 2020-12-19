@@ -11,7 +11,7 @@ const double _pickerItemHeight = 40.0;
 double _pickerMenuHeight = 36.0;
 
 /// 自定义 地区选择器
-/// [initProvince] 初始化省
+/// [initProvince] 初始化 省
 /// [initCity]    初始化 市
 /// [initTown]    初始化 区
 /// [onChanged]   选择器发生变动
@@ -24,6 +24,9 @@ double _pickerMenuHeight = 36.0;
 /// [title] 头部 中间的标题  默认null 不显示
 /// [backgroundColor] 选择器背景色 默认白色
 /// [textColor] 选择器文字颜色  默认黑色
+/// [headDecoration] 头部Container Decoration 样式
+/// 默认：BoxDecoration(color: Colors.white)
+/// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
 class AddressPicker {
   static void showPicker(
     BuildContext context, {
@@ -33,6 +36,8 @@ class AddressPicker {
     Widget cancelWidget,
     Widget commitWidget,
     Widget title,
+    Decoration headDecoration,
+    bool addAllItem: true,
     Color backgroundColor: Colors.white,
     Color textColor: Colors.black87,
     String initProvince: '',
@@ -59,6 +64,8 @@ class AddressPicker {
           initTown: initTown,
           onChanged: onChanged,
           onConfirm: onConfirm,
+          headDecoration: headDecoration,
+          addAllItem: addAllItem,
           theme: Theme.of(context, shadowThemeOnly: true),
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
@@ -71,6 +78,8 @@ class _PickerRoute<T> extends PopupRoute<T> {
     this.menuHeight,
     this.cancelWidget,
     this.commitWidget,
+    this.headDecoration,
+    this.addAllItem,
     this.title,
     this.backgroundColor,
     this.textColor,
@@ -98,6 +107,8 @@ class _PickerRoute<T> extends PopupRoute<T> {
   final double menuHeight;
   final Widget cancelWidget;
   final Widget commitWidget;
+  final Decoration headDecoration; // 头部样式
+  final bool addAllItem;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -129,6 +140,7 @@ class _PickerRoute<T> extends PopupRoute<T> {
         initProvince: initProvince,
         initCity: initCity,
         initTown: initTown,
+        addAllItem : addAllItem,
         onChanged: onChanged,
         route: this,
       ),
@@ -147,6 +159,7 @@ class _PickerContentView extends StatefulWidget {
     this.initProvince,
     this.initCity,
     this.initTown,
+    this.addAllItem,
     @required this.route,
     this.onChanged,
   }) : super(key: key);
@@ -154,9 +167,10 @@ class _PickerContentView extends StatefulWidget {
   final String initProvince, initCity, initTown;
   final AddressCallback onChanged;
   final _PickerRoute route;
+  final bool addAllItem;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.initProvince, this.initCity, this.initTown);
+  State<StatefulWidget> createState() => _PickerState(this.initProvince, this.initCity, this.initTown, this.addAllItem);
 }
 
 class _PickerState extends State<_PickerContentView> {
@@ -167,13 +181,15 @@ class _PickerState extends State<_PickerContentView> {
 
   // 是否显示县级
   bool hasTown = true;
+  // 是否添加全部
+  final bool addAllItem;
 
   AnimationController controller;
   Animation<double> animation;
 
   FixedExtentScrollController provinceScrollCtrl, cityScrollCtrl, townScrollCtrl;
 
-  _PickerState(this._currentProvince, this._currentCity, this._currentTown) {
+  _PickerState(this._currentProvince, this._currentCity, this._currentTown, this.addAllItem) {
     provinces = Address.provinces;
     hasTown = this._currentTown != null;
 
@@ -204,6 +220,7 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   _init() {
+    Address.addAllItem = addAllItem;
     int pindex = 0;
     int cindex = 0;
     int tindex = 0;
@@ -358,7 +375,7 @@ class _PickerState extends State<_PickerContentView> {
           child: Container(
               padding: EdgeInsets.all(8.0),
               height: _pickerHeight,
-              decoration: BoxDecoration(color: Colors.white),
+              color: widget.route.backgroundColor,
               child: CupertinoPicker(
                 scrollController: cityScrollCtrl,
                 itemExtent: _pickerItemHeight,
@@ -383,7 +400,7 @@ class _PickerState extends State<_PickerContentView> {
                 child: Container(
                     padding: EdgeInsets.all(8.0),
                     height: _pickerHeight,
-                    decoration: BoxDecoration(color: Colors.white),
+                    color: widget.route.backgroundColor,
                     child: CupertinoPicker(
                       scrollController: townScrollCtrl,
                       itemExtent: _pickerItemHeight,
@@ -412,8 +429,7 @@ class _PickerState extends State<_PickerContentView> {
     final commitButton = Container(
       height: _pickerTitleHeight,
       child: FlatButton(
-        onPressed: null,
-          child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0))),
+          onPressed: null, child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0))),
     );
 
     final cancelButton = Container(
@@ -424,20 +440,22 @@ class _PickerState extends State<_PickerContentView> {
           child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0))),
     );
 
+    final headDecoration = BoxDecoration(color: Colors.white);
+
     return Container(
       height: _pickerTitleHeight,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-      ),
+      decoration: (widget.route.headDecoration == null) ? headDecoration : widget.route.headDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          /// 取消按钮
           InkWell(
               onTap: () => Navigator.pop(context),
               child: (widget.route.cancelWidget == null) ? cancelButton : widget.route.cancelWidget),
-          (widget.route.title != null) ? widget.route.title :SizedBox(),
+
+          /// 分割线
+          (widget.route.title != null) ? widget.route.title : SizedBox(),
 
           /// 确认按钮
           InkWell(

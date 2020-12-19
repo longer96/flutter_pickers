@@ -1,7 +1,6 @@
 name: flutter_pickers
 description: flutter 选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）等…… 欢迎Fork & pr贡献您的代码，大家共同学习
-version: 1.0.0
-author: longer<longer413@gmail.com>
+version: 0.0.1
 homepage: https://github.com/longer96/flutter_pickers
 
 environment:

@@ -91,31 +91,35 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
 
   Widget _checkLocation3() {
     Widget _headMenuView = Container(
-        color: Colors.grey,
+        color: Colors.grey[700],
+        height: 36,
         child: Row(children: [
-          Expanded(child: Center(child: Text('省'))),
-          Expanded(child: Center(child: Text('市'))),
-          Expanded(child: Center(child: Text('区'))),
+          Expanded(child: Center(child: MyText('省', color: Colors.white))),
+          Expanded(child: Center(child: MyText('市', color: Colors.white))),
+          Expanded(child: Center(child: MyText('区', color: Colors.white))),
         ]));
 
     Widget _cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-      margin: const EdgeInsets.only(left: 10),
-      decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).primaryColor, width: 1), borderRadius: BorderRadius.circular(4)),
-      child: MyText('取消', color: Theme.of(context).primaryColor, size: 14),
+      margin: const EdgeInsets.only(left: 12),
+      decoration:
+          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
+      child: MyText('取消', color: Colors.white, size: 14),
     );
 
     Widget _commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(4)),
-      child: MyText('确认', color: Theme.of(context).primaryColor, size: 14),
+      margin: const EdgeInsets.only(right: 12),
+      decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
+      child: MyText('确认', color: Colors.white, size: 14),
     );
 
-    Widget title = Text('请选择地址', style: TextStyle(color: Theme.of(context).unselectedWidgetColor));
+    // 头部样式
+    Decoration headDecoration = BoxDecoration(
+        color: Colors.grey[800],
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+
+    Widget title = MyText('请选择地址', color: Colors.white, size: 14);
 
     return InkWell(
       onTap: () {
@@ -124,17 +128,16 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initProvince: locations2[0],
           initCity: locations2[1],
           initTown: locations2[2],
-
-          // showTitlebar: true,
-          // menu: _headMenuView,
-          // menuHeight: 80.0,
-          // title:title,
-          // cancelWidget: _cancelButton,
-          // commitWidget: _commitButton,
-          // textColor: Colors.red,
-          // backgroundColor: Colors.blue,
-
-
+          showTitlebar: true,
+          menu: _headMenuView,
+          menuHeight: 36.0,
+          title: title,
+          cancelWidget: _cancelButton,
+          commitWidget: _commitButton,
+          headDecoration: headDecoration,
+          addAllItem: false,
+          textColor: Colors.white,
+          backgroundColor: Colors.grey[800],
           onConfirm: (p, c, t) {
             setState(() {
               locations2[0] = p;

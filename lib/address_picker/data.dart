@@ -4131,10 +4131,12 @@ const locations = {
 
 class Address {
   static List<String> provinces = locations['86'].values.toList();
+  // 是否在市、区级添加 全部选项
+  static bool addAllItem = true;
 
   static getCities(String province) {
     var emptyData = {'name': "全部", 'cityCode': ''};
-    if (province == '全部') return [emptyData];
+    if (province == '全部' && addAllItem) return [emptyData];
 
     String code = '';
     locations['86'].forEach((key, value) {
@@ -4146,7 +4148,7 @@ class Address {
     Map areaList = locations[code];
     // print('longer >>>$code 城市数据：$areaList');
     var data = [];
-    if (areaList != null) data.add(emptyData);
+    if (areaList != null && addAllItem) data.add(emptyData);
     areaList.forEach((key, value) {
       data.add({'name': value, 'cityCode': key});
     });
@@ -4162,7 +4164,7 @@ class Address {
       return [''];
     } else {
       var data = areaList.values.toList();
-      data.insert(0, '全部');
+      if(addAllItem)  data.insert(0, '全部');
       return data;
     }
   }
