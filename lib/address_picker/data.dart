@@ -1,8 +1,6 @@
 import '../utils/check.dart';
 
-/**
- * 数据地址：https://github.com/airyland/china-area-data/blob/master/data.json
- */
+/// 数据地址：https://github.com/airyland/china-area-data/blob/master/data.json
 const locations = {
   "86": {
     "110000": "北京市",

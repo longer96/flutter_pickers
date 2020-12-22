@@ -10,13 +10,13 @@ class AddressPickerPage extends StatefulWidget {
 
 class _AddressPickerPageState extends State<AddressPickerPage> {
   // 所在区域  省 市 区
-  String initProvince = '四川省', initCity = '成都市', initTown = '双流县';
+  String initProvince = '四川省', initCity = '成都市', initTown = '双流区';
 
   // 选择器2
   List locations1 = ['', ''];
 
   // 选择器3
-  List locations2 = ['四川省', '成都市', '双流县'];
+  List locations2 = ['四川省', '成都市', '双流区'];
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
       onTap: () {
         AddressPicker.showPicker(
           context,
-          showTitlebar: true,
+          showTitleBar: true,
           initProvince: initProvince,
           initCity: initCity,
           initTown: initTown,
@@ -76,7 +76,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initProvince: locations1[0],
           initCity: locations1[1],
           // initTown: null,
-          showTitlebar: true,
+          showTitleBar: true,
           onConfirm: (p, c, t) {
             setState(() {
               locations1[0] = p;
@@ -128,7 +128,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initProvince: locations2[0],
           initCity: locations2[1],
           initTown: locations2[2],
-          showTitlebar: true,
+          showTitleBar: true,
           menu: _headMenuView,
           menuHeight: 36.0,
           title: title,

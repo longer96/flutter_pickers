@@ -16,7 +16,7 @@ double _pickerMenuHeight = 36.0;
 /// [initTown]    初始化 区
 /// [onChanged]   选择器发生变动
 /// [onConfirm]   选择器提交
-/// [showTitlebar]   是否显示头部 默认：true
+/// [showTitleBar]   是否显示头部 默认：true
 /// [menu]   头部和选择器之间的菜单widget,默认空 不显示
 /// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36
 /// [cancelWidget] 取消按钮
@@ -25,12 +25,12 @@ double _pickerMenuHeight = 36.0;
 /// [backgroundColor] 选择器背景色 默认白色
 /// [textColor] 选择器文字颜色  默认黑色
 /// [headDecoration] 头部Container Decoration 样式
-/// 默认：BoxDecoration(color: Colors.white)
+/// 默认：BoxDecoration(color: backgroundColor)
 /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
 class AddressPicker {
   static void showPicker(
     BuildContext context, {
-    bool showTitlebar: true,
+    bool showTitleBar: true,
     Widget menu,
     double menuHeight,
     Widget cancelWidget,
@@ -58,7 +58,7 @@ class AddressPicker {
           title: title,
           backgroundColor: backgroundColor,
           textColor: textColor,
-          showTitlebar: showTitlebar,
+          showTitlebar: showTitleBar,
           initProvince: initProvince,
           initCity: initCity,
           initTown: initTown,
@@ -66,7 +66,7 @@ class AddressPicker {
           onConfirm: onConfirm,
           headDecoration: headDecoration,
           addAllItem: addAllItem,
-          theme: Theme.of(context, shadowThemeOnly: true),
+          theme: Theme.of(context),
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
   }
@@ -440,7 +440,7 @@ class _PickerState extends State<_PickerContentView> {
           child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0))),
     );
 
-    final headDecoration = BoxDecoration(color: Colors.white);
+    final headDecoration = BoxDecoration(color: widget.route.backgroundColor);
 
     return Container(
       height: _pickerTitleHeight,
@@ -471,10 +471,9 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.showTitleActions, this.showMenu});
+  _BottomPickerLayout(this.progress, { this.showTitleActions, this.showMenu});
 
   final double progress;
-  final int itemCount;
   final bool showTitleActions;
   final bool showMenu;
 
