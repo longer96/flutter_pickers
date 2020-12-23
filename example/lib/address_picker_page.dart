@@ -90,9 +90,10 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
   }
 
   Widget _checkLocation3() {
+    double menuHeight = 36.0;
     Widget _headMenuView = Container(
         color: Colors.grey[700],
-        height: 36,
+        height: menuHeight,
         child: Row(children: [
           Expanded(child: Center(child: MyText('省', color: Colors.white))),
           Expanded(child: Center(child: MyText('市', color: Colors.white))),
@@ -130,7 +131,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initTown: locations2[2],
           showTitleBar: true,
           menu: _headMenuView,
-          menuHeight: 36.0,
+          menuHeight: menuHeight,
           title: title,
           cancelWidget: _cancelButton,
           commitWidget: _commitButton,

@@ -40,7 +40,7 @@ $ flutter packages get
 #### simple use
 ``` dart
 Widget _checkLocation() {
-String initProvince = '四川省', initCity = '成都市', initTown = '双流县';
+String initProvince = '四川省', initCity = '成都市', initTown = '双流区';
 return InkWell(
     onTap: () {
       AddressPicker.showPicker(
@@ -117,7 +117,7 @@ AddressPicker.showPicker(
 |title|head 中间的标题widget,null:不显示|null|
 |textColor|选择器文字颜色|black87|
 |backgroundColor|选择器背景色|white|
-|headDecoration|头部Container Decoration 样式|BoxDecoration(color: Colors.white)|
+|headDecoration|头部Container Decoration 样式|BoxDecoration(color: backgroundColor)|
 |addAllItem|市、区是否添加 '全部' 选项|true|
 
 

@@ -1,15 +1,15 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/pickers.dart';
+import 'package:flutter_pickers/pickers/picker.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
 
-class PickerPage extends StatefulWidget {
+class SinglePickerPage extends StatefulWidget {
   @override
-  _PickerPageState createState() => _PickerPageState();
+  _SinglePickerPageState createState() => _SinglePickerPageState();
 }
 
-class _PickerPageState extends State<PickerPage> {
+class _SinglePickerPageState extends State<SinglePickerPage> {
   String selectSex = '女';
   String selectEdu;
   String selectSubject;
@@ -24,7 +24,7 @@ class _PickerPageState extends State<PickerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: '通用选择器'),
+      appBar: MyAppBar(title: '单列选择器'),
       body: ListView(children: [
         _item('性别', PickerDataType.sex, selectSex),
         _item('学历', PickerDataType.education, selectEdu),
@@ -35,7 +35,7 @@ class _PickerPageState extends State<PickerPage> {
         _item('自定义数据 (单列)', ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'], "Dart"),
         _item('身高', List.generate(200, (index) => (50 + index).toString()), "168", label: 'cm'),
         _item('温度', List.generate(110, (index) => (33.0 + index * .1).toString()), "37.5", label: '℃'),
-        _item('Laber', ['空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], "", label: 'kg'),
+        _item('Laber', [123, '空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], "", label: 'kg'),
         _item2('自定义样式'),
       ]),
     );
@@ -60,7 +60,7 @@ class _PickerPageState extends State<PickerPage> {
   }
 
   void _onClickItem(var data, selectData, {String label}) {
-    FPickers.showPicker(
+    Picker.showSinglePicker(
       context,
       showTitleBar: true,
       data: data,
@@ -106,9 +106,10 @@ class _PickerPageState extends State<PickerPage> {
 
   void _onClickItem2() {
 
+    double menuHeight = 36.0;
     Widget _headMenuView = Container(
         color: Colors.grey[700],
-        height: 36,
+        height: menuHeight,
         child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
@@ -136,14 +137,14 @@ class _PickerPageState extends State<PickerPage> {
     Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500,letfpadding: 90);
 
 
-    FPickers.showPicker(
+    Picker.showSinglePicker(
       context,
       showTitleBar: true,
       data: List.generate(200, (index) => (50 + index).toString()),
       selectData: selectHeight,
 
       menu: _headMenuView,
-      menuHeight: 36.0,
+      menuHeight: menuHeight,
       title: title,
       cancelWidget: _cancelButton,
       commitWidget: _commitButton,

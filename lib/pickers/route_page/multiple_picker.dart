@@ -1,78 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/pickers/init_data.dart';
 
-import 'init_data.dart';
-
-typedef Callback(String data);
+typedef MultipleCallback(List res);
 
 const double _pickerHeight = 220.0;
 const double _pickerTitleHeight = 44.0;
 const double _pickerItemHeight = 40.0;
 double _pickerMenuHeight = 36.0;
 
-/// 通用选择器
-/// [onChanged]   选择器发生变动
-/// [onConfirm]   选择器提交
-/// [showTitleBar]   是否显示头部 默认：true
-/// [menu]   头部和选择器之间的菜单widget,默认空 不显示
-/// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36
-/// [cancelWidget] 取消按钮
-/// [commitWidget] 确认按钮
-/// [title] 头部 中间的标题  默认null 不显示
-/// [backgroundColor] 选择器背景色 默认白色
-/// [textColor] 选择器文字颜色  默认黑色
-/// [headDecoration] 头部Container Decoration 样式
-///   默认：BoxDecoration(color: Colors.white)
-/// [labelWidget] 自定义单位widget   默认：null
-/// [label] 单位   默认：null 不显示
-class FPickers {
-  static void showPicker(
-    BuildContext context, {
-    @required var data,
-    String selectData,
-    bool showTitleBar: true,
-    Widget menu,
-    double menuHeight,
-    Widget cancelWidget,
-    Widget commitWidget,
-    Widget labelWidget,
-    String label,
-    Widget title,
-    Decoration headDecoration,
-    Color backgroundColor: Colors.white,
-    Color textColor: Colors.black87,
-    Callback onChanged,
-    Callback onConfirm,
-  }) {
-    if (menuHeight != null) _pickerMenuHeight = menuHeight;
-
-    Navigator.push(
-        context,
-        _PickerRoute(
-          menu: menu,
-          menuHeight: menuHeight,
-          cancelWidget: cancelWidget,
-          commitWidget: commitWidget,
-          labelWidget: labelWidget,
-          label: label,
-          title: title,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          showTitleBar: showTitleBar,
-          data: data,
-          selectData: selectData,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          headDecoration: headDecoration,
-          // theme: Theme.of(context, shadowThemeOnly: true),
-          theme: Theme.of(context),
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
-  }
-}
-
-class _PickerRoute<T> extends PopupRoute<T> {
-  _PickerRoute({
+class MultiplePickerRoute<T> extends PopupRoute<T> {
+  MultiplePickerRoute({
     this.menu,
     this.menuHeight,
     this.cancelWidget,
@@ -85,21 +23,19 @@ class _PickerRoute<T> extends PopupRoute<T> {
     this.textColor,
     this.showTitleBar,
     this.data,
-    this.selectData,
     this.onChanged,
     this.onConfirm,
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  })  : assert(data != null, 'params: data can not be null'),
-        assert((data is List<String>) || (data is PickerDataType), 'params : data must List<String> or PickerDataType'),
-        super(settings: settings);
+  }) : super(settings: settings) {
+    if (menuHeight != null) _pickerMenuHeight = menuHeight;
+  }
 
   final bool showTitleBar;
-  final String selectData;
-  var data;
-  final Callback onChanged;
-  final Callback onConfirm;
+  final Map<String, List<String>> data;
+  final MultipleCallback onChanged;
+  final MultipleCallback onConfirm;
   final ThemeData theme;
 
   final Color backgroundColor; // 背景色
@@ -136,21 +72,11 @@ class _PickerRoute<T> extends PopupRoute<T> {
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-    var mData = [];
-    // 初始化数据
-    if (data is PickerDataType) {
-      mData = pickerData[data];
-    } else if (data is List) {
-      mData.clear();
-      mData.addAll(data);
-    }
-
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
       child: _PickerContentView(
-        data: mData,
-        selectData: selectData,
+        data: data,
         onChanged: onChanged,
         route: this,
       ),
@@ -167,28 +93,26 @@ class _PickerContentView extends StatefulWidget {
   _PickerContentView({
     Key key,
     this.data,
-    this.selectData,
     @required this.route,
     this.onChanged,
   }) : super(key: key);
 
-  final List data;
-  final String selectData;
-  final Callback onChanged;
-  final _PickerRoute route;
+  final Map<String, List> data;
+  final MultipleCallback onChanged;
+  final MultiplePickerRoute route;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData);
+  State<StatefulWidget> createState() => _PickerState(this.data);
 }
 
 class _PickerState extends State<_PickerContentView> {
-  String _selectData;
-  var data = [];
+  List<String> _selectData;
+  Map<String, List> data;
 
   AnimationController controller;
   Animation<double> animation;
 
-  FixedExtentScrollController provinceScrollCtrl;
+  List<FixedExtentScrollController> provinceScrollCtrl = [];
 
   // 单位widget Padding left
   double _laberLeft;
@@ -221,15 +145,18 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   _init() {
-    int pindex = 0;
-    pindex = data.indexWhere((element) => element == _selectData);
-    pindex = pindex >= 0 ? pindex : 0;
+    int pindex;
+    provinceScrollCtrl.clear();
+    data.forEach((key, value) {
+      pindex = 0;
+      value.indexWhere((element) => element == key);
+      pindex = pindex >= 0 ? pindex : 0;
 
-    provinceScrollCtrl = new FixedExtentScrollController(initialItem: pindex);
-    _laberLeft = _pickerLaberPadding(data[pindex]);
+      provinceScrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
+    });
   }
 
-  void _setProvince(int index) {
+  void _setPicker(int index, int selectIndex) {
     String selectedProvince = data[index];
 
     if (_selectData != selectedProvince) {
@@ -239,21 +166,17 @@ class _PickerState extends State<_PickerContentView> {
 
       _notifyLocationChanged();
     }
+
+
+
+
+
   }
 
   void _notifyLocationChanged() {
     if (widget.onChanged != null) {
-      widget.onChanged(_selectData);
+      widget.onChanged([_selectData]);
     }
-  }
-
-  double _pickerLaberPadding(String text) {
-    double left = 80;
-
-    if (text != null) {
-      left = left + text.length * 12;
-    }
-    return left;
   }
 
   double _pickerFontSize(String text) {
@@ -292,7 +215,7 @@ class _PickerState extends State<_PickerContentView> {
       scrollController: provinceScrollCtrl,
       itemExtent: _pickerItemHeight,
       onSelectedItemChanged: (int index) {
-        _setProvince(index);
+        _setPicker(index);
 
         if (widget.route.label != null && widget.route.label != '') {
           // 如果设置了才计算 单位的paddingLeft
@@ -378,7 +301,7 @@ class _PickerState extends State<_PickerContentView> {
           /// 确认按钮
           InkWell(
               onTap: () {
-                widget.route?.onConfirm(_selectData);
+                widget.route?.onConfirm([_selectData]);
                 Navigator.pop(context);
               },
               child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)

@@ -1,9 +1,10 @@
+import 'package:example/multiple_picker_page.dart';
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 
 import 'address_picker_page.dart';
-import 'picker_page.dart';
+import 'single_picker_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,8 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       children: [
         _itemView('地址选择器', AddressPickerPage()),
-        _itemView('单列选择器', PickerPage()),
-        _itemView('多列选择器', PickerPage()),
+        _itemView('单列选择器', SinglePickerPage()),
+        _itemView('多列选择器', MultiplePickerPage()),
       ],
     );
   }
