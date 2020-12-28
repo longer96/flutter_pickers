@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/init_data.dart';
 
 typedef MultipleCallback(List res);
 
@@ -15,14 +14,13 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
     this.menuHeight,
     this.cancelWidget,
     this.commitWidget,
-    this.labelWidget,
-    this.label,
     this.headDecoration,
     this.title,
     this.backgroundColor,
     this.textColor,
     this.showTitleBar,
     this.data,
+    this.selectData,
     this.onChanged,
     this.onConfirm,
     this.theme,
@@ -33,7 +31,8 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   }
 
   final bool showTitleBar;
-  final Map<String, List<String>> data;
+  final List data;
+  final List selectData;
   final MultipleCallback onChanged;
   final MultipleCallback onConfirm;
   final ThemeData theme;
@@ -46,8 +45,6 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   final Widget cancelWidget;
   final Widget commitWidget;
   final Decoration headDecoration; // 头部样式
-  final Widget labelWidget;
-  final String label;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -77,6 +74,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
       removeTop: true,
       child: _PickerContentView(
         data: data,
+        selectData: selectData,
         onChanged: onChanged,
         route: this,
       ),
@@ -93,31 +91,40 @@ class _PickerContentView extends StatefulWidget {
   _PickerContentView({
     Key key,
     this.data,
+    this.selectData,
     @required this.route,
     this.onChanged,
   }) : super(key: key);
 
-  final Map<String, List> data;
+  final List<List> data;
+  final List selectData;
   final MultipleCallback onChanged;
   final MultiplePickerRoute route;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.data);
+  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData);
 }
 
 class _PickerState extends State<_PickerContentView> {
-  List<String> _selectData;
-  Map<String, List> data;
+  List _selectData;
+  List<List> _data;
 
   AnimationController controller;
   Animation<double> animation;
 
   List<FixedExtentScrollController> provinceScrollCtrl = [];
 
-  // 单位widget Padding left
-  double _laberLeft;
+  _PickerState(this._data, List mSelectData) {
+    // 已选择器数据为准，因为初始化数据有可能和选择器对不上
+    this._selectData = [];
+    this._data.asMap().keys.forEach((index) {
+      if (index >= mSelectData.length) {
+        this._selectData.add('');
+      } else {
+        this._selectData.add(mSelectData[index]);
+      }
+    });
 
-  _PickerState(this.data, this._selectData) {
     _init();
   }
 
@@ -147,9 +154,10 @@ class _PickerState extends State<_PickerContentView> {
   _init() {
     int pindex;
     provinceScrollCtrl.clear();
-    data.forEach((key, value) {
+
+    this._data.asMap().keys.forEach((index) {
       pindex = 0;
-      value.indexWhere((element) => element == key);
+      pindex = _data[index].indexWhere((element) => element.toString() == _selectData[index].toString());
       pindex = pindex >= 0 ? pindex : 0;
 
       provinceScrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
@@ -157,25 +165,19 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _setPicker(int index, int selectIndex) {
-    String selectedProvince = data[index];
+    var selectedName = _data[index][selectIndex];
 
-    if (_selectData != selectedProvince) {
+    if (_selectData[index].toString() != selectedName.toString()) {
       setState(() {
-        _selectData = selectedProvince;
+        _selectData[index] = selectedName;
       });
-
       _notifyLocationChanged();
     }
-
-
-
-
-
   }
 
   void _notifyLocationChanged() {
     if (widget.onChanged != null) {
-      widget.onChanged([_selectData]);
+      widget.onChanged(_selectData);
     }
   }
 
@@ -211,57 +213,40 @@ class _PickerState extends State<_PickerContentView> {
 
   Widget _renderItemView() {
     // 选择器
-    Widget cPicker = CupertinoPicker(
-      scrollController: provinceScrollCtrl,
-      itemExtent: _pickerItemHeight,
-      onSelectedItemChanged: (int index) {
-        _setPicker(index);
+    List<Widget> pickerList = [];
 
-        if (widget.route.label != null && widget.route.label != '') {
-          // 如果设置了才计算 单位的paddingLeft
-          double resuleLeft = _pickerLaberPadding(data[index]);
-          if (resuleLeft != _laberLeft) {
-            setState(() {
-              _laberLeft = resuleLeft;
-            });
-          }
-        }
-      },
-      children: List.generate(data.length, (int index) {
-        String text = data[index];
-        return Container(
-            alignment: Alignment.center,
-            child: Text(text,
-                style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
-                textAlign: TextAlign.start));
-      }),
-    );
-
-    Widget view;
-    // 单位
-    if ((widget.route.label != null && widget.route.label != '') || (widget.route.labelWidget != null)) {
-      Widget laberView = Container(
-          height: _pickerHeight,
-          alignment: Alignment.center,
-          child: (widget.route.labelWidget == null)
-              ? AnimatedPadding(
-                  duration: Duration(milliseconds: 100),
-                  padding: EdgeInsets.only(left: _laberLeft),
-                  child: Text(widget.route.label,
-                      style: TextStyle(color: widget.route.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
-                )
-              : widget.route.labelWidget);
-
-      view = Stack(children: [cPicker, laberView]);
-    } else {
-      view = cPicker;
-    }
+    pickerList = List.generate(this._data.length, (index) => pickerView(index)).toList();
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       height: _pickerHeight,
       color: widget.route.backgroundColor,
-      child: view,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: pickerList,
+      ),
+    );
+  }
+
+  Widget pickerView(int position) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: CupertinoPicker(
+          scrollController: provinceScrollCtrl[position],
+          itemExtent: _pickerItemHeight,
+          onSelectedItemChanged: (int selectIndex) => _setPicker(position, selectIndex),
+          children: List.generate(_data[position].length, (int index) {
+            String text = _data[position][index].toString();
+            return Container(
+                alignment: Alignment.center,
+                child: Text(text,
+                    style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
+                    textAlign: TextAlign.start));
+          }),
+        ),
+      ),
     );
   }
 
@@ -301,7 +286,7 @@ class _PickerState extends State<_PickerContentView> {
           /// 确认按钮
           InkWell(
               onTap: () {
-                widget.route?.onConfirm([_selectData]);
+                widget.route?.onConfirm(_selectData);
                 Navigator.pop(context);
               },
               child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)

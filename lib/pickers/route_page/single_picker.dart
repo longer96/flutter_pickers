@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
 
-typedef SingleCallback(String data);
+typedef SingleCallback(var data);
 
 const double _pickerHeight = 220.0;
 const double _pickerTitleHeight = 44.0;
@@ -29,13 +29,13 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  })  : super(settings: settings) {
-    if (menuHeight != null)  _pickerMenuHeight = menuHeight;
+  }) : super(settings: settings) {
+    if (menuHeight != null) _pickerMenuHeight = menuHeight;
   }
 
   final bool showTitleBar;
-  final String selectData;
-  var data;
+  final dynamic selectData;
+  final dynamic data;
   final SingleCallback onChanged;
   final SingleCallback onConfirm;
   final ThemeData theme;
@@ -74,12 +74,11 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-    var mData = [];
+    List mData = [];
     // 初始化数据
     if (data is PickerDataType) {
       mData = pickerData[data];
     } else if (data is List) {
-      mData.clear();
       mData.addAll(data);
     }
 
@@ -111,7 +110,7 @@ class _PickerContentView extends StatefulWidget {
   }) : super(key: key);
 
   final List data;
-  final String selectData;
+  final dynamic selectData;
   final SingleCallback onChanged;
   final SinglePickerRoute route;
 
@@ -120,8 +119,8 @@ class _PickerContentView extends StatefulWidget {
 }
 
 class _PickerState extends State<_PickerContentView> {
-  String _selectData;
-  var data = [];
+  var _selectData;
+  List data = [];
 
   AnimationController controller;
   Animation<double> animation;
@@ -160,17 +159,17 @@ class _PickerState extends State<_PickerContentView> {
 
   _init() {
     int pindex = 0;
-    pindex = data.indexWhere((element) => element == _selectData);
+    pindex = data.indexWhere((element) => element.toString() == _selectData.toString());
     pindex = pindex >= 0 ? pindex : 0;
 
     provinceScrollCtrl = new FixedExtentScrollController(initialItem: pindex);
-    _laberLeft = _pickerLaberPadding(data[pindex]);
+    _laberLeft = _pickerLaberPadding(data[pindex].toString());
   }
 
-  void _setProvince(int index) {
-    String selectedProvince = data[index];
+  void _setPicker(int index) {
+    var selectedProvince = data[index];
 
-    if (_selectData != selectedProvince) {
+    if (_selectData.toString() != selectedProvince.toString()) {
       setState(() {
         _selectData = selectedProvince;
       });
@@ -230,11 +229,11 @@ class _PickerState extends State<_PickerContentView> {
       scrollController: provinceScrollCtrl,
       itemExtent: _pickerItemHeight,
       onSelectedItemChanged: (int index) {
-        _setProvince(index);
+        _setPicker(index);
 
         if (widget.route.label != null && widget.route.label != '') {
           // 如果设置了才计算 单位的paddingLeft
-          double resuleLeft = _pickerLaberPadding(data[index]);
+          double resuleLeft = _pickerLaberPadding(data[index].toString());
           if (resuleLeft != _laberLeft) {
             setState(() {
               _laberLeft = resuleLeft;
@@ -243,7 +242,7 @@ class _PickerState extends State<_PickerContentView> {
         }
       },
       children: List.generate(data.length, (int index) {
-        String text = data[index];
+        String text = data[index].toString();
         return Container(
             alignment: Alignment.center,
             child: Text(text,

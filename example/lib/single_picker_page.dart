@@ -35,13 +35,14 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         _item('自定义数据 (单列)', ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'], "Dart"),
         _item('身高', List.generate(200, (index) => (50 + index).toString()), "168", label: 'cm'),
         _item('温度', List.generate(110, (index) => (33.0 + index * .1).toString()), "37.5", label: '℃'),
-        _item('Laber', [123, '空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], "", label: 'kg'),
+        _item('Laber', [123, '空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], 123, label: 'kg'),
+        // _item('Laber', [123, 23,235,3,14545,15,123163,18548,9646,1313], 235, label: 'kg'),
         _item2('自定义样式'),
       ]),
     );
   }
 
-  Widget _item(title, var data, selectData, {String label}) {
+  Widget _item(title, var data, var selectData, {String label}) {
     return Column(
       children: [
         Container(
@@ -49,9 +50,10 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem(data, selectData, label: label),
-            trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[MyText(selectData ?? '暂无', color: Colors.grey, rightpadding: 18), rightIcon]),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              MyText(selectData.toString() ?? '暂无', color: Colors.grey, rightpadding: 18),
+              rightIcon
+            ]),
           ),
         ),
         divider,
@@ -59,7 +61,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     );
   }
 
-  void _onClickItem(var data, selectData, {String label}) {
+  void _onClickItem(var data, var selectData, {String label}) {
     Picker.showSinglePicker(
       context,
       showTitleBar: true,
@@ -67,6 +69,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       label: label,
       selectData: selectData,
       onConfirm: (p) {
+        print('longer >>> 返回数据类型：${p.runtimeType}');
         setState(() {
           if (data == PickerDataType.sex) {
             selectSex = p;
@@ -78,7 +81,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
             selectConstellation = p;
           } else if (data == PickerDataType.zodiac) {
             selectZodiac = p;
-          }else if (data == PickerDataType.ethnicity) {
+          } else if (data == PickerDataType.ethnicity) {
             selectEthnicity = p;
           }
         });
@@ -105,18 +108,15 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
   }
 
   void _onClickItem2() {
-
     double menuHeight = 36.0;
     Widget _headMenuView = Container(
-        color: Colors.grey[700],
-        height: menuHeight,
-        child: Center(child: MyText('净身高', color: Colors.white)));
+        color: Colors.grey[700], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
       margin: const EdgeInsets.only(left: 12),
       decoration:
-      BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
+          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
@@ -134,15 +134,13 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
     Widget title = MyText('身高选择器', color: Colors.white, size: 14);
 
-    Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500,letfpadding: 90);
-
+    Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
 
     Picker.showSinglePicker(
       context,
       showTitleBar: true,
       data: List.generate(200, (index) => (50 + index).toString()),
       selectData: selectHeight,
-
       menu: _headMenuView,
       menuHeight: menuHeight,
       title: title,
@@ -152,7 +150,6 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
       labelWidget: laber,
-
       onConfirm: (p) {
         setState(() {
           selectHeight = p;

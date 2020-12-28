@@ -26,7 +26,7 @@ set http_proxy=http://127.0.0.1:1087
 
 
 
-
+## 支持数据混传  num string
 
 
 

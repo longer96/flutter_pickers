@@ -349,7 +349,7 @@ class _PickerState extends State<_PickerContentView> {
         Expanded(
           flex: 1,
           child: Container(
-            padding: EdgeInsets.all(8.0),
+            padding:const EdgeInsets.all(8.0),
             height: _pickerHeight,
             color: widget.route.backgroundColor,
             child: CupertinoPicker(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
+import 'package:flutter_pickers/pickers/route_page/link_multiple_picker.dart';
 import 'package:flutter_pickers/pickers/route_page/multiple_picker.dart';
 import 'package:flutter_pickers/pickers/route_page/single_picker.dart';
 
@@ -21,8 +22,8 @@ class Picker {
   /// 单列 通用选择器
   static void showSinglePicker(
     BuildContext context, {
-    @required var data,
-    String selectData,
+    @required dynamic data,
+    dynamic selectData,
     bool showTitleBar: true,
     Widget menu,
     double menuHeight,
@@ -38,7 +39,7 @@ class Picker {
     SingleCallback onConfirm,
   }) {
     assert(data != null, 'params: data can not be null');
-    assert((data is List<String>) || (data is PickerDataType), 'params : data must List<String> or PickerDataType');
+    assert((data is List) || (data is PickerDataType), 'params : data must List or PickerDataType');
 
     Navigator.push(
         context,
@@ -67,15 +68,13 @@ class Picker {
   /// 通用 多列选择器
   static void showMultiplePicker(
     BuildContext context, {
-    @required Map data,
-    String selectData,
+    @required dynamic data,
+    @required dynamic selectData,
     bool showTitleBar: true,
     Widget menu,
     double menuHeight,
     Widget cancelWidget,
     Widget commitWidget,
-    Widget labelWidget,
-    String label,
     Widget title,
     Decoration headDecoration,
     Color backgroundColor: Colors.white,
@@ -84,7 +83,10 @@ class Picker {
     MultipleCallback onConfirm,
   }) {
     assert(data != null, 'params: data can not be null');
-    assert((data is Map<String, List>), 'params : data must Map<String, List<String>>');
+    assert((data is List), 'params : data must List');
+    if(selectData != null){
+      assert((data is List), 'params : selectData must List');
+    }
 
     Navigator.push(
         context,
@@ -93,8 +95,6 @@ class Picker {
           menuHeight: menuHeight,
           cancelWidget: cancelWidget,
           commitWidget: commitWidget,
-          labelWidget: labelWidget,
-          label: label,
           title: title,
           backgroundColor: backgroundColor,
           textColor: textColor,
@@ -109,4 +109,24 @@ class Picker {
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
   }
+
+  /// 通用 双列选择器（联动），目前只支持2列联动
+  // static void showLinkMultiplePicker(
+  //     BuildContext context, {
+  //       @required dynamic data,
+  //       @required dynamic selectData,
+  //       bool showTitleBar: true,
+  //       Widget menu,
+  //       double menuHeight,
+  //       Widget cancelWidget,
+  //       Widget commitWidget,
+  //       Widget title,
+  //       Decoration headDecoration,
+  //       Color backgroundColor: Colors.white,
+  //       Color textColor: Colors.black87,
+  //       MultipleCallback onChanged,
+  //       MultipleCallback onConfirm,
+  //     }) {
+  // }
+
 }
