@@ -2,15 +2,15 @@
 ///
 ///
 ///    var s = PDuration.now();
-//     print('longer1 >>> ${s.toString()}');
-//    {year: 2021, month: 1, day: 5, hour: 17, minute: 17, second: 3}
-//
-//     var m = PDuration(year: 2011);
-//     print('longer2 >>> ${m.toString()}');
-//      {year: 2011, month: null, day: null, hour: null, minute: null, second: null}
-//
-//     var d = PDuration.parse(DateTime.parse('20200304'));
-//     print('longer3 >>> ${d.toString()}');
+///     print('longer1 >>> ${s.toString()}');
+///    {year: 2021, month: 1, day: 5, hour: 17, minute: 17, second: 3}
+///
+///     var m = PDuration(year: 2011);
+///     print('longer2 >>> ${m.toString()}');
+///      {year: 2011, month: null, day: null, hour: null, minute: null, second: null}
+///
+///     var d = PDuration.parse(DateTime.parse('20200304'));
+///     print('longer3 >>> ${d.toString()}');
 ///     {year: 2020, month: 3, day: 4, hour: 0, minute: 0, second: 0}
 ///
 class PDuration {
@@ -42,6 +42,8 @@ class PDuration {
     this.minute = thisInstant.minute;
     this.second = thisInstant.second;
   }
+
+
 
   @override
   String toString() {

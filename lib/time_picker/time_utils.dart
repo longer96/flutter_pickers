@@ -1,9 +1,13 @@
 class TimeUtils {
-  static List calcYears({begin = 1900, end = 2100}) => _calcDayCount(begin, end);
+  static List calcYears({int begin = 1900, int end = 2100}) => _calcDayCount(begin, end);
 
-  static List calcMonth({begin = 1, end = 12}) => _calcDayCount(begin, end);
+  static List calcMonth({int begin = 1, int end = 12}) {
+    begin = begin < 1? 1:begin;
+    end = end > 12 ? 12 : end;
+    return _calcDayCount(begin, end);
+  }
 
-  // todo 开始结束时间
+  // todo 开始结束时间  区间
   static List calcDay(int year, int month) {
     // 正常
     int days = _calcDateCount(year, month);

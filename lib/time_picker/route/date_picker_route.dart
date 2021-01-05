@@ -84,8 +84,8 @@ class DatePickerRoute<T> extends PopupRoute<T> {
       context: context,
       removeTop: true,
       child: _PickerContentView(
-        data: null,
-        selectData: null,
+//        data: mode,
+//        selectData: initDate,
         onChanged: onChanged,
         route: this,
       ),

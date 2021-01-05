@@ -393,16 +393,16 @@ class _PickerState extends State<_PickerContentView> {
   Widget _titleView() {
     final commitButton = Container(
       height: _pickerTitleHeight,
-      child: FlatButton(
-          onPressed: null, child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0))),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.only( left: 12, right: 22),
+      child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
     );
 
     final cancelButton = Container(
-      alignment: Alignment.center,
       height: _pickerTitleHeight,
-      child: FlatButton(
-          onPressed: null,
-          child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0))),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.only( left: 22, right: 12),
+      child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
     );
 
     final headDecoration = BoxDecoration(color: widget.route.backgroundColor);

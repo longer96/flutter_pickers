@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
 import 'package:flutter_pickers/pickers/pickers.dart';
 
-import 'package:flutter_pickers/time_picker/pduration.dart';
-
 class DatePickerPage extends StatefulWidget {
   @override
   _DatePickerPageState createState() => _DatePickerPageState();
@@ -70,7 +68,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
           color: Colors.white,
           child: ListTile(
             title: Text(title),
-            onTap: () => _onClickItem(data, selectData, label: label),
+            onTap: () => _onClickItem(),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
               MyText(selectData.toString() ?? '暂无', color: Colors.grey, rightpadding: 18),
               rightIcon
@@ -82,13 +80,11 @@ class _DatePickerPageState extends State<DatePickerPage> {
     );
   }
 
-  void _onClickItem(var data, var selectData, {String label}) {
-    Pickers.showSinglePicker(
+  void _onClickItem() {
+    Pickers.showDatePicker(
       context,
       showTitleBar: true,
-      data: data,
-      label: label,
-      selectData: selectData,
+
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
         print('longer >>> 返回数据类型：${p.runtimeType}');

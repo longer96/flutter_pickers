@@ -1,8 +1,6 @@
-
-
-
 /// 时间选择器 所显示样式
-/// 13 种时间样式
+/// 16 种时间样式
+///
 enum DateMode {
   /// 【yyyy-MM-dd HH:mm:ss】年月日时分秒
   YMDHMS,
@@ -41,5 +39,15 @@ enum DateMode {
   HM,
 
   /// 【mm:ss】分秒
-  MS
+  MS,
+
+  /// 【ss】秒
+  S,
+
+  /// 【MM】月
+  M,
+
+  /// 【HH】时
+  H,
 }
+
