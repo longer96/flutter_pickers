@@ -156,6 +156,10 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
           selectHeight = p;
         });
       },
+      onChanged: (p){
+        print('数据发生改变：$p');
+        // todo 除了singlepicker 的onChange 事件修改了，其他都还没有
+      }
     );
   }
 }

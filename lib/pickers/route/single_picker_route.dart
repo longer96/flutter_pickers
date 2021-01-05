@@ -88,7 +88,6 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
       child: _PickerContentView(
         data: mData,
         selectData: selectData,
-        onChanged: onChanged,
         route: this,
       ),
     );
@@ -106,12 +105,10 @@ class _PickerContentView extends StatefulWidget {
     this.data,
     this.selectData,
     @required this.route,
-    this.onChanged,
   }) : super(key: key);
 
   final List data;
   final dynamic selectData;
-  final SingleCallback onChanged;
   final SinglePickerRoute route;
 
   @override
@@ -190,8 +187,8 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _notifyLocationChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged(_selectData);
+    if (widget.route.onChanged != null) {
+      widget.route.onChanged(_selectData);
     }
   }
 
