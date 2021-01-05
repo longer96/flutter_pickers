@@ -1,7 +1,7 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/picker.dart';
+import 'package:flutter_pickers/pickers/pickers.dart';
 
 class MultiplePickerPage extends StatefulWidget {
   @override
@@ -12,8 +12,19 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   var hourse = 13;
   String minute = '58';
 
-  var timeData;
-  var timeData2;
+  // 时间多列  选中的数据
+  var listTime = [];
+
+  final timeData = [
+    List.generate(24, (index) => (index).toString()).toList(),
+    List.generate(60, (index) => index.toString()).toList()
+  ];
+  final timeData2 = [
+    ['上午', '下午'],
+    List.generate(12, (index) => (index + 1).toString()).toList(),
+    List.generate(60, (index) => index.toString()).toList(),
+    List.generate(60, (index) => index.toString()).toList(),
+  ];
   List timeData2Select = [5, 13, 32];
 
   final divider = Divider(height: 1, indent: 20);
@@ -31,24 +42,20 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       appBar: MyAppBar(title: '多列选择器'),
       body: ListView(children: [
         _item('时间(传入不同类型)'),
-        _item2('自定义样式'),
+        _item2('时间(多列)'),
+        _item3('自定义样式'),
       ]),
     );
   }
 
   Widget _item(title) {
-    timeData = [
-      List.generate(24, (index) => (index + 1).toString()).toList(),
-      List.generate(60, (index) => index.toString()).toList()
-    ];
-
     return Column(
       children: [
         Container(
           color: Colors.white,
           child: ListTile(
             title: Text(title),
-            onTap: () => _onClickItem(timeData),
+            onTap: () => _onClickItem(),
             trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[MyText('$hourse时 $minute分', color: Colors.grey, rightpadding: 18), rightIcon]),
@@ -60,12 +67,6 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   }
 
   Widget _item2(title) {
-    timeData2 = [
-      List.generate(28, (index) => (index + 1)).toList(),
-      List.generate(24, (index) => (index + 1)).toList(),
-      List.generate(60, (index) => index).toList()
-    ];
-
     return Column(
       children: [
         Container(
@@ -73,6 +74,24 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem2(),
+            trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[MyText(listTime.toString(), color: Colors.grey, rightpadding: 18), rightIcon]),
+          ),
+        ),
+        divider,
+      ],
+    );
+  }
+
+  Widget _item3(title) {
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          child: ListTile(
+            title: Text(title),
+            onTap: () => _onClickItem3(),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
               MyText(timeData2Select.toString(), color: Colors.grey, rightpadding: 18),
               rightIcon
@@ -84,7 +103,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
     );
   }
 
-  void _onClickItem(data) {
+  void _onClickItem() {
     double menuHeight = 36.0;
     Widget _headMenuView = Container(
         color: Colors.grey[50],
@@ -94,16 +113,15 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           Expanded(child: Center(child: MyText('分'))),
         ]));
 
-    Picker.showMultiplePicker(
+    Pickers.showMultiplePicker(
       context,
       showTitleBar: true,
       menu: _headMenuView,
       menuHeight: menuHeight,
-      data: data,
+      data: timeData,
       selectData: [hourse, minute],
       onConfirm: (p) {
-        print('longer >>> 返回数据类型：');
-        print(p.map((x) => x.runtimeType).toList());
+        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {
           hourse = p[0];
           minute = p[1];
@@ -113,6 +131,35 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   }
 
   void _onClickItem2() {
+    double menuHeight = 36.0;
+    Widget _headMenuView = Container(
+        color: Colors.grey[50],
+        height: menuHeight,
+        child: Row(children: [
+          Expanded(child: Center(child: MyText('早晚'))),
+          Expanded(child: Center(child: MyText('时'))),
+          Expanded(child: Center(child: MyText('分'))),
+          Expanded(child: Center(child: MyText('秒'))),
+        ]));
+
+    Pickers.showMultiplePicker(
+      context,
+      showTitleBar: true,
+      menu: _headMenuView,
+      menuHeight: menuHeight,
+      data: timeData2,
+      selectData: ['', 4, 5, 12],
+      onConfirm: (p) {
+        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
+        setState(() {
+          listTime.clear();
+          listTime.addAll(p);
+        });
+      },
+    );
+  }
+
+  void _onClickItem3() {
     double menuHeight = 36.0;
     Widget _headMenuView = Container(
         color: Colors.grey[700],
@@ -145,7 +192,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Widget title = MyText('自定义选择器', color: Colors.white, size: 14);
 
-    Picker.showMultiplePicker(
+    Pickers.showMultiplePicker(
       context,
       showTitleBar: true,
       menu: _headMenuView,
@@ -161,7 +208,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       onConfirm: (p) {
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {
-          timeData2Select = p;
+          timeData2Select.clear();
+          timeData2Select.addAll(p);
         });
       },
     );

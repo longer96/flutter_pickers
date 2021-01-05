@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'data.dart';
+import '../data.dart';
 
 typedef AddressCallback(String province, String city, String town);
 
@@ -27,53 +27,8 @@ double _pickerMenuHeight = 36.0;
 /// [headDecoration] 头部Container Decoration 样式
 /// 默认：BoxDecoration(color: backgroundColor)
 /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
-class AddressPicker {
-  static void showPicker(
-    BuildContext context, {
-    bool showTitleBar: true,
-    Widget menu,
-    double menuHeight,
-    Widget cancelWidget,
-    Widget commitWidget,
-    Widget title,
-    Decoration headDecoration,
-    bool addAllItem: true,
-    Color backgroundColor: Colors.white,
-    Color textColor: Colors.black87,
-    String initProvince: '',
-    String initCity: '',
-    String initTown,
-    AddressCallback onChanged,
-    AddressCallback onConfirm,
-  }) {
-    if (menuHeight != null) _pickerMenuHeight = menuHeight;
-
-    Navigator.push(
-        context,
-        _PickerRoute(
-          menu: menu,
-          menuHeight: menuHeight,
-          cancelWidget: cancelWidget,
-          commitWidget: commitWidget,
-          title: title,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          showTitlebar: showTitleBar,
-          initProvince: initProvince,
-          initCity: initCity,
-          initTown: initTown,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          headDecoration: headDecoration,
-          addAllItem: addAllItem,
-          theme: Theme.of(context),
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
-  }
-}
-
-class _PickerRoute<T> extends PopupRoute<T> {
-  _PickerRoute({
+class AddressPickerRoute<T> extends PopupRoute<T> {
+  AddressPickerRoute({
     this.menu,
     this.menuHeight,
     this.cancelWidget,
@@ -92,7 +47,9 @@ class _PickerRoute<T> extends PopupRoute<T> {
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  }) : super(settings: settings);
+  }) : super(settings: settings){
+    if (menuHeight != null) _pickerMenuHeight = menuHeight;
+  }
 
   final bool showTitlebar;
   final String initProvince, initCity, initTown;
@@ -166,7 +123,7 @@ class _PickerContentView extends StatefulWidget {
 
   final String initProvince, initCity, initTown;
   final AddressCallback onChanged;
-  final _PickerRoute route;
+  final AddressPickerRoute route;
   final bool addAllItem;
 
   @override
@@ -194,6 +151,14 @@ class _PickerState extends State<_PickerContentView> {
     hasTown = this._currentTown != null;
 
     _init();
+  }
+  @override
+  void dispose() {
+    provinceScrollCtrl.dispose();
+    cityScrollCtrl.dispose();
+    townScrollCtrl?.dispose();
+
+    super.dispose();
   }
 
   @override

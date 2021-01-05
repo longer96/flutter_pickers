@@ -1,29 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/init_data.dart';
+import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/model/pduration.dart';
+import 'package:flutter_pickers/time_picker/model/suffix.dart';
 
-typedef SingleCallback(var data);
+typedef DateCallback(List res);
 
 const double _pickerHeight = 220.0;
 const double _pickerTitleHeight = 44.0;
 const double _pickerItemHeight = 40.0;
 double _pickerMenuHeight = 36.0;
 
-class SinglePickerRoute<T> extends PopupRoute<T> {
-  SinglePickerRoute({
+class DatePickerRoute<T> extends PopupRoute<T> {
+  DatePickerRoute({
+    this.mode,
+    this.initDate,
+    this.maxDate,
+    this.minDate,
+    this.suffix,
+
     this.menu,
     this.menuHeight,
     this.cancelWidget,
     this.commitWidget,
-    this.labelWidget,
-    this.label,
     this.headDecoration,
     this.title,
     this.backgroundColor,
     this.textColor,
     this.showTitleBar,
-    this.data,
-    this.selectData,
     this.onChanged,
     this.onConfirm,
     this.theme,
@@ -33,13 +37,17 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     if (menuHeight != null) _pickerMenuHeight = menuHeight;
   }
 
-  final bool showTitleBar;
-  final dynamic selectData;
-  final dynamic data;
-  final SingleCallback onChanged;
-  final SingleCallback onConfirm;
-  final ThemeData theme;
+  final DateMode mode;
+  final PDuration initDate;
+  final PDuration maxDate;
+  final PDuration minDate;
+  final Suffix suffix;
 
+
+  final bool showTitleBar;
+  final DateCallback onChanged;
+  final DateCallback onConfirm;
+  final ThemeData theme;
   final Color backgroundColor; // 背景色
   final Color textColor; // 文字颜色
   final Widget title;
@@ -48,8 +56,6 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final Widget cancelWidget;
   final Widget commitWidget;
   final Decoration headDecoration; // 头部样式
-  final Widget labelWidget;
-  final String label;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -74,20 +80,12 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-    List mData = [];
-    // 初始化数据
-    if (data is PickerDataType) {
-      mData = pickerData[data];
-    } else if (data is List) {
-      mData.addAll(data);
-    }
-
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
       child: _PickerContentView(
-        data: mData,
-        selectData: selectData,
+        data: null,
+        selectData: null,
         onChanged: onChanged,
         route: this,
       ),
@@ -109,29 +107,44 @@ class _PickerContentView extends StatefulWidget {
     this.onChanged,
   }) : super(key: key);
 
-  final List data;
-  final dynamic selectData;
-  final SingleCallback onChanged;
-  final SinglePickerRoute route;
+  final List<List> data;
+  final List selectData;
+  final DateCallback onChanged;
+  final DatePickerRoute route;
 
   @override
   State<StatefulWidget> createState() => _PickerState(this.data, this.selectData);
 }
 
 class _PickerState extends State<_PickerContentView> {
-  var _selectData;
-  List data = [];
+  List _selectData;
+  List<List> _data;
 
   AnimationController controller;
   Animation<double> animation;
 
-  FixedExtentScrollController provinceScrollCtrl;
+  List<FixedExtentScrollController> provinceScrollCtrl = [];
 
-  // 单位widget Padding left
-  double _laberLeft;
+  _PickerState(this._data, List mSelectData) {
+    // 已选择器数据为准，因为初始化数据有可能和选择器对不上
+    this._selectData = [];
+    this._data.asMap().keys.forEach((index) {
+      if (index >= mSelectData.length) {
+        this._selectData.add('');
+      } else {
+        this._selectData.add(mSelectData[index]);
+      }
+    });
 
-  _PickerState(this.data, this._selectData) {
     _init();
+  }
+
+  @override
+  void dispose() {
+    provinceScrollCtrl.forEach((element) {
+      element.dispose();
+    });
+    super.dispose();
   }
 
   @override
@@ -158,22 +171,29 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   _init() {
-    int pindex = 0;
-    pindex = data.indexWhere((element) => element.toString() == _selectData.toString());
-    pindex = pindex >= 0 ? pindex : 0;
+    int pindex;
+    provinceScrollCtrl.clear();
 
-    provinceScrollCtrl = new FixedExtentScrollController(initialItem: pindex);
-    _laberLeft = _pickerLaberPadding(data[pindex].toString());
+    this._data.asMap().keys.forEach((index) {
+      pindex = 0;
+      pindex = _data[index].indexWhere((element) => element.toString() == _selectData[index].toString());
+      // 如果没有匹配到选择器对应数据，我们得修改选择器选中数据 ，不然confirm 返回的事设置的数据
+      if(pindex < 0){
+        _selectData[index] = _data[index][0];
+        pindex = 0;
+      }
+
+      provinceScrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
+    });
   }
 
-  void _setPicker(int index) {
-    var selectedProvince = data[index];
+  void _setPicker(int index, int selectIndex) {
+    var selectedName = _data[index][selectIndex];
 
-    if (_selectData.toString() != selectedProvince.toString()) {
+    if (_selectData[index].toString() != selectedName.toString()) {
       setState(() {
-        _selectData = selectedProvince;
+        _selectData[index] = selectedName;
       });
-
       _notifyLocationChanged();
     }
   }
@@ -182,15 +202,6 @@ class _PickerState extends State<_PickerContentView> {
     if (widget.onChanged != null) {
       widget.onChanged(_selectData);
     }
-  }
-
-  double _pickerLaberPadding(String text) {
-    double left = 80;
-
-    if (text != null) {
-      left = left + text.length * 12;
-    }
-    return left;
   }
 
   double _pickerFontSize(String text) {
@@ -225,57 +236,40 @@ class _PickerState extends State<_PickerContentView> {
 
   Widget _renderItemView() {
     // 选择器
-    Widget cPicker = CupertinoPicker(
-      scrollController: provinceScrollCtrl,
-      itemExtent: _pickerItemHeight,
-      onSelectedItemChanged: (int index) {
-        _setPicker(index);
+    List<Widget> pickerList = [];
 
-        if (widget.route.label != null && widget.route.label != '') {
-          // 如果设置了才计算 单位的paddingLeft
-          double resuleLeft = _pickerLaberPadding(data[index].toString());
-          if (resuleLeft != _laberLeft) {
-            setState(() {
-              _laberLeft = resuleLeft;
-            });
-          }
-        }
-      },
-      children: List.generate(data.length, (int index) {
-        String text = data[index].toString();
-        return Container(
-            alignment: Alignment.center,
-            child: Text(text,
-                style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
-                textAlign: TextAlign.start));
-      }),
-    );
-
-    Widget view;
-    // 单位
-    if ((widget.route.label != null && widget.route.label != '') || (widget.route.labelWidget != null)) {
-      Widget laberView = Container(
-          height: _pickerHeight,
-          alignment: Alignment.center,
-          child: (widget.route.labelWidget == null)
-              ? AnimatedPadding(
-                  duration: Duration(milliseconds: 100),
-                  padding: EdgeInsets.only(left: _laberLeft),
-                  child: Text(widget.route.label,
-                      style: TextStyle(color: widget.route.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
-                )
-              : widget.route.labelWidget);
-
-      view = Stack(children: [cPicker, laberView]);
-    } else {
-      view = cPicker;
-    }
+    pickerList = List.generate(this._data.length, (index) => pickerView(index)).toList();
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       height: _pickerHeight,
       color: widget.route.backgroundColor,
-      child: view,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: pickerList,
+      ),
+    );
+  }
+
+  Widget pickerView(int position) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: CupertinoPicker(
+          scrollController: provinceScrollCtrl[position],
+          itemExtent: _pickerItemHeight,
+          onSelectedItemChanged: (int selectIndex) => _setPicker(position, selectIndex),
+          children: List.generate(_data[position].length, (int index) {
+            String text = _data[position][index].toString();
+            return Container(
+                alignment: Alignment.center,
+                child: Text(text,
+                    style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
+                    textAlign: TextAlign.start));
+          }),
+        ),
+      ),
     );
   }
 

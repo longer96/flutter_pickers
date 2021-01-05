@@ -1,7 +1,7 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/picker.dart';
+import 'package:flutter_pickers/pickers/pickers.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
 
 class SinglePickerPage extends StatefulWidget {
@@ -62,13 +62,14 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
   }
 
   void _onClickItem(var data, var selectData, {String label}) {
-    Picker.showSinglePicker(
+    Pickers.showSinglePicker(
       context,
       showTitleBar: true,
       data: data,
       label: label,
       selectData: selectData,
       onConfirm: (p) {
+        print('longer >>> 返回数据：$p');
         print('longer >>> 返回数据类型：${p.runtimeType}');
         setState(() {
           if (data == PickerDataType.sex) {
@@ -136,7 +137,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
     Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
 
-    Picker.showSinglePicker(
+    Pickers.showSinglePicker(
       context,
       showTitleBar: true,
       data: List.generate(200, (index) => (50 + index).toString()),

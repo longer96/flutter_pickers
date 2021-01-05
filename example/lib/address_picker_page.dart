@@ -1,7 +1,7 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/address_picker/address_picker.dart';
+import 'package:flutter_pickers/pickers/pickers.dart';
 
 class AddressPickerPage extends StatefulWidget {
   @override
@@ -47,7 +47,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
 
     return InkWell(
       onTap: () {
-        AddressPicker.showPicker(
+        Pickers.showAddressPicker(
           context,
           showTitleBar: true,
           initProvince: initProvince,
@@ -71,7 +71,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
 
     return InkWell(
       onTap: () {
-        AddressPicker.showPicker(
+        Pickers.showAddressPicker(
           context,
           initProvince: locations1[0],
           initCity: locations1[1],
@@ -124,7 +124,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
 
     return InkWell(
       onTap: () {
-        AddressPicker.showPicker(
+        Pickers.showAddressPicker(
           context,
           initProvince: locations2[0],
           initCity: locations2[1],
