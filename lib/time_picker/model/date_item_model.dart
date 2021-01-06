@@ -19,6 +19,19 @@ class DateItemModel {
     this.minute = DateModeMap[dateMode].contains('分');
     this.second = DateModeMap[dateMode].contains('秒');
   }
+
+  // 返回需要显示多少个picker
+  int get length {
+    int i = 0;
+    if (this.year) ++i;
+    if (this.month) ++i;
+    if (this.day) ++i;
+    if (this.hour) ++i;
+    if (this.minute) ++i;
+    if (this.second) ++i;
+
+    return i;
+  }
 }
 
 const DateModeMap = {

@@ -227,7 +227,6 @@ class _PickerState extends State<_PickerContentView> {
     pickerList = List.generate(this._data.length, (index) => pickerView(index)).toList();
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
       height: _pickerHeight,
       color: widget.route.backgroundColor,
       child: Row(
@@ -241,7 +240,7 @@ class _PickerState extends State<_PickerContentView> {
     return Expanded(
       flex: 1,
       child: Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 2),
         child: CupertinoPicker(
           scrollController: scrollCtrl[position],
           itemExtent: _pickerItemHeight,

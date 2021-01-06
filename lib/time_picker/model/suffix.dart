@@ -1,13 +1,40 @@
+import 'package:flutter_pickers/time_picker/model/date_type.dart';
+
 /// 后缀标签
 class Suffix {
-  String years = '年';
-  String month = '月';
-  String days = '日';
-  String hours = '时';
-  String minutes = '分';
-  String seconds = '秒';
+  String years;
+  String month;
+  String days;
+  String hours;
+  String minutes;
+  String seconds;
 
-  static Suffix noSuffix = Suffix(years: '', month: '', days: '', hours: '', minutes: '', seconds: '');
+  Suffix.normal() {
+    this.years = '年';
+    this.month = '月';
+    this.days = '日';
+    this.hours = '时';
+    this.minutes = '分';
+    this.seconds = '秒';
+  }
 
-  Suffix({this.years, this.month, this.days, this.hours, this.minutes, this.seconds});
+  Suffix({this.years: '', this.month: '', this.days: '', this.hours: '', this.minutes: '', this.seconds: ''});
+
+  String getSingle(DateType dateType) {
+    switch (dateType) {
+      case DateType.Year:
+        return this.years;
+      case DateType.Month:
+        return this.month;
+      case DateType.Day:
+        return this.days;
+      case DateType.Hour:
+        return this.hours;
+      case DateType.Minute:
+        return this.minutes;
+      case DateType.Second:
+        return this.seconds;
+    }
+    return '';
+  }
 }

@@ -1,31 +1,38 @@
 class TimeUtils {
 
   /// 年
-  static List calcYears({int begin = 1900, int end = 2100}) => _calcDayCount(begin, end);
+  static List calcYears({int begin = 1900, int end = 2100}) => _calcCount(begin, end);
 
   /// 月
   static List calcMonth({int begin = 1, int end = 12}) {
     begin = begin < 1 ? 1 : begin;
     end = end > 12 ? 12 : end;
-    return _calcDayCount(begin, end);
+    return _calcCount(begin, end);
   }
 
   /// 日
   static List calcDay(int year, int month) {
-    // 正常
+    print("$year - $month");
     int days = _calcDateCount(year, month);
 
     return List.generate(days, (index) => index + 1);
   }
 
   /// 时
-  static List calcHour({int begin = 0, int end = 59}) {
+  static List calcHour({int begin = 0, int end = 23}) {
     begin = begin < 0 ? 0 : begin;
-    end = end > 59 ? 59 : end;
-    return _calcDayCount(begin, end);
+    end = end > 23 ? 23 : end;
+    return _calcCount(begin, end);
   }
 
-  static List _calcDayCount(begin, end) {
+  /// 分 和 秒
+  static List calcMinAndSecond({int begin = 0, int end = 59}) {
+    begin = begin < 0 ? 0 : begin;
+    end = end > 59 ? 59 : end;
+    return _calcCount(begin, end);
+  }
+
+  static List _calcCount(begin, end) {
     int length = end - begin + 1;
     if (length == 0) return [begin];
     if (length < 0) return [];

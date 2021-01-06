@@ -213,6 +213,7 @@ class Pickers {
     // }
 
     if (initDate == null) initDate = PDuration.now();
+    if (suffix == null) suffix = Suffix.normal();
     if (maxDate == null) maxDate = PDuration(year: 2100);
     if (minDate == null) minDate = PDuration(year: 1900);
 
