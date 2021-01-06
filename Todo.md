@@ -25,6 +25,7 @@ set http_proxy=http://127.0.0.1:1087
 ## 时间选择器文档
 - 支持数据混传  num string
 - 多语言可参考 flutter_picker
+- [DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD]
 
 
 

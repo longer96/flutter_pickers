@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../data.dart';
+import '../locations_data.dart';
 
 typedef AddressCallback(String province, String city, String town);
 
@@ -98,7 +98,6 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
         initCity: initCity,
         initTown: initTown,
         addAllItem : addAllItem,
-        onChanged: onChanged,
         route: this,
       ),
     );
@@ -118,11 +117,9 @@ class _PickerContentView extends StatefulWidget {
     this.initTown,
     this.addAllItem,
     @required this.route,
-    this.onChanged,
   }) : super(key: key);
 
   final String initProvince, initCity, initTown;
-  final AddressCallback onChanged;
   final AddressPickerRoute route;
   final bool addAllItem;
 
@@ -271,8 +268,8 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _notifyLocationChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged(_currentProvince, _currentCity, _currentTown);
+    if (widget.route.onChanged != null) {
+      widget.route.onChanged(_currentProvince, _currentCity, _currentTown);
     }
   }
 

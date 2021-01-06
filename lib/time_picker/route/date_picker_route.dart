@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/time_picker/model/date_item_model.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/model/date_time_data.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_pickers/time_picker/model/suffix.dart';
+
+import '../time_utils.dart';
 
 typedef DateCallback(List res);
 
@@ -18,7 +22,6 @@ class DatePickerRoute<T> extends PopupRoute<T> {
     this.maxDate,
     this.minDate,
     this.suffix,
-
     this.menu,
     this.menuHeight,
     this.cancelWidget,
@@ -42,7 +45,6 @@ class DatePickerRoute<T> extends PopupRoute<T> {
   final PDuration maxDate;
   final PDuration minDate;
   final Suffix suffix;
-
 
   final bool showTitleBar;
   final DateCallback onChanged;
@@ -84,9 +86,8 @@ class DatePickerRoute<T> extends PopupRoute<T> {
       context: context,
       removeTop: true,
       child: _PickerContentView(
-//        data: mode,
-//        selectData: initDate,
-        onChanged: onChanged,
+        mode: mode,
+        initData: initDate,
         route: this,
       ),
     );
@@ -101,48 +102,104 @@ class DatePickerRoute<T> extends PopupRoute<T> {
 class _PickerContentView extends StatefulWidget {
   _PickerContentView({
     Key key,
-    this.data,
-    this.selectData,
+    this.mode,
+    this.initData,
     @required this.route,
-    this.onChanged,
   }) : super(key: key);
 
-  final List<List> data;
-  final List selectData;
-  final DateCallback onChanged;
+  final DateMode mode;
+  final PDuration initData;
   final DatePickerRoute route;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData);
+  State<StatefulWidget> createState() => _PickerState(this.mode, this.initData);
 }
 
 class _PickerState extends State<_PickerContentView> {
-  List _selectData;
-  List<List> _data;
+  // 是否显示 [年月日时分秒]
+  DateItemModel dateItemModel;
 
-  AnimationController controller;
+  // 初始 设置选中的数据
+  final PDuration _initData;
+
+  // 选中的数据  用于回传
+  PDuration _selectData;
+
+  // 所有item 对应的数据
+  DateTimeData _dateTimeData;
+
   Animation<double> animation;
+  Map<String, FixedExtentScrollController> scrollCtrl = {};
 
-  List<FixedExtentScrollController> provinceScrollCtrl = [];
-
-  _PickerState(this._data, List mSelectData) {
-    // 已选择器数据为准，因为初始化数据有可能和选择器对不上
-    this._selectData = [];
-    this._data.asMap().keys.forEach((index) {
-      if (index >= mSelectData.length) {
-        this._selectData.add('');
-      } else {
-        this._selectData.add(mSelectData[index]);
-      }
-    });
-
+  _PickerState(DateMode mode, this._initData) {
+    this.dateItemModel = DateItemModel.parse(mode);
     _init();
+  }
+
+  _init() {
+    scrollCtrl.clear();
+
+    _dateTimeData = DateTimeData();
+    int pindex = 0;
+    /// 年
+    if(dateItemModel.year){
+      pindex = 0;
+      _dateTimeData.year = TimeUtils.calcYears();
+      
+      if(_initData.year != null){
+        pindex = _dateTimeData.year.indexOf(_initData.year);
+        pindex = pindex < 0 ? 0 : pindex;
+      }
+      scrollCtrl['year'] = FixedExtentScrollController(initialItem: pindex);
+    }
+    
+    /// 月
+    // 选中的月 用于之后 day 的计算
+    int selectMonth = 1;
+    if(dateItemModel.month){
+      pindex = 0;
+      _dateTimeData.month = TimeUtils.calcMonth();
+
+      if(_initData.month != null){
+        pindex = _dateTimeData.month.indexOf(_initData.month);
+        pindex = pindex < 0 ? 0 : pindex;
+      }
+      selectMonth = _dateTimeData.month[pindex];
+      scrollCtrl['month'] = FixedExtentScrollController(initialItem: pindex);
+    }
+
+    /// 日
+    if(dateItemModel.day){
+      pindex = 0;
+      _dateTimeData.day = TimeUtils.calcDay(_initData.year, selectMonth);
+
+      if(_initData.day != null){
+        pindex = _dateTimeData.day.indexOf(_initData.day);
+        pindex = pindex < 0 ? 0 : pindex;
+      }
+      scrollCtrl['day'] = FixedExtentScrollController(initialItem: pindex);
+    }
+
+    /// 时   todo
+    if(dateItemModel.hour){
+      pindex = 0;
+      _dateTimeData.hour = TimeUtils.calcDay(_initData.year, selectMonth);
+
+      if(_initData.day != null){
+        pindex = _dateTimeData.day.indexOf(_initData.day);
+        pindex = pindex < 0 ? 0 : pindex;
+      }
+      scrollCtrl['day'] = FixedExtentScrollController(initialItem: pindex);
+    }
+
+
+
   }
 
   @override
   void dispose() {
-    provinceScrollCtrl.forEach((element) {
-      element.dispose();
+    scrollCtrl.forEach((key, value) {
+      value.dispose();
     });
     super.dispose();
   }
@@ -170,37 +227,20 @@ class _PickerState extends State<_PickerContentView> {
     );
   }
 
-  _init() {
-    int pindex;
-    provinceScrollCtrl.clear();
-
-    this._data.asMap().keys.forEach((index) {
-      pindex = 0;
-      pindex = _data[index].indexWhere((element) => element.toString() == _selectData[index].toString());
-      // 如果没有匹配到选择器对应数据，我们得修改选择器选中数据 ，不然confirm 返回的事设置的数据
-      if(pindex < 0){
-        _selectData[index] = _data[index][0];
-        pindex = 0;
-      }
-
-      provinceScrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
-    });
-  }
-
   void _setPicker(int index, int selectIndex) {
-    var selectedName = _data[index][selectIndex];
+    var selectedName = _mode[index][selectIndex];
 
-    if (_selectData[index].toString() != selectedName.toString()) {
+    if (_initData[index].toString() != selectedName.toString()) {
       setState(() {
-        _selectData[index] = selectedName;
+        _initData[index] = selectedName;
       });
       _notifyLocationChanged();
     }
   }
 
   void _notifyLocationChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged(_selectData);
+    if (widget.route.onChanged != null) {
+      widget.route.onChanged(_initData);
     }
   }
 
@@ -238,7 +278,7 @@ class _PickerState extends State<_PickerContentView> {
     // 选择器
     List<Widget> pickerList = [];
 
-    pickerList = List.generate(this._data.length, (index) => pickerView(index)).toList();
+    pickerList = List.generate(this._mode.length, (index) => pickerView(index)).toList();
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -257,11 +297,11 @@ class _PickerState extends State<_PickerContentView> {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         child: CupertinoPicker(
-          scrollController: provinceScrollCtrl[position],
+          scrollController: scrollCtrl[position],
           itemExtent: _pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) => _setPicker(position, selectIndex),
-          children: List.generate(_data[position].length, (int index) {
-            String text = _data[position][index].toString();
+          children: List.generate(_mode[position].length, (int index) {
+            String text = _mode[position][index].toString();
             return Container(
                 alignment: Alignment.center,
                 child: Text(text,
@@ -309,7 +349,7 @@ class _PickerState extends State<_PickerContentView> {
           /// 确认按钮
           InkWell(
               onTap: () {
-                widget.route?.onConfirm(_selectData);
+                widget.route?.onConfirm(_initData);
                 Navigator.pop(context);
               },
               child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)

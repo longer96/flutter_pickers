@@ -184,7 +184,7 @@ class Pickers {
   /// [mode] : 时间选择器所显示样式  16 种时间样式 默认：DateMode.YMD
   static void showDatePicker(
     BuildContext context, {
-    DateMode mode : DateMode.YMD,
+    DateMode mode: DateMode.YMD,
     PDuration initDate,
     PDuration maxDate,
     PDuration minDate,
@@ -212,18 +212,24 @@ class Pickers {
     //   assert((data is List), 'params : selectData must List');
     // }
 
-    if(initDate == null) initDate = PDuration.now();
-    if(maxDate == null) maxDate = PDuration(year: 2100);
-    if(minDate == null) minDate = PDuration(year: 1900);
+    if (initDate == null) initDate = PDuration.now();
+    if (maxDate == null) maxDate = PDuration(year: 2100);
+    if (minDate == null) minDate = PDuration(year: 1900);
+
+    if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode)) {
+      // todo 须设置years  只是dialog 不显示年选项
+      // 默认是今年
+      // initDate.year = DateTime.now().year;
+    }
 
     Navigator.push(
         context,
         DatePickerRoute(
-           mode: mode,
-           initDate : initDate,
-           maxDate : maxDate,
-           minDate : minDate,
-           suffix : suffix,
+          mode: mode,
+          initDate: initDate,
+          maxDate: maxDate,
+          minDate: minDate,
+          suffix: suffix,
 
           // style  begin
           menu: menu,
@@ -236,7 +242,6 @@ class Pickers {
           showTitleBar: showTitleBar,
           headDecoration: headDecoration,
           // style  end
-
 
           onChanged: onChanged,
           onConfirm: onConfirm,

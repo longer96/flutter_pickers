@@ -1,5 +1,6 @@
-import 'package:flutter_pickers/address_picker/data.dart';
+import 'package:flutter_pickers/address_picker/locations_data.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -13,11 +14,21 @@ void main() {
   //   Address.getCityNameByCode();
   // });
 
-  test('adds one to input values', () {
-    print('longer >>> ${DateMode.MDHMS.toString()}');
-    print('longer >>> ${DateMode.MDHMS.toString().length - 9}');
-  });
+  // test('adds one to input values', () {
+  //   print('longer >>> ${DateMode.MDHMS.toString()}');
+  //   print('longer >>> ${DateMode.MDHMS.toString().length - 9}');
+  // });
 
+
+
+  /// 计算
+  // var h = TimeUtils.calcHour();
+  // var m = TimeUtils.calcMonth();
+  // var d = TimeUtils.calcDay(2021,1);
+  //
+  // print('longer >>> $h');
+  // print('longer >>> $m');
+  // print('longer >>> $d');
 
 }
 

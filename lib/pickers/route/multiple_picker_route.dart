@@ -75,7 +75,6 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
       child: _PickerContentView(
         data: data,
         selectData: selectData,
-        onChanged: onChanged,
         route: this,
       ),
     );
@@ -93,12 +92,10 @@ class _PickerContentView extends StatefulWidget {
     this.data,
     this.selectData,
     @required this.route,
-    this.onChanged,
   }) : super(key: key);
 
   final List<List> data;
   final List selectData;
-  final MultipleCallback onChanged;
   final MultiplePickerRoute route;
 
   @override
@@ -112,7 +109,7 @@ class _PickerState extends State<_PickerContentView> {
   AnimationController controller;
   Animation<double> animation;
 
-  List<FixedExtentScrollController> provinceScrollCtrl = [];
+  List<FixedExtentScrollController> scrollCtrl = [];
 
   _PickerState(this._data, List mSelectData) {
     // 已选择器数据为准，因为初始化数据有可能和选择器对不上
@@ -130,7 +127,7 @@ class _PickerState extends State<_PickerContentView> {
 
   @override
   void dispose() {
-    provinceScrollCtrl.forEach((element) {
+    scrollCtrl.forEach((element) {
       element.dispose();
     });
     super.dispose();
@@ -161,7 +158,7 @@ class _PickerState extends State<_PickerContentView> {
 
   _init() {
     int pindex;
-    provinceScrollCtrl.clear();
+    scrollCtrl.clear();
 
     this._data.asMap().keys.forEach((index) {
       pindex = 0;
@@ -172,7 +169,7 @@ class _PickerState extends State<_PickerContentView> {
         pindex = 0;
       }
 
-      provinceScrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
+      scrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
     });
   }
 
@@ -188,8 +185,8 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _notifyLocationChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged(_selectData);
+    if (widget.route.onChanged != null) {
+      widget.route.onChanged(_selectData);
     }
   }
 
@@ -246,7 +243,7 @@ class _PickerState extends State<_PickerContentView> {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         child: CupertinoPicker(
-          scrollController: provinceScrollCtrl[position],
+          scrollController: scrollCtrl[position],
           itemExtent: _pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) => _setPicker(position, selectIndex),
           children: List.generate(_data[position].length, (int index) {
