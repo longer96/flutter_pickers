@@ -205,22 +205,14 @@ class Pickers {
     DateCallback onChanged,
     DateCallback onConfirm,
   }) {
-    // assert(data != null, 'params: data can not be null');
-    // assert((data is List), 'params : data must List');
-    //
-    // if (selectData != null) {
-    //   assert((data is List), 'params : selectData must List');
-    // }
-
     if (initDate == null) initDate = PDuration.now();
     if (suffix == null) suffix = Suffix.normal();
     if (maxDate == null) maxDate = PDuration(year: 2100);
     if (minDate == null) minDate = PDuration(year: 1900);
 
-    if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode)) {
-      // todo 须设置years  只是dialog 不显示年选项
-      // 默认是今年
-      // initDate.year = DateTime.now().year;
+    if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode) && initDate.year == null) {
+      print('picker   Tip >>> initDate未设置years，默认设置为now().year');
+      initDate.year = DateTime.now().year;
     }
 
     Navigator.push(

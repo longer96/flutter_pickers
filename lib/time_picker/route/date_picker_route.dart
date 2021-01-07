@@ -118,7 +118,7 @@ class _PickerContentView extends StatefulWidget {
 
 class _PickerState extends State<_PickerContentView> {
   // 是否显示 [年月日时分秒]
-  DateItemModel dateItemModel;
+  DateItemModel _dateItemModel;
 
   // 初始 设置选中的数据
   final PDuration _initData;
@@ -133,7 +133,7 @@ class _PickerState extends State<_PickerContentView> {
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
   _PickerState(DateMode mode, this._initData) {
-    this.dateItemModel = DateItemModel.parse(mode);
+    this._dateItemModel = DateItemModel.parse(mode);
     _init();
   }
 
@@ -145,7 +145,7 @@ class _PickerState extends State<_PickerContentView> {
     _selectData = PDuration();
 
     /// 年
-    if (dateItemModel.year) {
+    if (_dateItemModel.year) {
       index = 0;
       _dateTimeData.year = TimeUtils.calcYears();
 
@@ -160,7 +160,7 @@ class _PickerState extends State<_PickerContentView> {
     /// 月
     // 选中的月 用于之后 day 的计算
     int selectMonth = 1;
-    if (dateItemModel.month) {
+    if (_dateItemModel.month) {
       index = 0;
       _dateTimeData.month = TimeUtils.calcMonth();
 
@@ -174,7 +174,7 @@ class _PickerState extends State<_PickerContentView> {
     }
 
     /// 日
-    if (dateItemModel.day) {
+    if (_dateItemModel.day) {
       index = 0;
       _dateTimeData.day = TimeUtils.calcDay(_initData.year, selectMonth);
 
@@ -187,7 +187,7 @@ class _PickerState extends State<_PickerContentView> {
     }
 
     /// 时
-    if (dateItemModel.hour) {
+    if (_dateItemModel.hour) {
       index = 0;
       _dateTimeData.hour = TimeUtils.calcHour();
 
@@ -200,7 +200,7 @@ class _PickerState extends State<_PickerContentView> {
     }
 
     /// 分
-    if (dateItemModel.minute) {
+    if (_dateItemModel.minute) {
       index = 0;
       _dateTimeData.minute = TimeUtils.calcMinAndSecond();
 
@@ -213,7 +213,7 @@ class _PickerState extends State<_PickerContentView> {
     }
 
     /// 秒
-    if (dateItemModel.second) {
+    if (_dateItemModel.second) {
       index = 0;
       _dateTimeData.second = TimeUtils.calcMinAndSecond();
 
@@ -258,41 +258,59 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _setPicker(DateType dateType, int selectIndex) {
+    var selectValue = _dateTimeData.getListByName(dateType)[selectIndex];
+    _selectData.setSingle(dateType, selectValue);
+
+    // 如果有day的picker 需要判断是否需要变动
+    if (_dateItemModel.day) {
+      _checkUpdateDay(dateType, selectIndex);
+    }
+
+    _notifyLocationChanged();
+  }
+
+  // 检查是否需要更新 Day picker data
+  void _checkUpdateDay(DateType dateType, int selectIndex) {
     // 如果是月或者年 可能会带动日的变化
-    if (dateType == DateType.Year) {
-      var selectYear = _dateTimeData.year[selectIndex];
+    if (dateType == DateType.Year || dateType == DateType.Month) {
+      // 年 月
+      var selectYear;
+      var selectMonth;
 
-      var resultDays = TimeUtils.calcDay(selectYear, _selectData.month);
-      print('返回的天数：$resultDays');
+      if (dateType == DateType.Year) {
+        selectYear = _dateTimeData.year[selectIndex];
+        // 月 Picker 肯定不为空
+        selectMonth = _selectData.month;
+      } else if (dateType == DateType.Month) {
+        selectMonth = _dateTimeData.month[selectIndex];
 
-      // 如果天数一样不用更新
-      if (resultDays.length != _dateTimeData.month.length) {
-        print('进来了');
-        scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
-        setState(() {
-          _dateTimeData.day = resultDays;
-        });
+        // 年 Picker 可能为空，如果为空，我们从_initData 里面取数据
+        if (_dateItemModel.year) {
+          selectYear = _selectData.year;
+        } else {
+          selectYear = _initData.year;
+        }
       }
-    }else if(dateType == DateType.Month){
-      var selectMonth = _dateTimeData.month[selectIndex];
 
-      var resultDays = TimeUtils.calcDay(_selectData.year, selectMonth);
+      var resultDays = TimeUtils.calcDay(selectYear, selectMonth);
       print('返回的天数：$resultDays');
 
       // 如果天数一样不用更新
-      if (resultDays.length != _dateTimeData.month.length) {
-        print('进来了');
-        todo 跳转
-        scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+      if (resultDays.length != _dateTimeData.day.length) {
+        print('进来了,更新天数');
+
         setState(() {
+          // 可能 选中的天数大于 新的一个月的长度，设置选中在最后一天
+          if(_selectData.day > resultDays[resultDays.length - 1]){
+            scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+            print('longer >>> 进来了');
+            // scrollCtrl[DateType.Day]?.jumpToItem(0);
+          }
+          scrollCtrl[DateType.Day]?.jumpToItem(26);
           _dateTimeData.day = resultDays;
         });
       }
     }
-
-    var selectValue = _dateTimeData.getListByName(dateType)[selectIndex];
-    _selectData.setSingle(dateType, selectValue);
-    _notifyLocationChanged();
   }
 
   void _notifyLocationChanged() {
@@ -335,12 +353,12 @@ class _PickerState extends State<_PickerContentView> {
     // 选择器
     List<Widget> pickerList = [];
 
-    if (dateItemModel.year) pickerList.add(pickerView(DateType.Year));
-    if (dateItemModel.month) pickerList.add(pickerView(DateType.Month));
-    if (dateItemModel.day) pickerList.add(pickerView(DateType.Day));
-    if (dateItemModel.hour) pickerList.add(pickerView(DateType.Hour));
-    if (dateItemModel.minute) pickerList.add(pickerView(DateType.Minute));
-    if (dateItemModel.second) pickerList.add(pickerView(DateType.Second));
+    if (_dateItemModel.year) pickerList.add(pickerView(DateType.Year));
+    if (_dateItemModel.month) pickerList.add(pickerView(DateType.Month));
+    if (_dateItemModel.day) pickerList.add(pickerView(DateType.Day));
+    if (_dateItemModel.hour) pickerList.add(pickerView(DateType.Hour));
+    if (_dateItemModel.minute) pickerList.add(pickerView(DateType.Minute));
+    if (_dateItemModel.second) pickerList.add(pickerView(DateType.Second));
 
     return Container(
       height: _pickerHeight,
@@ -353,6 +371,10 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   Widget pickerView(DateType dateType) {
+    print('longer >>> $dateType');
+    if(dateType == DateType.Day){
+      print('longer >>> 最新数据：${_dateTimeData.day}');
+    }
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
