@@ -47,7 +47,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  }) : super(settings: settings){
+  }) : super(settings: settings) {
     if (menuHeight != null) _pickerMenuHeight = menuHeight;
   }
 
@@ -97,7 +97,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
         initProvince: initProvince,
         initCity: initCity,
         initTown: initTown,
-        addAllItem : addAllItem,
+        addAllItem: addAllItem,
         route: this,
       ),
     );
@@ -135,6 +135,7 @@ class _PickerState extends State<_PickerContentView> {
 
   // 是否显示县级
   bool hasTown = true;
+
   // 是否添加全部
   final bool addAllItem;
 
@@ -149,6 +150,7 @@ class _PickerState extends State<_PickerContentView> {
 
     _init();
   }
+
   @override
   void dispose() {
     provinceScrollCtrl.dispose();
@@ -309,76 +311,73 @@ class _PickerState extends State<_PickerContentView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Expanded(
-          flex: 1,
           child: Container(
-            padding:const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             height: _pickerHeight,
             color: widget.route.backgroundColor,
-            child: CupertinoPicker(
+            child: CupertinoPicker.builder(
               scrollController: provinceScrollCtrl,
               itemExtent: _pickerItemHeight,
               onSelectedItemChanged: (int index) {
                 _setProvince(index);
               },
-              children: List.generate(Address.provinces.length, (int index) {
+              childCount: Address.provinces.length,
+              itemBuilder: (_, index) {
                 String text = Address.provinces[index];
-                return Container(
-                    height: _pickerItemHeight,
+                return Align(
                     alignment: Alignment.center,
                     child: Text(text,
                         style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
                         textAlign: TextAlign.start));
-              }),
+              },
             ),
           ),
         ),
         Expanded(
-          flex: 1,
           child: Container(
               padding: EdgeInsets.all(8.0),
               height: _pickerHeight,
               color: widget.route.backgroundColor,
-              child: CupertinoPicker(
+              child: CupertinoPicker.builder(
                 scrollController: cityScrollCtrl,
                 itemExtent: _pickerItemHeight,
                 onSelectedItemChanged: (int index) {
                   _setCity(index);
                 },
-                children: List.generate(cities.length, (int index) {
+                childCount: cities.length,
+                itemBuilder: (_, index) {
                   String text = cities[index]['name'];
-                  return Container(
-                    height: _pickerItemHeight,
+                  return Align(
                     alignment: Alignment.center,
                     child: Text('$text',
                         style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
                         textAlign: TextAlign.start),
                   );
-                }),
+                },
               )),
         ),
         hasTown
             ? Expanded(
-                flex: 1,
                 child: Container(
                     padding: EdgeInsets.all(8.0),
                     height: _pickerHeight,
                     color: widget.route.backgroundColor,
-                    child: CupertinoPicker(
+                    child: CupertinoPicker.builder(
                       scrollController: townScrollCtrl,
                       itemExtent: _pickerItemHeight,
                       onSelectedItemChanged: (int index) {
                         _setTown(index);
                       },
-                      children: List.generate(towns.length, (int index) {
+                      childCount: towns.length,
+                      itemBuilder: (_, index) {
                         String text = towns[index];
-                        return Container(
-                          height: _pickerItemHeight,
+                        return Align(
                           alignment: Alignment.center,
                           child: Text(text,
                               style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
                               textAlign: TextAlign.start),
                         );
-                      }),
+                      },
                     )),
               )
             : Center()
@@ -391,14 +390,14 @@ class _PickerState extends State<_PickerContentView> {
     final commitButton = Container(
       height: _pickerTitleHeight,
       alignment: Alignment.center,
-      padding: const EdgeInsets.only( left: 12, right: 22),
+      padding: const EdgeInsets.only(left: 12, right: 22),
       child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
     );
 
     final cancelButton = Container(
       height: _pickerTitleHeight,
       alignment: Alignment.center,
-      padding: const EdgeInsets.only( left: 22, right: 12),
+      padding: const EdgeInsets.only(left: 22, right: 12),
       child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
     );
 
@@ -433,7 +432,7 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, { this.showTitleActions, this.showMenu});
+  _BottomPickerLayout(this.progress, {this.showTitleActions, this.showMenu});
 
   final double progress;
   final bool showTitleActions;

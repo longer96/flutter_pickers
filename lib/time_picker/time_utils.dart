@@ -12,9 +12,7 @@ class TimeUtils {
 
   /// 日
   static List calcDay(int year, int month) {
-    print("$year - $month");
     int days = _calcDateCount(year, month);
-
     return List.generate(days, (index) => index + 1);
   }
 

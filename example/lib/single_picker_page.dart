@@ -114,16 +114,16 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         color: Colors.grey[700], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-      margin: const EdgeInsets.only(left: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: const EdgeInsets.only(left: 22),
       decoration:
           BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
     Widget _commitButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-      margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
     );

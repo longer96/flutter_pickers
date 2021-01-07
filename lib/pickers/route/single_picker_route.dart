@@ -165,7 +165,7 @@ class _PickerState extends State<_PickerContentView> {
     int pindex = 0;
     pindex = _data.indexWhere((element) => element.toString() == _selectData.toString());
     // 如果没有匹配到选择器对应数据，我们得修改选择器选中数据 ，不然confirm 返回的事设置的数据
-    if(pindex < 0){
+    if (pindex < 0) {
       _selectData = _data[0];
       pindex = 0;
     }
@@ -233,12 +233,11 @@ class _PickerState extends State<_PickerContentView> {
 
   Widget _renderItemView() {
     // 选择器
-    Widget cPicker = CupertinoPicker(
+    Widget cPicker = CupertinoPicker.builder(
       scrollController: scrollCtrl,
       itemExtent: _pickerItemHeight,
       onSelectedItemChanged: (int index) {
         _setPicker(index);
-
         if (widget.route.label != null && widget.route.label != '') {
           // 如果设置了才计算 单位的paddingLeft
           double resuleLeft = _pickerLaberPadding(_data[index].toString());
@@ -249,14 +248,15 @@ class _PickerState extends State<_PickerContentView> {
           }
         }
       },
-      children: List.generate(_data.length, (int index) {
+      childCount: _data.length,
+      itemBuilder: (_, index) {
         String text = _data[index].toString();
-        return Container(
+        return Align(
             alignment: Alignment.center,
             child: Text(text,
                 style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
                 textAlign: TextAlign.start));
-      }),
+      },
     );
 
     Widget view;
@@ -292,14 +292,14 @@ class _PickerState extends State<_PickerContentView> {
     final commitButton = Container(
       height: _pickerTitleHeight,
       alignment: Alignment.center,
-      padding: const EdgeInsets.only( left: 12, right: 22),
+      padding: const EdgeInsets.only(left: 12, right: 22),
       child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
     );
 
     final cancelButton = Container(
       alignment: Alignment.center,
       height: _pickerTitleHeight,
-      padding: const EdgeInsets.only( left: 22, right: 12),
+      padding: const EdgeInsets.only(left: 22, right: 12),
       child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
     );
 

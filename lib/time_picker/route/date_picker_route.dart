@@ -293,20 +293,17 @@ class _PickerState extends State<_PickerContentView> {
       }
 
       var resultDays = TimeUtils.calcDay(selectYear, selectMonth);
-      print('返回的天数：$resultDays');
 
       // 如果天数一样不用更新
       if (resultDays.length != _dateTimeData.day.length) {
-        print('进来了,更新天数');
+        //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天
+        if (_selectData.day > resultDays[resultDays.length - 1]) {
+          scrollCtrl[DateType.Day] = FixedExtentScrollController(initialItem: resultDays.length - 1);
+//          scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+        }
+          scrollCtrl[DateType.Day]?.jumpToItem(10);
 
         setState(() {
-          // 可能 选中的天数大于 新的一个月的长度，设置选中在最后一天
-          if(_selectData.day > resultDays[resultDays.length - 1]){
-            scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
-            print('longer >>> 进来了');
-            // scrollCtrl[DateType.Day]?.jumpToItem(0);
-          }
-          scrollCtrl[DateType.Day]?.jumpToItem(26);
           _dateTimeData.day = resultDays;
         });
       }
@@ -371,25 +368,27 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   Widget pickerView(DateType dateType) {
-    print('longer >>> $dateType');
-    if(dateType == DateType.Day){
-      print('longer >>> 最新数据：${_dateTimeData.day}');
+    if(dateType ==DateType.Day){
+      print('${_selectData.year ?? 2021}${_selectData.month}');
     }
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
-        child: CupertinoPicker(
+        child: CupertinoPicker.builder(
+          // 年月拼接 就不会重复了
+          key: (dateType == DateType.Day) ? ValueKey('${_selectData.year ?? 2021}${_selectData.month}') : null,
           scrollController: scrollCtrl[dateType],
           itemExtent: _pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) => _setPicker(dateType, selectIndex),
-          children: List.generate(_dateTimeData.getListByName(dateType).length, (int index) {
+          childCount: _dateTimeData.getListByName(dateType).length,
+          itemBuilder: (_, index) {
             String text = '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix.getSingle(dateType)}';
-            return Container(
+            return Align(
                 alignment: Alignment.center,
                 child: Text(text,
                     style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
                     textAlign: TextAlign.start));
-          }),
+          },
         ),
       ),
     );
@@ -399,16 +398,16 @@ class _PickerState extends State<_PickerContentView> {
   Widget _titleView() {
     final commitButton = Container(
       height: _pickerTitleHeight,
-      child: FlatButton(
-          onPressed: null, child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0))),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.only(left: 12, right: 22),
+      child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
     );
 
     final cancelButton = Container(
       alignment: Alignment.center,
       height: _pickerTitleHeight,
-      child: FlatButton(
-          onPressed: null,
-          child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0))),
+      padding: const EdgeInsets.only(left: 12, right: 22),
+      child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
     );
 
     final headDecoration = BoxDecoration(color: Colors.white);
