@@ -15,7 +15,6 @@ import 'package:flutter_pickers/time_picker/model/date_type.dart';
 ///     print('longer3 >>> ${d.toString()}');
 ///     {year: 2020, month: 3, day: 4, hour: 0, minute: 0, second: 0}
 ///
-/// todo 转化为DateTime
 class PDuration {
   int year;
   int month;
@@ -25,6 +24,34 @@ class PDuration {
   int second;
 
   PDuration({this.year, this.month, this.day, this.hour, this.minute, this.second});
+
+  // /// maxDate 会用上
+  // void max() {
+  //   // int maxInt = double.infinity.toInt();
+  //   int maxInt = 9999;
+  //   this.year = intEmpty(this.year) ? maxInt : this.year;
+  //   this.month = intEmpty(this.month) ? maxInt : this.month;
+  //   this.day = intEmpty(this.day) ? maxInt : this.day;
+  //   this.hour = intEmpty(this.hour) ? maxInt : this.hour;
+  //   this.minute = intEmpty(this.minute) ? maxInt : this.minute;
+  //   this.second = intEmpty(this.second) ? maxInt : this.second;
+  // }
+  //
+  // /// minDate 会用上
+  // void min() {
+  //   // int minInt = double.negativeInfinity.toInt();
+  //   int minInt = -9999;
+  //   this.year = intEmpty(this.year) ? minInt : this.year;
+  //   this.month = intEmpty(this.month) ? minInt : this.month;
+  //   this.day = intEmpty(this.day) ? minInt : this.day;
+  //   this.hour = intEmpty(this.hour) ? minInt : this.hour;
+  //   this.minute = intEmpty(this.minute) ? minInt : this.minute;
+  //   this.second = intEmpty(this.second) ? minInt : this.second;
+  // }
+
+  static bool intEmpty(int value) {
+    return (value == null || value == 0);
+  }
 
   // 注意默认会设为0 不是null
   PDuration.parse(DateTime dateTime) {
@@ -46,7 +73,7 @@ class PDuration {
     this.second = thisInstant.second;
   }
 
-  void  setSingle(DateType dateType, var value) {
+  void setSingle(DateType dateType, var value) {
     switch (dateType) {
       case DateType.Year:
         this.year = value;
@@ -67,6 +94,25 @@ class PDuration {
         this.second = value;
         break;
     }
+  }
+
+  // 若为null 返回0
+  int getSingle(DateType dateType) {
+    switch (dateType) {
+      case DateType.Year:
+        return this.year ?? 0;
+      case DateType.Month:
+        return this.month ?? 0;
+      case DateType.Day:
+        return this.day ?? 0;
+      case DateType.Hour:
+        return this.hour ?? 0;
+      case DateType.Minute:
+        return this.minute ?? 0;
+      case DateType.Second:
+        return this.second ?? 0;
+    }
+    return 0;
   }
 
   @override

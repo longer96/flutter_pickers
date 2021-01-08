@@ -89,6 +89,8 @@ class DatePickerRoute<T> extends PopupRoute<T> {
       child: _PickerContentView(
         mode: mode,
         initData: initDate,
+        maxDate: maxDate,
+        minDate: minDate,
         route: this,
       ),
     );
@@ -105,6 +107,8 @@ class _PickerContentView extends StatefulWidget {
     Key key,
     this.mode,
     this.initData,
+    this.maxDate,
+    this.minDate,
     @required this.route,
   }) : super(key: key);
 
@@ -112,8 +116,12 @@ class _PickerContentView extends StatefulWidget {
   final PDuration initData;
   final DatePickerRoute route;
 
+  // 限制时间
+  final PDuration maxDate;
+  final PDuration minDate;
+
   @override
-  State<StatefulWidget> createState() => _PickerState(this.mode, this.initData);
+  State<StatefulWidget> createState() => _PickerState(this.mode, this.initData, this.maxDate, this.minDate);
 }
 
 class _PickerState extends State<_PickerContentView> {
@@ -129,10 +137,14 @@ class _PickerState extends State<_PickerContentView> {
   // 所有item 对应的数据
   DateTimeData _dateTimeData;
 
+  // 限制时间
+  final PDuration maxDate;
+  final PDuration minDate;
+
   Animation<double> animation;
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
-  _PickerState(DateMode mode, this._initData) {
+  _PickerState(DateMode mode, this._initData, this.maxDate, this.minDate) {
     this._dateItemModel = DateItemModel.parse(mode);
     _init();
   }
@@ -296,12 +308,12 @@ class _PickerState extends State<_PickerContentView> {
 
       // 如果天数一样不用更新
       if (resultDays.length != _dateTimeData.day.length) {
-        //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天
+        //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天 fixme
         if (_selectData.day > resultDays[resultDays.length - 1]) {
           scrollCtrl[DateType.Day] = FixedExtentScrollController(initialItem: resultDays.length - 1);
 //          scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
         }
-          scrollCtrl[DateType.Day]?.jumpToItem(10);
+        // scrollCtrl[DateType.Day]?.jumpToItem(10);
 
         setState(() {
           _dateTimeData.day = resultDays;
@@ -349,7 +361,6 @@ class _PickerState extends State<_PickerContentView> {
   Widget _renderItemView() {
     // 选择器
     List<Widget> pickerList = [];
-
     if (_dateItemModel.year) pickerList.add(pickerView(DateType.Year));
     if (_dateItemModel.month) pickerList.add(pickerView(DateType.Month));
     if (_dateItemModel.day) pickerList.add(pickerView(DateType.Day));
@@ -367,15 +378,19 @@ class _PickerState extends State<_PickerContentView> {
     );
   }
 
+  ///  CupertinoPicker.builder
   Widget pickerView(DateType dateType) {
-    if(dateType ==DateType.Day){
-      print('${_selectData.year ?? 2021}${_selectData.month}');
-    }
+    // if(dateType ==DateType.Day){
+    //   print('${_selectData.year ?? 2021}${_selectData.month}');
+    // }
+    // 清洗数据
+    List data = filteData(dateType);
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: CupertinoPicker.builder(
-          // 年月拼接 就不会重复了
+          // 年月拼接 就不会重复了 fixme
           key: (dateType == DateType.Day) ? ValueKey('${_selectData.year ?? 2021}${_selectData.month}') : null,
           scrollController: scrollCtrl[dateType],
           itemExtent: _pickerItemHeight,
@@ -392,6 +407,41 @@ class _PickerState extends State<_PickerContentView> {
         ),
       ),
     );
+  }
+
+  /// 可能设置了时间区间  我们的筛选一下
+  ///  月日 需要根据上级进行判断
+  ///  如果上级有选项需要进行判断
+  List filteData(DateType dateType) {
+    List data = List.from(_dateTimeData.getListByName(dateType));
+
+    int min = minDate.getSingle(dateType);
+    int max = maxDate.getSingle(dateType);
+
+    // 如果都为0 相当于没有设置限制 直接返回
+    if (min == 0 && max == 0) return data;
+
+    // 查询出索引
+    int begin = data.indexOf(min);
+    begin = begin < 0 ? 0 : begin;
+
+    int end = data.indexOf(max);
+    end = end < 0 ? 0 : end;
+
+    // 如果都为0 相当于没有设置限制 直接返回
+    if (begin == 0 && end == 0) return data;
+
+    if (dateType == DateType.Year) {
+      // 年 是多少直接取多少
+      if (begin != 0 && end == 0) {
+        return data.sublist(begin);
+      } else {
+        return data.sublist(begin, end + 1);
+      }
+    }
+
+
+    return [];
   }
 
   // 选择器上面的view

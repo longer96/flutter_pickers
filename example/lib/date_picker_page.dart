@@ -117,14 +117,14 @@ class _DatePickerPageState extends State<DatePickerPage> {
 //
 //  ////////////////////////end
 
-  void show(context, timeFormat, dateParam) {
-    PickHelper.openDateTimePicker(
-      context,
-      maxValue: DateTime.now().add(Duration(days: 999)),
-      minValue: DateTime.now(),
-      onConfirm: (_, __) {},
-    );
-  }
+  // void show(context, timeFormat, dateParam) {
+  //   PickHelper.openDateTimePicker(
+  //     context,
+  //     maxValue: DateTime.now().add(Duration(days: 999)),
+  //     minValue: DateTime.now(),
+  //     onConfirm: (_, __) {},
+  //   );
+  // }
 
   Widget _item(title, var data, var selectData, {String label}) {
     return Column(

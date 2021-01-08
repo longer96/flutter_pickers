@@ -215,6 +215,10 @@ class Pickers {
       initDate.year = DateTime.now().year;
     }
 
+    // 初始化 时间限制 maxDate minDate
+    // maxDate.max();
+    // minDate.min();
+
     Navigator.push(
         context,
         DatePickerRoute(
