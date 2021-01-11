@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:example/demo/pic_help.dart';
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
@@ -46,6 +48,8 @@ class _DatePickerPageState extends State<DatePickerPage> {
 //            ),
 //          ),
 
+          // Container(height: _height, child: picker()),
+
           _item('测试选择器', PickerDataType.sex, 'selectSex'),
 //          Container(height: 200, child: picker())
         ],
@@ -54,67 +58,69 @@ class _DatePickerPageState extends State<DatePickerPage> {
   }
 
   ////////////////////////start
-//  var date1 = [1, 2, 3];
-//  var date2 = ['aa', 'aaaa', 'aaaaa'];
-//  var date3 = ['aa', 'aaaa', 'aaaaa', 'bbbbbbb'];
-//  var date4 = ['aa', 'aaaa', ];
-//
-//  FixedExtentScrollController scrollController1, scrollController2;
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    scrollController1 = FixedExtentScrollController(initialItem: 1);
-//    scrollController2 = FixedExtentScrollController(initialItem: 1);
-//  }
-//
-//  Widget picker() {
-//    return Row(
-//      children: <Widget>[
-//        Expanded(
-//          child: CupertinoPicker.builder(
-//            scrollController: scrollController1,
-//            itemExtent: 40,
-//            onSelectedItemChanged: (int selectIndex) => _setPicker(selectIndex),
-//            childCount: date1.length,
-//            itemBuilder: (_, index) {
-//              return Align(alignment: Alignment.center, child: Text(date1[index].toString()));
-//            },
-//          ),
-//        ),
-//        Expanded(
-//          child: CupertinoPicker.builder(
-//            key: ValueKey(date2.length),
-//            scrollController: scrollController2,
-//            itemExtent: 40,
-//            onSelectedItemChanged: (int value) {},
-//            childCount: date2.length,
-//            itemBuilder: (_, index) {
-//              return Align(alignment: Alignment.center, child: Text(date2[index].toString()));
-//            },
-//          ),
-//        )
-//      ],
-//    );
-//  }
-//
-//  void _setPicker(int selectIndex) {
-//    if(selectIndex%2 == 0){
-//      print('aaaaaaaaaaaaa');
-//      setState(() {
-//        date2.clear();
-//        date2.addAll(date3);
-//      });
-//    }else{
-//      print('bbbbbbbbbbb');
-//      setState(() {
-//        date2.clear();
-//        date2.addAll(date4);
-//      });
-//    }
-//
-//  }
-//
+  // var date1 = [1, 2, 3];
+  // var date2 = ['aa', 'aaaa', 'aaaaa'];
+  // var date3 = ['aa', 'aaaa', 'aaaaa', 'bbbbbbb'];
+  // var date4 = ['aa', 'aaaa'];
+  // double _height = 300;
+  //
+  // FixedExtentScrollController scrollController1, scrollController2;
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   scrollController1 = FixedExtentScrollController(initialItem: 0);
+  //   scrollController2 = FixedExtentScrollController(initialItem: 0);
+  // }
+  //
+  // Widget picker() {
+  //   return Row(
+  //     children: <Widget>[
+  //       Expanded(
+  //         child: CupertinoPicker.builder(
+  //           scrollController: scrollController1,
+  //           itemExtent: 40,
+  //           onSelectedItemChanged: (int selectIndex) => _setPicker(selectIndex),
+  //           childCount: date1.length,
+  //           itemBuilder: (_, index) {
+  //             return Align(alignment: Alignment.center, child: Text(date1[index].toString()));
+  //           },
+  //         ),
+  //       ),
+  //       Expanded(
+  //         child: CupertinoPicker.builder(
+  //           key: ValueKey(date2.length),
+  //           scrollController: scrollController2,
+  //           itemExtent: 40,
+  //           onSelectedItemChanged: (int value) {},
+  //           childCount: date2.length,
+  //           itemBuilder: (_, index) {
+  //             return Align(alignment: Alignment.center, child: Text(date2[index].toString()));
+  //           },
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
+  //
+  // void _setPicker(int selectIndex) {
+  //   if(selectIndex%2 == 0){
+  //     print('aaaaaaaaaaaaa');
+  //     setState(() {
+  //       date2.clear();
+  //       date2.addAll(date3);
+  //       _height = 300.0 + Random().nextDouble() / 100000000;
+  //     });
+  //   }else{
+  //     print('bbbbbbbbbbb');
+  //     setState(() {
+  //       date2.clear();
+  //       date2.addAll(date4);
+  //       _height = 300.0 + Random().nextDouble() / 100000000;
+  //     });
+  //   }
+  // }
+
 //  ////////////////////////end
 
   // void show(context, timeFormat, dateParam) {

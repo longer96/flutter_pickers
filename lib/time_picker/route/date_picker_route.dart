@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/time_picker/model/date_item_model.dart';
@@ -144,8 +146,12 @@ class _PickerState extends State<_PickerContentView> {
   Animation<double> animation;
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
+  // 选择器 高度
+  double pickerItemHeight;
+
   _PickerState(DateMode mode, this._initData, this.maxDate, this.minDate) {
     this._dateItemModel = DateItemModel.parse(mode);
+    this.pickerItemHeight = _pickerItemHeight;
     _init();
   }
 
@@ -306,17 +312,20 @@ class _PickerState extends State<_PickerContentView> {
 
       var resultDays = TimeUtils.calcDay(selectYear, selectMonth);
 
+      /// key ：年月拼接 就不会重复了 fixme
+      /// 最好别使用key 会生成新的widget
+      /// 官方的bug : https://github.com/flutter/flutter/issues/22999
+      /// 临时方法 通过修改height
       // 如果天数一样不用更新
       if (resultDays.length != _dateTimeData.day.length) {
         //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天 fixme
         if (_selectData.day > resultDays[resultDays.length - 1]) {
-          scrollCtrl[DateType.Day] = FixedExtentScrollController(initialItem: resultDays.length - 1);
-//          scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+         scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
         }
-        // scrollCtrl[DateType.Day]?.jumpToItem(10);
 
         setState(() {
           _dateTimeData.day = resultDays;
+          pickerItemHeight = _pickerItemHeight - Random().nextDouble() / 100000000;
         });
       }
     }
@@ -380,20 +389,19 @@ class _PickerState extends State<_PickerContentView> {
 
   ///  CupertinoPicker.builder
   Widget pickerView(DateType dateType) {
-    // if(dateType ==DateType.Day){
-    //   print('${_selectData.year ?? 2021}${_selectData.month}');
-    // }
     // 清洗数据
-    List data = filteData(dateType);
+    // List data = filteData(dateType);
 
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: CupertinoPicker.builder(
-          // 年月拼接 就不会重复了 fixme
-          key: (dateType == DateType.Day) ? ValueKey('${_selectData.year ?? 2021}${_selectData.month}') : null,
+          /// key ：年月拼接 就不会重复了 fixme
+          /// 最好别使用key 会生成新的widget
+          /// 官方的bug : https://github.com/flutter/flutter/issues/22999
+          /// 临时方法 通过修改height
           scrollController: scrollCtrl[dateType],
-          itemExtent: _pickerItemHeight,
+          itemExtent: pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) => _setPicker(dateType, selectIndex),
           childCount: _dateTimeData.getListByName(dateType).length,
           itemBuilder: (_, index) {
