@@ -28,6 +28,7 @@ class Pickers {
     BuildContext context, {
     @required dynamic data,
     dynamic selectData,
+
     bool showTitleBar: true,
     Widget menu,
     double menuHeight,
@@ -39,6 +40,7 @@ class Pickers {
     Decoration headDecoration,
     Color backgroundColor: Colors.white,
     Color textColor: Colors.black87,
+
     SingleCallback onChanged,
     SingleCallback onConfirm,
   }) {

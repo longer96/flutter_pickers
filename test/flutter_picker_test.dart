@@ -1,5 +1,5 @@
 import 'package:flutter_pickers/address_picker/locations_data.dart';
-import 'package:flutter_pickers/picker_style.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';

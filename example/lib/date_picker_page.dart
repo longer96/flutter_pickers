@@ -181,8 +181,8 @@ class _DatePickerPageState extends State<DatePickerPage> {
   void _onClickItem() {
     Pickers.showDatePicker(
       context,
-      mode: DateMode.YMD,
-      suffix: Suffix(),
+      mode: DateMode.YMDHMS,
+      suffix: Suffix.normal(),
       showTitleBar: true,
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');

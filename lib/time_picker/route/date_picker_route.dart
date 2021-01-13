@@ -320,7 +320,7 @@ class _PickerState extends State<_PickerContentView> {
       if (resultDays.length != _dateTimeData.day.length) {
         //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天 fixme
         if (_selectData.day > resultDays[resultDays.length - 1]) {
-         scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+          scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
         }
 
         setState(() {
@@ -338,7 +338,13 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   double _pickerFontSize(String text) {
-    if (text == null || text.length <= 6) {
+    if (text == null) return 18.0;
+
+    if (_dateItemModel.length == 6 && (text.length > 4 && text.length <= 6)) {
+      return 16.0;
+    }
+
+    if (text.length <= 6) {
       return 18.0;
     } else if (text.length < 9) {
       return 16.0;
@@ -447,7 +453,6 @@ class _PickerState extends State<_PickerContentView> {
         return data.sublist(begin, end + 1);
       }
     }
-
 
     return [];
   }
