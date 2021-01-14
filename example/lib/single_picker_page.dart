@@ -1,7 +1,7 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/pickers.dart';
+import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
 
 class SinglePickerPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       context,
       showTitleBar: true,
       data: data,
-      label: label,
+      suffix: label,
       selectData: selectData,
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');

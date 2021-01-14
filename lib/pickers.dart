@@ -21,7 +21,7 @@ import 'package:flutter_pickers/time_picker/model/suffix.dart';
 /// [headDecoration] 头部Container Decoration 样式
 ///   默认：BoxDecoration(color: Colors.white)
 /// [labelWidget] 自定义单位widget   默认：null
-/// [label] 单位   默认：null 不显示
+/// [suffix] 后缀   默认：null 不显示
 class Pickers {
   /// 单列 通用选择器
   static void showSinglePicker(
@@ -35,7 +35,7 @@ class Pickers {
     Widget cancelWidget,
     Widget commitWidget,
     Widget labelWidget,
-    String label,
+    String suffix,
     Widget title,
     Decoration headDecoration,
     Color backgroundColor: Colors.white,
@@ -55,7 +55,7 @@ class Pickers {
           cancelWidget: cancelWidget,
           commitWidget: commitWidget,
           labelWidget: labelWidget,
-          label: label,
+          suffix: suffix,
           title: title,
           backgroundColor: backgroundColor,
           textColor: textColor,
@@ -76,6 +76,8 @@ class Pickers {
     BuildContext context, {
     @required dynamic data,
     @required dynamic selectData,
+    dynamic suffix,
+
     bool showTitleBar: true,
     Widget menu,
     double menuHeight,
@@ -85,6 +87,7 @@ class Pickers {
     Decoration headDecoration,
     Color backgroundColor: Colors.white,
     Color textColor: Colors.black87,
+
     MultipleCallback onChanged,
     MultipleCallback onConfirm,
   }) {
@@ -97,6 +100,9 @@ class Pickers {
     Navigator.push(
         context,
         MultiplePickerRoute(
+          data: data,
+          selectData: selectData,
+          suffix: suffix,
           menu: menu,
           menuHeight: menuHeight,
           cancelWidget: cancelWidget,
@@ -105,8 +111,6 @@ class Pickers {
           backgroundColor: backgroundColor,
           textColor: textColor,
           showTitleBar: showTitleBar,
-          data: data,
-          selectData: selectData,
           onChanged: onChanged,
           onConfirm: onConfirm,
           headDecoration: headDecoration,

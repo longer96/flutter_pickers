@@ -21,6 +21,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
     this.showTitleBar,
     this.data,
     this.selectData,
+    this.suffix,
     this.onChanged,
     this.onConfirm,
     this.theme,
@@ -33,6 +34,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   final bool showTitleBar;
   final List data;
   final List selectData;
+  final List suffix;
   final MultipleCallback onChanged;
   final MultipleCallback onConfirm;
   final ThemeData theme;
@@ -246,7 +248,13 @@ class _PickerState extends State<_PickerContentView> {
           onSelectedItemChanged: (int selectIndex) => _setPicker(position, selectIndex),
           childCount: _data[position].length,
           itemBuilder: (_, index) {
-            String text = _data[position][index].toString();
+            // String text = _data[position][index].toString();
+            String suffix = '';
+            if (widget.route.suffix != null && position < widget.route.suffix.length) {
+              suffix = widget.route.suffix[position];
+            }
+
+            String text = '${_data[position][index]}$suffix';
             return Align(
                 alignment: Alignment.center,
                 child: Text(text,

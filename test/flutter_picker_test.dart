@@ -5,8 +5,6 @@ import 'package:flutter_pickers/time_picker/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
-
   // test('adds one to input values', () {
   //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "510104");
   //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "5104");
@@ -22,8 +20,6 @@ void main() {
   //   print('longer >>> ${DateMode.MDHMS.toString().length - 9}');
   // });
 
-
-
   /// 计算
   // var h = TimeUtils.calcHour();
   // var m = TimeUtils.calcMonth();
@@ -33,8 +29,6 @@ void main() {
   // print('longer >>> $m');
   // print('longer >>> $d');
 
-  var picker = PickerStyle1();
-//  print(picker.menu)
+  // var picker = DefaultStyle();
+  // print(picker.menuHeight);
 }
-
-

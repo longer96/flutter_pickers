@@ -1,7 +1,7 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/pickers.dart';
+import 'package:flutter_pickers/pickers.dart';
 
 class MultiplePickerPage extends StatefulWidget {
   @override
@@ -194,6 +194,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Pickers.showMultiplePicker(
       context,
+      data: timeData2,
+      selectData: timeData2Select,
+      suffix:['','时', '分','秒'],
+
       showTitleBar: true,
       menu: _headMenuView,
       menuHeight: menuHeight,
@@ -203,8 +207,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       headDecoration: headDecoration,
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
-      data: timeData2,
-      selectData: timeData2Select,
+
       onConfirm: (p) {
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {

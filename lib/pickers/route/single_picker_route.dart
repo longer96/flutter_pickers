@@ -16,7 +16,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     this.cancelWidget,
     this.commitWidget,
     this.labelWidget,
-    this.label,
+    this.suffix,
     this.headDecoration,
     this.title,
     this.backgroundColor,
@@ -49,7 +49,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final Widget commitWidget;
   final Decoration headDecoration; // 头部样式
   final Widget labelWidget;
-  final String label;
+  final String suffix;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -238,7 +238,7 @@ class _PickerState extends State<_PickerContentView> {
       itemExtent: _pickerItemHeight,
       onSelectedItemChanged: (int index) {
         _setPicker(index);
-        if (widget.route.label != null && widget.route.label != '') {
+        if (widget.route.suffix != null && widget.route.suffix != '') {
           // 如果设置了才计算 单位的paddingLeft
           double resuleLeft = _pickerLaberPadding(_data[index].toString());
           if (resuleLeft != _laberLeft) {
@@ -261,7 +261,7 @@ class _PickerState extends State<_PickerContentView> {
 
     Widget view;
     // 单位
-    if ((widget.route.label != null && widget.route.label != '') || (widget.route.labelWidget != null)) {
+    if ((widget.route.suffix != null && widget.route.suffix != '') || (widget.route.labelWidget != null)) {
       Widget laberView = Container(
           height: _pickerHeight,
           alignment: Alignment.center,
@@ -269,7 +269,7 @@ class _PickerState extends State<_PickerContentView> {
               ? AnimatedPadding(
                   duration: Duration(milliseconds: 100),
                   padding: EdgeInsets.only(left: _laberLeft),
-                  child: Text(widget.route.label,
+                  child: Text(widget.route.suffix,
                       style: TextStyle(color: widget.route.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
                 )
               : widget.route.labelWidget);
