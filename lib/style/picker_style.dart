@@ -20,9 +20,9 @@ abstract class PickerStyle {
     return 44.0;
   }
 
-  /// [pickerItemHeight]  选择器上面 title 确认、取消的整体高度  固定高度：44.0
+  /// [pickerItemHeight]  选择器每个被选中item的高度：40.0
   double getPickerItemHeight() {
-    return 44.0;
+    return 40.0;
   }
 
   /// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36.0
@@ -31,10 +31,10 @@ abstract class PickerStyle {
   }
 
   ///  取消按钮
-  Widget getCancelWidget();
+  Widget getCancelButton(BuildContext context);
 
   ///  确认按钮
-  Widget getCommitWidget();
+  Widget getCommitButton(BuildContext context);
 
   /// 选择器背景色 默认白色
   Color getBackgroundColor();
@@ -66,10 +66,6 @@ abstract class PickerStyle {
 
   double get menuHeight => getMenuHeight() ?? 36.0;
 
-  Widget get cancelWidget => getCancelWidget();
-
-  Widget get commitWidget => getCommitWidget();
-
   Color get backgroundColor => getBackgroundColor();
 
   Color get textColor => getTextColor();
@@ -90,8 +86,8 @@ class DefaultStyle extends PickerStyle {
   double pickerItemHeight;
   double menuHeight;
 
-  Widget cancelWidget;
-  Widget commitWidget;
+  Widget cancelButton;
+  Widget commitButton;
   Widget labelWidget;
   Widget title;
   Decoration headDecoration;
@@ -103,13 +99,26 @@ class DefaultStyle extends PickerStyle {
       this.showTitleBar = true,
       this.menu,
       this.menuHeight = 36.0,
-      this.cancelWidget,
-      this.commitWidget,
+      this.pickerHeight = 220.0,
+      this.pickerItemHeight = 40.0,
+      this.pickerTitleHeight = 44.0,
+
+      this.cancelButton,
+      this.commitButton,
       this.labelWidget,
       this.title,
       this.headDecoration,
       this.backgroundColor,
-      this.textColor}) {}
+      this.textColor}){
+   if(this.cancelButton == null){
+     this.cancelButton  = Container(
+       alignment: Alignment.center,
+       height: pickerTitleHeight,
+       padding: const EdgeInsets.only(left: 22, right: 12),
+       child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
+     );
+   }
+  }
 
   DefaultStyle.dark() {
     this.dark = true;
@@ -121,13 +130,13 @@ class DefaultStyle extends PickerStyle {
   }
 
   @override
-  Widget getCancelWidget() {
-    return cancelWidget;
+  Widget getCancelButton(BuildContext context) {
+    return cancelButton;
   }
 
   @override
-  Widget getCommitWidget() {
-    return commitWidget;
+  Widget getCommitButton(BuildContext context) {
+    return commitButton;
   }
 
   @override

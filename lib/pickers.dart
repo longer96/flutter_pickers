@@ -13,8 +13,8 @@ import 'package:flutter_pickers/time_picker/model/suffix.dart';
 /// [showTitleBar]   是否显示头部 默认：true
 /// [menu]   头部和选择器之间的菜单widget,默认空 不显示
 /// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36
-/// [cancelWidget] 取消按钮
-/// [commitWidget] 确认按钮
+/// [cancelButton] 取消按钮
+/// [commitButton] 确认按钮
 /// [title] 头部 中间的标题  默认null 不显示
 /// [backgroundColor] 选择器背景色 默认白色
 /// [textColor] 选择器文字颜色  默认黑色
