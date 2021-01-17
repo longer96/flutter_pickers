@@ -29,6 +29,6 @@ void main() {
   // print('longer >>> $m');
   // print('longer >>> $d');
 
-  // var picker = DefaultStyle();
-  // print(picker.menuHeight);
+  var picker = DefaultStyle(null,pickerHeight: -1);
+  print(picker.pickerHeight);
 }

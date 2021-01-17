@@ -1,191 +1,162 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class PickerStyle {
   ///  是否显示头部（选择器以上的控件） 默认：true
-  bool getShowTitleBar();
+  bool get showTitleBar;
 
   ///  头部和选择器之间的菜单widget,默认空 不显示
-  Widget getMenu();
+  Widget get menu;
 
   ///  头部 中间的标题  默认null 不显示
-  Widget getTitle();
+  Widget get title;
 
   /// [pickerHeight]  选择器下面 picker 的整体高度  固定高度：220.0
-  double getPickerHeight() {
-    return 220.0;
-  }
+  double get pickerHeight;
 
   /// [pickerTitleHeight]  选择器上面 title 确认、取消的整体高度  固定高度：44.0
-  double getPickerTitleHeight() {
-    return 44.0;
-  }
+  double get pickerTitleHeight;
 
   /// [pickerItemHeight]  选择器每个被选中item的高度：40.0
-  double getPickerItemHeight() {
-    return 40.0;
-  }
+  double get pickerItemHeight;
 
   /// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36.0
-  double getMenuHeight() {
-    return 36.0;
-  }
+  double get menuHeight;
 
   ///  取消按钮
-  Widget getCancelButton(BuildContext context);
+  Widget get cancelButton;
 
   ///  确认按钮
-  Widget getCommitButton(BuildContext context);
+  Widget get commitButton;
 
   /// 选择器背景色 默认白色
-  Color getBackgroundColor();
+  Color get backgroundColor;
 
   /// 选择器文字颜色  默认黑色
-  Color getTextColor();
+  // Color getTextColor();
+  Color get textColor;
 
   /// [headDecoration] 头部Container Decoration 样式
   ///  null 默认：BoxDecoration(color: Colors.white)
-  Decoration getHeadDecoration();
+  Decoration get headDecoration;
 
   /// [labelWidget] 自定义单位widget   默认：null
   /// SinglePickerRoute 选择器可用
-  Widget getLabelWidget() {
-    return null;
-  }
-
-  bool get showTitleBar => getShowTitleBar();
-
-  Widget get menu => getMenu();
-
-  Widget get title => getTitle();
-
-  double get pickerHeight => getPickerHeight() ?? 220.0;
-
-  double get pickerTitleHeight => getPickerTitleHeight() ?? 44.0;
-
-  double get pickerItemHeight => getPickerItemHeight() ?? 40.0;
-
-  double get menuHeight => getMenuHeight() ?? 36.0;
-
-  Color get backgroundColor => getBackgroundColor();
-
-  Color get textColor => getTextColor();
-
-  Decoration get headDecoration => getHeadDecoration();
-
-  Widget get labelWidget => getLabelWidget();
+  Widget get labelWidget;
 }
 
 // /// 默认样式
 class DefaultStyle extends PickerStyle {
+  final BuildContext context;
   bool dark = false;
-  bool showTitleBar;
-  Widget menu;
+  bool _showTitleBar;
+  Widget _menu;
 
-  double pickerHeight;
-  double pickerTitleHeight;
-  double pickerItemHeight;
-  double menuHeight;
+  double _pickerHeight;
+  double _pickerTitleHeight;
+  double _pickerItemHeight;
+  double _menuHeight;
 
-  Widget cancelButton;
-  Widget commitButton;
-  Widget labelWidget;
-  Widget title;
-  Decoration headDecoration;
-  Color backgroundColor;
-  Color textColor;
+  Widget _cancelButton;
+  Widget _commitButton;
+  Widget _labelWidget;
+  Widget _title;
+  Decoration _headDecoration;
+  Color _backgroundColor;
+  Color _textColor;
 
-  DefaultStyle(
-      {this.dark = false,
-      this.showTitleBar = true,
-      this.menu,
-      this.menuHeight = 36.0,
-      this.pickerHeight = 220.0,
-      this.pickerItemHeight = 40.0,
-      this.pickerTitleHeight = 44.0,
+  DefaultStyle(this.context,
+      {bool dark,
+      bool showTitleBar,
+      Widget menu,
+      double pickerHeight,
+      double pickerTitleHeight,
+      double pickerItemHeight,
+      double menuHeight,
+      Widget cancelButton,
+      Widget commitButton,
+      Widget labelWidget,
+      Widget title,
+      Decoration headDecoration,
+      Color backgroundColor,
+      Color textColor}) {
+    this.dark = dark;
+    this._showTitleBar = showTitleBar;
+    this._menu = menu;
 
-      this.cancelButton,
-      this.commitButton,
-      this.labelWidget,
-      this.title,
-      this.headDecoration,
-      this.backgroundColor,
-      this.textColor}){
-   if(this.cancelButton == null){
-     this.cancelButton  = Container(
-       alignment: Alignment.center,
-       height: pickerTitleHeight,
-       padding: const EdgeInsets.only(left: 22, right: 12),
-       child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
-     );
-   }
-  }
+    this._pickerHeight = pickerHeight;
+    this._pickerTitleHeight = pickerTitleHeight;
+    this._pickerItemHeight = pickerItemHeight;
+    this._menuHeight = menuHeight;
 
-  DefaultStyle.dark() {
-    this.dark = true;
-  }
-
-  @override
-  Color getBackgroundColor() {
-    return backgroundColor;
-  }
-
-  @override
-  Widget getCancelButton(BuildContext context) {
-    return cancelButton;
+    this._cancelButton = cancelButton;
+    this._commitButton = commitButton;
+    this._labelWidget = labelWidget;
+    this._title = title;
+    this._headDecoration = headDecoration;
+    this._backgroundColor = backgroundColor;
+    this._textColor = textColor;
   }
 
   @override
-  Widget getCommitButton(BuildContext context) {
-    return commitButton;
-  }
+  Color get backgroundColor => this._backgroundColor ?? Colors.white;
 
   @override
-  Decoration getHeadDecoration() {
-    return headDecoration;
-  }
+  Decoration get headDecoration => this._headDecoration ?? BoxDecoration(color: Colors.white);
 
   @override
-  Widget getMenu() {
-    return menu;
-  }
+  Widget get labelWidget => this._labelWidget;
 
   @override
-  bool getShowTitleBar() {
-    return showTitleBar;
-  }
+  Widget get menu => this._menu;
 
   @override
-  Color getTextColor() {
-    return textColor;
-  }
+  double get menuHeight => this._menuHeight ?? 36.0;
 
   @override
-  Widget getTitle() {
-    return title;
-  }
+  double get pickerHeight => this._pickerHeight ?? 220.0;
 
   @override
-  double getMenuHeight() {
-    return menuHeight;
-  }
+  double get pickerItemHeight => this._pickerItemHeight ?? 40.0;
 
   @override
-  double getPickerHeight() {
-    return pickerHeight;
-  }
+  double get pickerTitleHeight => this._pickerTitleHeight ?? 44.0;
 
   @override
-  double getPickerTitleHeight() {
-    return pickerTitleHeight;
-  }
+  bool get showTitleBar => this._showTitleBar ?? true;
 
   @override
-  double getPickerItemHeight() {
-    return pickerItemHeight;
-  }
+  Color get textColor => this._textColor ?? Colors.black87;
 
   @override
-  Widget getLabelWidget() {
-    return labelWidget;
+  Widget get title => this._title;
+
+  @override
+  Widget get commitButton => getCommitButton();
+
+  @override
+  Widget get cancelButton => getCancelButton();
+
+
+
+
+  getCommitButton() {
+    return this._commitButton ??
+        Container(
+          height: _pickerTitleHeight,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(left: 12, right: 22),
+          child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
+        );
+  }
+
+  getCancelButton() {
+    return this._cancelButton ??
+        Container(
+          alignment: Alignment.center,
+          height: _pickerTitleHeight,
+          padding: const EdgeInsets.only(left: 22, right: 12),
+          child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
+        );
   }
 }
