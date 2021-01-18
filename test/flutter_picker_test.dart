@@ -1,4 +1,5 @@
 import 'package:flutter_pickers/address_picker/locations_data.dart';
+import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/time_utils.dart';
@@ -29,6 +30,6 @@ void main() {
   // print('longer >>> $m');
   // print('longer >>> $d');
 
-  var picker = DefaultStyle(null,pickerHeight: -1);
-  print(picker.pickerHeight);
+  var picker = DefaultStyle.dark(null);
+  print(picker.menuHeight);
 }
