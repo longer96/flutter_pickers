@@ -30,6 +30,6 @@ void main() {
   // print('longer >>> $m');
   // print('longer >>> $d');
 
-  var picker = DefaultStyle.dark(null);
+  var picker = DefaultPickerStyle.dark(null);
   print(picker.menuHeight);
 }

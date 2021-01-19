@@ -3,6 +3,8 @@ import 'package:flutter_pickers/address_picker/route/address_picker_route.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
 import 'package:flutter_pickers/pickers/route/multiple_picker_route.dart';
 import 'package:flutter_pickers/pickers/route/single_picker_route.dart';
+import 'package:flutter_pickers/style/default_style.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_pickers/time_picker/route/date_picker_route.dart';
@@ -41,11 +43,17 @@ class Pickers {
     Color backgroundColor: Colors.white,
     Color textColor: Colors.black87,
 
+    PickerStyle pickerStyle,
+
     SingleCallback onChanged,
     SingleCallback onConfirm,
   }) {
     assert(data != null, 'params: data can not be null');
     assert((data is List) || (data is PickerDataType), 'params : data must List or PickerDataType');
+
+    if(pickerStyle == null){
+      pickerStyle = DefaultPickerStyle(context);
+    }
 
     Navigator.push(
         context,
@@ -60,6 +68,10 @@ class Pickers {
           backgroundColor: backgroundColor,
           textColor: textColor,
           showTitleBar: showTitleBar,
+
+
+          pickerStyle : pickerStyle,
+
           data: data,
           selectData: selectData,
           onChanged: onChanged,

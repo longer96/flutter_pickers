@@ -45,7 +45,7 @@ import 'package:flutter/material.dart';
 // }
 
 /// 基础样式
-class BasePickerStyle {
+class PickerStyle {
   final BuildContext context;
 
   bool _showTitleBar;
@@ -64,9 +64,8 @@ class BasePickerStyle {
   Color _backgroundColor;
   Color _textColor;
 
-  BasePickerStyle(this.context,
-      {bool dark,
-      bool showTitleBar,
+  PickerStyle(this.context,
+      {bool showTitleBar,
       Widget menu,
       double pickerHeight,
       double pickerTitleHeight,
@@ -100,6 +99,54 @@ class BasePickerStyle {
     _menuHeight = value;
   }
 
+  set menu(Widget value) {
+    _menu = value;
+  }
+
+  set pickerHeight(double value) {
+    _pickerHeight = value;
+  }
+
+  set pickerTitleHeight(double value) {
+    _pickerTitleHeight = value;
+  }
+
+  set pickerItemHeight(double value) {
+    _pickerItemHeight = value;
+  }
+
+  set cancelButton(Widget value) {
+    _cancelButton = value;
+  }
+
+  set commitButton(Widget value) {
+    _commitButton = value;
+  }
+
+  set labelWidget(Widget value) {
+    _labelWidget = value;
+  }
+
+  set title(Widget value) {
+    _title = value;
+  }
+
+  set headDecoration(Decoration value) {
+    _headDecoration = value;
+  }
+
+  set backgroundColor(Color value) {
+    _backgroundColor = value;
+  }
+
+  set textColor(Color value) {
+    _textColor = value;
+  }
+
+  set showTitleBar(bool value) {
+    _showTitleBar = value;
+  }
+
   Color get backgroundColor => this._backgroundColor ?? Colors.white;
 
   Decoration get headDecoration => this._headDecoration ?? BoxDecoration(color: Colors.white);
@@ -129,6 +176,7 @@ class BasePickerStyle {
   Widget getCommitButton() {
     return this._commitButton ??
         Container(
+          // todo
           height: _pickerTitleHeight,
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 12, right: 22),
@@ -140,6 +188,7 @@ class BasePickerStyle {
     return this._cancelButton ??
         Container(
           alignment: Alignment.center,
+          // todo
           height: _pickerTitleHeight,
           padding: const EdgeInsets.only(left: 22, right: 12),
           child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),

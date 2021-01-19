@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef SingleCallback(var data);
 
@@ -28,6 +29,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     this.onConfirm,
     this.theme,
     this.barrierLabel,
+    this.pickerStyle,
     RouteSettings settings,
   }) : super(settings: settings) {
     if (menuHeight != null) _pickerMenuHeight = menuHeight;
@@ -50,6 +52,8 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final Decoration headDecoration; // 头部样式
   final Widget labelWidget;
   final String suffix;
+
+  final PickerStyle pickerStyle;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
