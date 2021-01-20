@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/address_picker/route/address_picker_route.dart';
-import 'package:flutter_pickers/pickers/init_data.dart';
-import 'package:flutter_pickers/pickers/route/multiple_picker_route.dart';
-import 'package:flutter_pickers/pickers/route/single_picker_route.dart';
+import 'package:flutter_pickers/more_pickers/init_data.dart';
+import 'package:flutter_pickers/more_pickers/route/multiple_picker_route.dart';
+import 'package:flutter_pickers/more_pickers/route/single_picker_route.dart';
 import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';

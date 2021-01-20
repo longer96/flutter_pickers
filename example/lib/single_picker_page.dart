@@ -2,9 +2,8 @@ import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
-import 'package:flutter_pickers/pickers/init_data.dart';
+import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/style/default_style.dart';
-import 'package:flutter_pickers/style/notitle_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 class SinglePickerPage extends StatefulWidget {
@@ -119,7 +118,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         color: Colors.grey[700], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       margin: const EdgeInsets.only(left: 22),
       decoration:
           BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
@@ -127,7 +126,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     );
 
     Widget _commitButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
@@ -138,7 +137,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         color: Colors.grey[800],
         borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = MyText('身高选择器', color: Colors.white, size: 14);
+    Widget title = Center(child: MyText('身高选择器', color: Colors.white, size: 14));
 
     Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
 
@@ -170,8 +169,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       // backgroundColor: Colors.grey[800],
       // labelWidget: laber,
 
-      pickerStyle: DefaultPickerStyle1(haveRadius: true),
-      // pickerStyle: pickerStyle,
+      pickerStyle: pickerStyle,
 
       onConfirm: (p) {
         setState(() {

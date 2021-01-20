@@ -185,8 +185,6 @@ class PickerStyle {
   Widget getCommitButton() {
     return this._commitButton ??
         Container(
-          // todo
-          height: _pickerTitleHeight,
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 12, right: 22),
           child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
@@ -197,10 +195,9 @@ class PickerStyle {
     return this._cancelButton ??
         Container(
           alignment: Alignment.center,
-          // todo
-          height: _pickerTitleHeight,
           padding: const EdgeInsets.only(left: 22, right: 12),
           child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
         );
   }
+
 }

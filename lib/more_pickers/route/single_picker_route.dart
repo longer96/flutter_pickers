@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers/init_data.dart';
+import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef SingleCallback(var data);
 
-const double _pickerHeight = 220.0;
-const double _pickerTitleHeight = 44.0;
-const double _pickerItemHeight = 40.0;
-double _pickerMenuHeight = 36.0;
+// const double _pickerHeight = 220.0;
+// const double _pickerTitleHeight = 44.0;
+// const double _pickerItemHeight = 40.0;
+// double _pickerMenuHeight = 36.0;
 
 class SinglePickerRoute<T> extends PopupRoute<T> {
   SinglePickerRoute({
@@ -33,9 +33,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     this.barrierLabel,
     this.pickerStyle,
     RouteSettings settings,
-  }) : super(settings: settings) {
-    // if (menuHeight != null) _pickerMenuHeight = menuHeight;
-  }
+  }) : super(settings: settings);
 
   final dynamic selectData;
   final dynamic data;
@@ -155,8 +153,7 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value,
-                  showTitleActions: _pickerStyle.showTitleBar, showMenu: _pickerStyle.menu != null),
+              delegate: _BottomPickerLayout(widget.route.animation.value, pickerStyle : _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -244,7 +241,7 @@ class _PickerState extends State<_PickerContentView> {
     // 选择器
     Widget cPicker = CupertinoPicker.builder(
       scrollController: scrollCtrl,
-      itemExtent: _pickerItemHeight,
+      itemExtent: _pickerStyle.pickerItemHeight,
       onSelectedItemChanged: (int index) {
         _setPicker(index);
         if (widget.route.suffix != null && widget.route.suffix != '') {
@@ -272,7 +269,6 @@ class _PickerState extends State<_PickerContentView> {
     // 单位
     if ((widget.route.suffix != null && widget.route.suffix != '') || (_pickerStyle.labelWidget != null)) {
       Widget laberView = Container(
-          height: _pickerHeight,
           alignment: Alignment.center,
           child: (_pickerStyle.labelWidget == null)
               ? AnimatedPadding(
@@ -290,7 +286,7 @@ class _PickerState extends State<_PickerContentView> {
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 40),
-      height: _pickerHeight,
+      height: _pickerStyle.pickerHeight,
       color: _pickerStyle.backgroundColor,
       child: view,
     );
@@ -315,7 +311,7 @@ class _PickerState extends State<_PickerContentView> {
     // final headDecoration = BoxDecoration(color: Colors.white);
 
     return Container(
-      height: _pickerTitleHeight,
+      height: _pickerStyle.pickerTitleHeight,
       decoration: _pickerStyle.headDecoration,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -343,21 +339,22 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.showTitleActions, this.showMenu});
+  _BottomPickerLayout(this.progress, {this.itemCount, this.pickerStyle});
 
   final double progress;
   final int itemCount;
-  final bool showTitleActions;
-  final bool showMenu;
+  final PickerStyle pickerStyle;
+  // final bool showTitleBar;
+  // final bool showMenu;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = _pickerHeight;
-    if (showTitleActions) {
-      maxHeight += _pickerTitleHeight;
+    double maxHeight = pickerStyle.pickerHeight;
+    if (pickerStyle.showTitleBar) {
+      maxHeight += pickerStyle.pickerTitleHeight;
     }
-    if (showMenu) {
-      maxHeight += _pickerMenuHeight;
+    if (pickerStyle.menu != null) {
+      maxHeight += pickerStyle.menuHeight;
     }
 
     return BoxConstraints(

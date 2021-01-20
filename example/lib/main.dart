@@ -1,5 +1,6 @@
 import 'package:example/date_picker_page.dart';
 import 'package:example/multiple_picker_page.dart';
+import 'package:example/style_picker_page.dart';
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _itemView('单列选择器', SinglePickerPage()),
         _itemView('多列选择器', MultiplePickerPage()),
         _itemView('日期选择器', DatePickerPage()),
+        _itemView('内置样式', StylePickerPage()),
       ],
     );
   }

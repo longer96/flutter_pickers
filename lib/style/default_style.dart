@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
+/// 无标题样式
+class NoTitleStyle extends PickerStyle {
+  NoTitleStyle() {
+    this.showTitleBar =  false;
+  }
+
+  NoTitleStyle.dark() {
+    this.showTitleBar =  false;
+    this.backgroundColor = Colors.grey[800];
+    this.textColor = Colors.white;
+  }
+}
+
+/// 默认样式
 class DefaultPickerStyle extends PickerStyle {
   DefaultPickerStyle({bool haveRadius: false}) {
     if (haveRadius) {
@@ -33,6 +47,7 @@ class DefaultPickerStyle extends PickerStyle {
   }
 }
 
+/// 默认样式
 class DefaultPickerStyle1 extends PickerStyle {
   DefaultPickerStyle1({bool haveRadius: false, String title}) {
     if (haveRadius) {
