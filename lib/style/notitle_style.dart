@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 class NoTitleStyle extends PickerStyle {
-  NoTitleStyle(BuildContext context) : super(context) {
+  NoTitleStyle() {
     this.showTitleBar =  false;
   }
 
-  NoTitleStyle.dark(BuildContext context, {bool haveRadius: false}) : super(context) {
+  NoTitleStyle.dark({bool haveRadius: false}) {
     this.showTitleBar =  false;
     this.backgroundColor = Colors.grey[800];
     this.textColor = Colors.white;

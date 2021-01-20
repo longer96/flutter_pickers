@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 //   ///  头部和选择器之间的菜单widget,默认空 不显示
 //   Widget get menu;
 //
-//   ///  头部 中间的标题  默认null 不显示
+//   ///  头部 中间的标题  默认SizedBox() 不显示
 //   Widget get title;
 //
 //   /// [pickerHeight]  选择器下面 picker 的整体高度  固定高度：220.0
@@ -46,7 +46,7 @@ import 'package:flutter/material.dart';
 
 /// 基础样式
 class PickerStyle {
-  final BuildContext context;
+  BuildContext _context;
 
   bool _showTitleBar;
   Widget _menu;
@@ -64,8 +64,9 @@ class PickerStyle {
   Color _backgroundColor;
   Color _textColor;
 
-  PickerStyle(this.context,
-      {bool showTitleBar,
+  PickerStyle(
+      {BuildContext context,
+      bool showTitleBar,
       Widget menu,
       double pickerHeight,
       double pickerTitleHeight,
@@ -78,6 +79,7 @@ class PickerStyle {
       Decoration headDecoration,
       Color backgroundColor,
       Color textColor}) {
+    this._context = context;
     this._showTitleBar = showTitleBar;
     this._menu = menu;
 
@@ -93,6 +95,11 @@ class PickerStyle {
     this._headDecoration = headDecoration;
     this._backgroundColor = backgroundColor;
     this._textColor = textColor;
+  }
+
+
+  set context(BuildContext value) {
+    _context = value;
   }
 
   set menuHeight(double value) {
@@ -147,6 +154,8 @@ class PickerStyle {
     _showTitleBar = value;
   }
 
+  BuildContext get context => this._context;
+
   Color get backgroundColor => this._backgroundColor ?? Colors.white;
 
   Decoration get headDecoration => this._headDecoration ?? BoxDecoration(color: Colors.white);
@@ -167,7 +176,7 @@ class PickerStyle {
 
   Color get textColor => this._textColor ?? Colors.black87;
 
-  Widget get title => this._title;
+  Widget get title => this._title ?? SizedBox();
 
   Widget get commitButton => getCommitButton();
 

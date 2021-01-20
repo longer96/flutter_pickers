@@ -3,6 +3,9 @@ import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/pickers/init_data.dart';
+import 'package:flutter_pickers/style/default_style.dart';
+import 'package:flutter_pickers/style/notitle_style.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 
 class SinglePickerPage extends StatefulWidget {
   @override
@@ -64,10 +67,12 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
   void _onClickItem(var data, var selectData, {String label}) {
     Pickers.showSinglePicker(
       context,
-      showTitleBar: true,
       data: data,
-      suffix: label,
       selectData: selectData,
+
+      // showTitleBar: true,
+      // suffix: label,
+
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
         print('longer >>> 返回数据类型：${p.runtimeType}');
@@ -114,7 +119,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         color: Colors.grey[700], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       margin: const EdgeInsets.only(left: 22),
       decoration:
           BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
@@ -122,7 +127,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     );
 
     Widget _commitButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
@@ -137,20 +142,37 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
     Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
 
-    Pickers.showSinglePicker(
-      context,
-      showTitleBar: true,
-      data: List.generate(200, (index) => (50 + index).toString()),
-      selectData: selectHeight,
+    var pickerStyle = PickerStyle(
       menu: _headMenuView,
-      menuHeight: menuHeight,
-      title: title,
-      cancelWidget: _cancelButton,
-      commitWidget: _commitButton,
+      cancelButton: _cancelButton,
+      commitButton: _commitButton,
       headDecoration: headDecoration,
+      title: title,
+      labelWidget: laber,
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
-      labelWidget: laber,
+    );
+
+
+    Pickers.showSinglePicker(
+      context,
+      data: List.generate(200, (index) => (50 + index).toString()),
+      selectData: selectHeight,
+
+      // showTitleBar: true,
+      // menu: _headMenuView,
+      // menuHeight: menuHeight,
+      // title: title,
+      // cancelWidget: _cancelButton,
+      // commitWidget: _commitButton,
+      // headDecoration: headDecoration,
+      // textColor: Colors.white,
+      // backgroundColor: Colors.grey[800],
+      // labelWidget: laber,
+
+      pickerStyle: DefaultPickerStyle1(haveRadius: true),
+      // pickerStyle: pickerStyle,
+
       onConfirm: (p) {
         setState(() {
           selectHeight = p;

@@ -12,19 +12,21 @@ double _pickerMenuHeight = 36.0;
 
 class SinglePickerRoute<T> extends PopupRoute<T> {
   SinglePickerRoute({
-    this.menu,
-    this.menuHeight,
-    this.cancelWidget,
-    this.commitWidget,
-    this.labelWidget,
-    this.suffix,
-    this.headDecoration,
-    this.title,
-    this.backgroundColor,
-    this.textColor,
-    this.showTitleBar,
+    // this.menu,
+    // this.menuHeight,
+    // this.cancelWidget,
+    // this.commitWidget,
+    // this.labelWidget,
+
+    // this.headDecoration,
+    // this.title,
+    // this.backgroundColor,
+    // this.textColor,
+    // this.showTitleBar,
+
     this.data,
     this.selectData,
+    this.suffix,
     this.onChanged,
     this.onConfirm,
     this.theme,
@@ -32,27 +34,26 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     this.pickerStyle,
     RouteSettings settings,
   }) : super(settings: settings) {
-    if (menuHeight != null) _pickerMenuHeight = menuHeight;
+    // if (menuHeight != null) _pickerMenuHeight = menuHeight;
   }
 
-  final bool showTitleBar;
   final dynamic selectData;
   final dynamic data;
   final SingleCallback onChanged;
   final SingleCallback onConfirm;
   final ThemeData theme;
 
-  final Color backgroundColor; // 背景色
-  final Color textColor; // 文字颜色
-  final Widget title;
-  final Widget menu;
-  final double menuHeight;
-  final Widget cancelWidget;
-  final Widget commitWidget;
-  final Decoration headDecoration; // 头部样式
-  final Widget labelWidget;
+  // final bool showTitleBar;
+  // final Color backgroundColor; // 背景色
+  // final Color textColor; // 文字颜色
+  // final Widget title;
+  // final Widget menu;
+  // final double menuHeight;
+  // final Widget cancelWidget;
+  // final Widget commitWidget;
+  // final Decoration headDecoration; // 头部样式
+  // final Widget labelWidget;
   final String suffix;
-
   final PickerStyle pickerStyle;
 
   @override
@@ -92,6 +93,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
       child: _PickerContentView(
         data: mData,
         selectData: selectData,
+        pickerStyle :pickerStyle,
         route: this,
       ),
     );
@@ -108,18 +110,21 @@ class _PickerContentView extends StatefulWidget {
     Key key,
     this.data,
     this.selectData,
+    this.pickerStyle,
     @required this.route,
   }) : super(key: key);
 
   final List data;
   final dynamic selectData;
   final SinglePickerRoute route;
+  final PickerStyle pickerStyle;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData);
+  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData, this.pickerStyle);
 }
 
 class _PickerState extends State<_PickerContentView> {
+  final PickerStyle _pickerStyle;
   var _selectData;
   List _data = [];
 
@@ -131,7 +136,7 @@ class _PickerState extends State<_PickerContentView> {
   // 单位widget Padding left
   double _laberLeft;
 
-  _PickerState(this._data, this._selectData) {
+  _PickerState(this._data, this._selectData, this._pickerStyle) {
     _init();
   }
 
@@ -151,7 +156,7 @@ class _PickerState extends State<_PickerContentView> {
           return ClipRect(
             child: CustomSingleChildLayout(
               delegate: _BottomPickerLayout(widget.route.animation.value,
-                  showTitleActions: widget.route.showTitleBar, showMenu: widget.route.menu != null),
+                  showTitleActions: _pickerStyle.showTitleBar, showMenu: _pickerStyle.menu != null),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -220,15 +225,15 @@ class _PickerState extends State<_PickerContentView> {
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
-    if (!widget.route.showTitleBar && widget.route.menu == null) {
+    if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
     List viewList = <Widget>[];
-    if (widget.route.showTitleBar) {
+    if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
-    if (widget.route.menu != null) {
-      viewList.add(widget.route.menu);
+    if (_pickerStyle.menu != null) {
+      viewList.add(_pickerStyle.menu);
     }
     viewList.add(itemView);
 
@@ -258,25 +263,25 @@ class _PickerState extends State<_PickerContentView> {
         return Align(
             alignment: Alignment.center,
             child: Text(text,
-                style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
+                style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
                 textAlign: TextAlign.start));
       },
     );
 
     Widget view;
     // 单位
-    if ((widget.route.suffix != null && widget.route.suffix != '') || (widget.route.labelWidget != null)) {
+    if ((widget.route.suffix != null && widget.route.suffix != '') || (_pickerStyle.labelWidget != null)) {
       Widget laberView = Container(
           height: _pickerHeight,
           alignment: Alignment.center,
-          child: (widget.route.labelWidget == null)
+          child: (_pickerStyle.labelWidget == null)
               ? AnimatedPadding(
                   duration: Duration(milliseconds: 100),
                   padding: EdgeInsets.only(left: _laberLeft),
                   child: Text(widget.route.suffix,
-                      style: TextStyle(color: widget.route.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
+                      style: TextStyle(color: _pickerStyle.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
                 )
-              : widget.route.labelWidget);
+              : _pickerStyle.labelWidget);
 
       view = Stack(children: [cPicker, laberView]);
     } else {
@@ -286,43 +291,43 @@ class _PickerState extends State<_PickerContentView> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 40),
       height: _pickerHeight,
-      color: widget.route.backgroundColor,
+      color: _pickerStyle.backgroundColor,
       child: view,
     );
   }
 
   // 选择器上面的view
   Widget _titleView() {
-    final commitButton = Container(
-      height: _pickerTitleHeight,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
-    );
+    // final commitButton = Container(
+    //   height: _pickerTitleHeight,
+    //   alignment: Alignment.center,
+    //   padding: const EdgeInsets.only(left: 12, right: 22),
+    //   child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
+    // );
+    //
+    // final cancelButton = Container(
+    //   alignment: Alignment.center,
+    //   height: _pickerTitleHeight,
+    //   padding: const EdgeInsets.only(left: 22, right: 12),
+    //   child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
+    // );
 
-    final cancelButton = Container(
-      alignment: Alignment.center,
-      height: _pickerTitleHeight,
-      padding: const EdgeInsets.only(left: 22, right: 12),
-      child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
-    );
-
-    final headDecoration = BoxDecoration(color: Colors.white);
+    // final headDecoration = BoxDecoration(color: Colors.white);
 
     return Container(
       height: _pickerTitleHeight,
-      decoration: (widget.route.headDecoration == null) ? headDecoration : widget.route.headDecoration,
+      decoration: _pickerStyle.headDecoration,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
           InkWell(
               onTap: () => Navigator.pop(context),
-              child: (widget.route.cancelWidget == null) ? cancelButton : widget.route.cancelWidget),
+              child: _pickerStyle.cancelButton),
 
-          /// 分割线
-          (widget.route.title != null) ? widget.route.title : SizedBox(),
+          /// 标题
+           Expanded(child: _pickerStyle.title),
 
           /// 确认按钮
           InkWell(
@@ -330,7 +335,7 @@ class _PickerState extends State<_PickerContentView> {
                 widget.route?.onConfirm(_selectData);
                 Navigator.pop(context);
               },
-              child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)
+              child: _pickerStyle.commitButton)
         ],
       ),
     );

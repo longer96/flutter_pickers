@@ -31,52 +31,54 @@ class Pickers {
     @required dynamic data,
     dynamic selectData,
 
-    bool showTitleBar: true,
-    Widget menu,
-    double menuHeight,
-    Widget cancelWidget,
-    Widget commitWidget,
-    Widget labelWidget,
-    String suffix,
-    Widget title,
-    Decoration headDecoration,
-    Color backgroundColor: Colors.white,
-    Color textColor: Colors.black87,
+    // bool showTitleBar: true,
+    // Widget menu,
+    // double menuHeight,
+    // Widget cancelWidget,
+    // Widget commitWidget,
+    // Widget labelWidget,
+    // String suffix,
+    // Widget title,
+    // Decoration headDecoration,
+    // Color backgroundColor: Colors.white,
+    // Color textColor: Colors.black87,
 
     PickerStyle pickerStyle,
-
     SingleCallback onChanged,
     SingleCallback onConfirm,
   }) {
     assert(data != null, 'params: data can not be null');
     assert((data is List) || (data is PickerDataType), 'params : data must List or PickerDataType');
 
-    if(pickerStyle == null){
-      pickerStyle = DefaultPickerStyle(context);
+    if (pickerStyle == null) {
+      pickerStyle = DefaultPickerStyle();
+    }
+    if (pickerStyle.context == null) {
+      pickerStyle.context = context;
     }
 
     Navigator.push(
         context,
         SinglePickerRoute(
-          menu: menu,
-          menuHeight: menuHeight,
-          cancelWidget: cancelWidget,
-          commitWidget: commitWidget,
-          labelWidget: labelWidget,
-          suffix: suffix,
-          title: title,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          showTitleBar: showTitleBar,
+          // menu: menu,
+          // menuHeight: menuHeight,
+          // cancelWidget: cancelWidget,
+          // commitWidget: commitWidget,
+          // labelWidget: labelWidget,
+          // suffix: suffix,
+          // title: title,
+          // backgroundColor: backgroundColor,
+          // textColor: textColor,
+          // headDecoration: headDecoration,
+          // showTitleBar: showTitleBar,
 
-
-          pickerStyle : pickerStyle,
+          pickerStyle: pickerStyle,
 
           data: data,
           selectData: selectData,
           onChanged: onChanged,
           onConfirm: onConfirm,
-          headDecoration: headDecoration,
+
           // theme: Theme.of(context, shadowThemeOnly: true),
           theme: Theme.of(context),
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -89,7 +91,6 @@ class Pickers {
     @required dynamic data,
     @required dynamic selectData,
     dynamic suffix,
-
     bool showTitleBar: true,
     Widget menu,
     double menuHeight,
@@ -99,7 +100,6 @@ class Pickers {
     Decoration headDecoration,
     Color backgroundColor: Colors.white,
     Color textColor: Colors.black87,
-
     MultipleCallback onChanged,
     MultipleCallback onConfirm,
   }) {
