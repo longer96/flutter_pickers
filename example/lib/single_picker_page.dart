@@ -152,33 +152,27 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       backgroundColor: Colors.grey[800],
     );
 
+    Pickers.showSinglePicker(context,
+        data: List.generate(200, (index) => (50 + index).toString()),
+        selectData: selectHeight,
 
-    Pickers.showSinglePicker(
-      context,
-      data: List.generate(200, (index) => (50 + index).toString()),
-      selectData: selectHeight,
+        // showTitleBar: true,
+        // menu: _headMenuView,
+        // menuHeight: menuHeight,
+        // title: title,
+        // cancelWidget: _cancelButton,
+        // commitWidget: _commitButton,
+        // headDecoration: headDecoration,
+        // textColor: Colors.white,
+        // backgroundColor: Colors.grey[800],
+        // labelWidget: laber,
 
-      // showTitleBar: true,
-      // menu: _headMenuView,
-      // menuHeight: menuHeight,
-      // title: title,
-      // cancelWidget: _cancelButton,
-      // commitWidget: _commitButton,
-      // headDecoration: headDecoration,
-      // textColor: Colors.white,
-      // backgroundColor: Colors.grey[800],
-      // labelWidget: laber,
-
-      pickerStyle: pickerStyle,
-
-      onConfirm: (p) {
-        setState(() {
-          selectHeight = p;
-        });
-      },
-      onChanged: (p){
-        print('数据发生改变：$p');
-      }
-    );
+        pickerStyle: pickerStyle, onConfirm: (p) {
+      setState(() {
+        selectHeight = p;
+      });
+    }, onChanged: (p) {
+      print('数据发生改变：$p');
+    });
   }
 }
