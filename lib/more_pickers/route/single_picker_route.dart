@@ -5,25 +5,8 @@ import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef SingleCallback(var data);
 
-// const double _pickerHeight = 220.0;
-// const double _pickerTitleHeight = 44.0;
-// const double _pickerItemHeight = 40.0;
-// double _pickerMenuHeight = 36.0;
-
 class SinglePickerRoute<T> extends PopupRoute<T> {
   SinglePickerRoute({
-    // this.menu,
-    // this.menuHeight,
-    // this.cancelWidget,
-    // this.commitWidget,
-    // this.labelWidget,
-
-    // this.headDecoration,
-    // this.title,
-    // this.backgroundColor,
-    // this.textColor,
-    // this.showTitleBar,
-
     this.data,
     this.selectData,
     this.suffix,
@@ -41,16 +24,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final SingleCallback onConfirm;
   final ThemeData theme;
 
-  // final bool showTitleBar;
-  // final Color backgroundColor; // 背景色
-  // final Color textColor; // 文字颜色
-  // final Widget title;
-  // final Widget menu;
-  // final double menuHeight;
-  // final Widget cancelWidget;
-  // final Widget commitWidget;
-  // final Decoration headDecoration; // 头部样式
-  // final Widget labelWidget;
+
   final String suffix;
   final PickerStyle pickerStyle;
 
@@ -294,22 +268,6 @@ class _PickerState extends State<_PickerContentView> {
 
   // 选择器上面的view
   Widget _titleView() {
-    // final commitButton = Container(
-    //   height: _pickerTitleHeight,
-    //   alignment: Alignment.center,
-    //   padding: const EdgeInsets.only(left: 12, right: 22),
-    //   child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
-    // );
-    //
-    // final cancelButton = Container(
-    //   alignment: Alignment.center,
-    //   height: _pickerTitleHeight,
-    //   padding: const EdgeInsets.only(left: 22, right: 12),
-    //   child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
-    // );
-
-    // final headDecoration = BoxDecoration(color: Colors.white);
-
     return Container(
       height: _pickerStyle.pickerTitleHeight,
       decoration: _pickerStyle.headDecoration,
@@ -344,8 +302,6 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   final double progress;
   final int itemCount;
   final PickerStyle pickerStyle;
-  // final bool showTitleBar;
-  // final bool showMenu;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {

@@ -172,7 +172,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         selectHeight = p;
       });
     }, onChanged: (p) {
-      print('数据发生改变：$p');
+      // print('数据发生改变：$p');
     });
   }
 }

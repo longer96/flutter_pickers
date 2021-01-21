@@ -1,24 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef MultipleCallback(List res);
 
-const double _pickerHeight = 220.0;
-const double _pickerTitleHeight = 44.0;
-const double _pickerItemHeight = 40.0;
-double _pickerMenuHeight = 36.0;
-
 class MultiplePickerRoute<T> extends PopupRoute<T> {
   MultiplePickerRoute({
-    this.menu,
-    this.menuHeight,
-    this.cancelWidget,
-    this.commitWidget,
-    this.headDecoration,
-    this.title,
-    this.backgroundColor,
-    this.textColor,
-    this.showTitleBar,
+    this.pickerStyle,
     this.data,
     this.selectData,
     this.suffix,
@@ -27,11 +15,8 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  }) : super(settings: settings) {
-    if (menuHeight != null) _pickerMenuHeight = menuHeight;
-  }
+  }) : super(settings: settings);
 
-  final bool showTitleBar;
   final List data;
   final List selectData;
   final List suffix;
@@ -39,14 +24,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   final MultipleCallback onConfirm;
   final ThemeData theme;
 
-  final Color backgroundColor; // 背景色
-  final Color textColor; // 文字颜色
-  final Widget title;
-  final Widget menu;
-  final double menuHeight;
-  final Widget cancelWidget;
-  final Widget commitWidget;
-  final Decoration headDecoration; // 头部样式
+  final PickerStyle pickerStyle;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -77,6 +55,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
       child: _PickerContentView(
         data: data,
         selectData: selectData,
+        pickerStyle: pickerStyle,
         route: this,
       ),
     );
@@ -92,6 +71,7 @@ class _PickerContentView extends StatefulWidget {
   _PickerContentView({
     Key key,
     this.data,
+    this.pickerStyle,
     this.selectData,
     @required this.route,
   }) : super(key: key);
@@ -99,12 +79,14 @@ class _PickerContentView extends StatefulWidget {
   final List<List> data;
   final List selectData;
   final MultiplePickerRoute route;
+  final PickerStyle pickerStyle;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData);
+  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData, this.pickerStyle);
 }
 
 class _PickerState extends State<_PickerContentView> {
+  final PickerStyle _pickerStyle;
   List _selectData;
   List<List> _data;
 
@@ -113,7 +95,7 @@ class _PickerState extends State<_PickerContentView> {
 
   List<FixedExtentScrollController> scrollCtrl = [];
 
-  _PickerState(this._data, List mSelectData) {
+  _PickerState(this._data, List mSelectData, this._pickerStyle) {
     // 已选择器数据为准，因为初始化数据有可能和选择器对不上
     this._selectData = [];
     this._data.asMap().keys.forEach((index) {
@@ -143,8 +125,7 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value,
-                  showTitleActions: widget.route.showTitleBar, showMenu: widget.route.menu != null),
+              delegate: _BottomPickerLayout(widget.route.animation.value, pickerStyle: _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -207,15 +188,15 @@ class _PickerState extends State<_PickerContentView> {
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
-    if (!widget.route.showTitleBar && widget.route.menu == null) {
+    if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
     List viewList = <Widget>[];
-    if (widget.route.showTitleBar) {
+    if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
-    if (widget.route.menu != null) {
-      viewList.add(widget.route.menu);
+    if (_pickerStyle.menu != null) {
+      viewList.add(_pickerStyle.menu);
     }
     viewList.add(itemView);
 
@@ -229,8 +210,8 @@ class _PickerState extends State<_PickerContentView> {
     pickerList = List.generate(this._data.length, (index) => pickerView(index)).toList();
 
     return Container(
-      height: _pickerHeight,
-      color: widget.route.backgroundColor,
+      height: _pickerStyle.pickerHeight,
+      color: _pickerStyle.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: pickerList,
@@ -244,7 +225,7 @@ class _PickerState extends State<_PickerContentView> {
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: CupertinoPicker.builder(
           scrollController: scrollCtrl[position],
-          itemExtent: _pickerItemHeight,
+          itemExtent: _pickerStyle.pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) => _setPicker(position, selectIndex),
           childCount: _data[position].length,
           itemBuilder: (_, index) {
@@ -258,7 +239,7 @@ class _PickerState extends State<_PickerContentView> {
             return Align(
                 alignment: Alignment.center,
                 child: Text(text,
-                    style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
+                    style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
                     textAlign: TextAlign.start));
           },
         ),
@@ -268,36 +249,18 @@ class _PickerState extends State<_PickerContentView> {
 
   // 选择器上面的view
   Widget _titleView() {
-    final commitButton = Container(
-      height: _pickerTitleHeight,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
-    );
-
-    final cancelButton = Container(
-      height: _pickerTitleHeight,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.only(left: 22, right: 12),
-      child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
-    );
-
-    final headDecoration = BoxDecoration(color: Colors.white);
-
     return Container(
-      height: _pickerTitleHeight,
-      decoration: (widget.route.headDecoration == null) ? headDecoration : widget.route.headDecoration,
+      height: _pickerStyle.pickerTitleHeight,
+      decoration: _pickerStyle.headDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
-          InkWell(
-              onTap: () => Navigator.pop(context),
-              child: (widget.route.cancelWidget == null) ? cancelButton : widget.route.cancelWidget),
+          InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
 
           /// 分割线
-          (widget.route.title != null) ? widget.route.title : SizedBox(),
+          Expanded(child: _pickerStyle.title),
 
           /// 确认按钮
           InkWell(
@@ -305,7 +268,7 @@ class _PickerState extends State<_PickerContentView> {
                 widget.route?.onConfirm(_selectData);
                 Navigator.pop(context);
               },
-              child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)
+              child: _pickerStyle.commitButton)
         ],
       ),
     );
@@ -313,21 +276,20 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.showTitleActions, this.showMenu});
+  _BottomPickerLayout(this.progress, {this.itemCount, this.pickerStyle});
 
   final double progress;
   final int itemCount;
-  final bool showTitleActions;
-  final bool showMenu;
+  final PickerStyle pickerStyle;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = _pickerHeight;
-    if (showTitleActions) {
-      maxHeight += _pickerTitleHeight;
+    double maxHeight = pickerStyle.pickerHeight;
+    if (pickerStyle.showTitleBar) {
+      maxHeight += pickerStyle.pickerTitleHeight;
     }
-    if (showMenu) {
-      maxHeight += _pickerMenuHeight;
+    if (pickerStyle.menu != null) {
+      maxHeight += pickerStyle.menuHeight;
     }
 
     return BoxConstraints(

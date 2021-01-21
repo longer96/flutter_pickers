@@ -2,6 +2,7 @@ import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 
 class MultiplePickerPage extends StatefulWidget {
   @override
@@ -115,9 +116,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Pickers.showMultiplePicker(
       context,
-      showTitleBar: true,
-      menu: _headMenuView,
-      menuHeight: menuHeight,
+      pickerStyle: PickerStyle(menu: _headMenuView),
       data: timeData,
       selectData: [hourse, minute],
       onConfirm: (p) {
@@ -144,9 +143,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Pickers.showMultiplePicker(
       context,
-      showTitleBar: true,
-      menu: _headMenuView,
-      menuHeight: menuHeight,
+      pickerStyle: PickerStyle(menu: _headMenuView),
       data: timeData2,
       selectData: ['', 4, 5, 12],
       onConfirm: (p) {
@@ -192,21 +189,23 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Widget title = MyText('自定义选择器', color: Colors.white, size: 14);
 
+    var pickerStyle = PickerStyle(
+      menu: _headMenuView,
+      cancelButton: _cancelButton,
+      commitButton: _commitButton,
+      headDecoration: headDecoration,
+      title: title,
+      textColor: Colors.white,
+      backgroundColor: Colors.grey[800],
+    );
+
     Pickers.showMultiplePicker(
       context,
       data: timeData2,
       selectData: timeData2Select,
-      suffix:['','时', '分','秒'],
+      suffix: ['', '时', '分', '秒'],
 
-      showTitleBar: true,
-      menu: _headMenuView,
-      menuHeight: menuHeight,
-      title: title,
-      cancelWidget: _cancelButton,
-      commitWidget: _commitButton,
-      headDecoration: headDecoration,
-      textColor: Colors.white,
-      backgroundColor: Colors.grey[800],
+      pickerStyle : pickerStyle,
 
       onConfirm: (p) {
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');

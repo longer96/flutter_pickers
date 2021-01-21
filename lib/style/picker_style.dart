@@ -1,56 +1,25 @@
 import 'package:flutter/material.dart';
 
-// abstract class PickerStyle {
-//   ///  是否显示头部（选择器以上的控件） 默认：true
-//   bool get showTitleBar;
-//
-//   ///  头部和选择器之间的菜单widget,默认空 不显示
-//   Widget get menu;
-//
-//   ///  头部 中间的标题  默认SizedBox() 不显示
-//   Widget get title;
-//
-//   /// [pickerHeight]  选择器下面 picker 的整体高度  固定高度：220.0
-//   double get pickerHeight;
-//
-//   /// [pickerTitleHeight]  选择器上面 title 确认、取消的整体高度  固定高度：44.0
-//   double get pickerTitleHeight;
-//
-//   /// [pickerItemHeight]  选择器每个被选中item的高度：40.0
-//   double get pickerItemHeight;
-//
-//   /// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36.0
-//   double get menuHeight;
-//
-//   ///  取消按钮
-//   Widget get cancelButton;
-//
-//   ///  确认按钮
-//   Widget get commitButton;
-//
-//   /// 选择器背景色 默认白色
-//   Color get backgroundColor;
-//
-//   /// 选择器文字颜色  默认黑色
-//   // Color getTextColor();
-//   Color get textColor;
-//
-//   /// [headDecoration] 头部Container Decoration 样式
-//   ///  null 默认：BoxDecoration(color: Colors.white)
-//   Decoration get headDecoration;
-//
-//   /// [labelWidget] 自定义单位widget   默认：null
-//   /// SinglePickerRoute 选择器可用
-//   Widget get labelWidget;
-// }
-
 /// 基础样式
+/// [showTitleBar] 是否显示头部（选择器以上的控件） 默认：true
+/// [menu] 头部和选择器之间的菜单widget,默认null 不显示
+/// [title] 头部 中间的标题  默认SizedBox() 不显示
+/// [pickerHeight] 选择器下面 picker 的整体高度  固定高度：220.0
+/// [pickerTitleHeight]  选择器上面 title 确认、取消的整体高度  固定高度：44.0
+/// [pickerItemHeight]  选择器每个被选中item的高度：40.0
+/// [menuHeight]  头部和选择器之间的菜单高度  固定高度：36.0
+/// [cancelButton]  头部的取消按钮
+/// [commitButton]  头部的确认按钮
+/// [textColor]  选择器的文字颜色 默认黑色
+/// [backgroundColor]  选择器的背景颜色 默认白色
+/// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
+/// [labelWidget] 自定义单位widget   默认：null  SinglePickerRoute 选择器可用
+///
 class PickerStyle {
   BuildContext _context;
 
   bool _showTitleBar;
   Widget _menu;
-
   double _pickerHeight;
   double _pickerTitleHeight;
   double _pickerItemHeight;
@@ -156,6 +125,7 @@ class PickerStyle {
 
   BuildContext get context => this._context;
 
+  /// 选择器背景色 默认白色
   Color get backgroundColor => this._backgroundColor ?? Colors.white;
 
   Decoration get headDecoration => this._headDecoration ?? BoxDecoration(color: Colors.white);

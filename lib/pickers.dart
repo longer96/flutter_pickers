@@ -12,17 +12,6 @@ import 'package:flutter_pickers/time_picker/model/suffix.dart';
 
 /// [onChanged]   选择器发生变动
 /// [onConfirm]   选择器提交
-/// [showTitleBar]   是否显示头部 默认：true
-/// [menu]   头部和选择器之间的菜单widget,默认空 不显示
-/// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36
-/// [cancelButton] 取消按钮
-/// [commitButton] 确认按钮
-/// [title] 头部 中间的标题  默认null 不显示
-/// [backgroundColor] 选择器背景色 默认白色
-/// [textColor] 选择器文字颜色  默认黑色
-/// [headDecoration] 头部Container Decoration 样式
-///   默认：BoxDecoration(color: Colors.white)
-/// [labelWidget] 自定义单位widget   默认：null
 /// [suffix] 后缀   默认：null 不显示
 class Pickers {
   /// 单列 通用选择器
@@ -31,19 +20,8 @@ class Pickers {
     @required dynamic data,
     dynamic selectData,
 
-    // bool showTitleBar: true,
-    // Widget menu,
-    // double menuHeight,
-    // Widget cancelWidget,
-    // Widget commitWidget,
-    // Widget labelWidget,
-    // String suffix,
-    // Widget title,
-    // Decoration headDecoration,
-    // Color backgroundColor: Colors.white,
-    // Color textColor: Colors.black87,
-
     PickerStyle pickerStyle,
+
     SingleCallback onChanged,
     SingleCallback onConfirm,
   }) {
@@ -60,25 +38,11 @@ class Pickers {
     Navigator.push(
         context,
         SinglePickerRoute(
-          // menu: menu,
-          // menuHeight: menuHeight,
-          // cancelWidget: cancelWidget,
-          // commitWidget: commitWidget,
-          // labelWidget: labelWidget,
-          // suffix: suffix,
-          // title: title,
-          // backgroundColor: backgroundColor,
-          // textColor: textColor,
-          // headDecoration: headDecoration,
-          // showTitleBar: showTitleBar,
-
-          pickerStyle: pickerStyle,
-
           data: data,
           selectData: selectData,
+          pickerStyle: pickerStyle,
           onChanged: onChanged,
           onConfirm: onConfirm,
-
           // theme: Theme.of(context, shadowThemeOnly: true),
           theme: Theme.of(context),
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -91,15 +55,19 @@ class Pickers {
     @required dynamic data,
     @required dynamic selectData,
     dynamic suffix,
-    bool showTitleBar: true,
-    Widget menu,
-    double menuHeight,
-    Widget cancelWidget,
-    Widget commitWidget,
-    Widget title,
-    Decoration headDecoration,
-    Color backgroundColor: Colors.white,
-    Color textColor: Colors.black87,
+
+    PickerStyle pickerStyle,
+
+    // bool showTitleBar: true,
+    // Widget menu,
+    // double menuHeight,
+    // Widget cancelWidget,
+    // Widget commitWidget,
+    // Widget title,
+    // Decoration headDecoration,
+    // Color backgroundColor: Colors.white,
+    // Color textColor: Colors.black87,
+
     MultipleCallback onChanged,
     MultipleCallback onConfirm,
   }) {
@@ -109,23 +77,34 @@ class Pickers {
       assert((data is List), 'params : selectData must List');
     }
 
+    if (pickerStyle == null) {
+      pickerStyle = DefaultPickerStyle();
+    }
+    if (pickerStyle.context == null) {
+      pickerStyle.context = context;
+    }
+
     Navigator.push(
         context,
         MultiplePickerRoute(
           data: data,
           selectData: selectData,
           suffix: suffix,
-          menu: menu,
-          menuHeight: menuHeight,
-          cancelWidget: cancelWidget,
-          commitWidget: commitWidget,
-          title: title,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          showTitleBar: showTitleBar,
+
+          // menu: menu,
+          // menuHeight: menuHeight,
+          // cancelWidget: cancelWidget,
+          // commitWidget: commitWidget,
+          // title: title,
+          // backgroundColor: backgroundColor,
+          // textColor: textColor,
+          // showTitleBar: showTitleBar,
+          // headDecoration: headDecoration,
+          pickerStyle :pickerStyle,
+
+
           onChanged: onChanged,
           onConfirm: onConfirm,
-          headDecoration: headDecoration,
           // theme: Theme.of(context, shadowThemeOnly: true),
           theme: Theme.of(context),
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
