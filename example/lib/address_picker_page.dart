@@ -2,6 +2,7 @@ import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 
 class AddressPickerPage extends StatefulWidget {
   @override
@@ -49,7 +50,6 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
       onTap: () {
         Pickers.showAddressPicker(
           context,
-          showTitleBar: true,
           initProvince: initProvince,
           initCity: initCity,
           initTown: initTown,
@@ -76,7 +76,6 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initProvince: locations1[0],
           initCity: locations1[1],
           // initTown: null,
-          showTitleBar: true,
           onConfirm: (p, c, t) {
             setState(() {
               locations1[0] = p;
@@ -120,7 +119,17 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
         color: Colors.grey[800],
         borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = MyText('请选择地址', color: Colors.white, size: 14);
+    Widget title = Center(child: MyText('请选择地址', color: Colors.white, size: 14));
+
+    var pickerStyle = PickerStyle(
+      menu: _headMenuView,
+      cancelButton: _cancelButton,
+      commitButton: _commitButton,
+      headDecoration: headDecoration,
+      title: title,
+      textColor: Colors.white,
+      backgroundColor: Colors.grey[800],
+    );
 
     return InkWell(
       onTap: () {
@@ -129,16 +138,10 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initProvince: locations2[0],
           initCity: locations2[1],
           initTown: locations2[2],
-          showTitleBar: true,
-          menu: _headMenuView,
-          menuHeight: menuHeight,
-          title: title,
-          cancelWidget: _cancelButton,
-          commitWidget: _commitButton,
-          headDecoration: headDecoration,
+
+          pickerStyle : pickerStyle,
+
           addAllItem: false,
-          textColor: Colors.white,
-          backgroundColor: Colors.grey[800],
           onConfirm: (p, c, t) {
             setState(() {
               locations2[0] = p;

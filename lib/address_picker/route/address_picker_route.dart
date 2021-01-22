@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 
 import '../locations_data.dart';
 
 typedef AddressCallback(String province, String city, String town);
-
-const double _pickerHeight = 220.0;
-const double _pickerTitleHeight = 44.0;
-const double _pickerItemHeight = 40.0;
-double _pickerMenuHeight = 36.0;
 
 /// 自定义 地区选择器
 /// [initProvince] 初始化 省
@@ -16,29 +12,11 @@ double _pickerMenuHeight = 36.0;
 /// [initTown]    初始化 区
 /// [onChanged]   选择器发生变动
 /// [onConfirm]   选择器提交
-/// [showTitleBar]   是否显示头部 默认：true
-/// [menu]   头部和选择器之间的菜单widget,默认空 不显示
-/// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36
-/// [cancelWidget] 取消按钮
-/// [commitWidget] 确认按钮
-/// [title] 头部 中间的标题  默认null 不显示
-/// [backgroundColor] 选择器背景色 默认白色
-/// [textColor] 选择器文字颜色  默认黑色
-/// [headDecoration] 头部Container Decoration 样式
-/// 默认：BoxDecoration(color: backgroundColor)
 /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
 class AddressPickerRoute<T> extends PopupRoute<T> {
   AddressPickerRoute({
-    this.menu,
-    this.menuHeight,
-    this.cancelWidget,
-    this.commitWidget,
-    this.headDecoration,
     this.addAllItem,
-    this.title,
-    this.backgroundColor,
-    this.textColor,
-    this.showTitlebar,
+    this.pickerStyle,
     this.initProvince,
     this.initCity,
     this.initTown,
@@ -47,25 +25,15 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  }) : super(settings: settings) {
-    if (menuHeight != null) _pickerMenuHeight = menuHeight;
-  }
+  }) : super(settings: settings);
 
-  final bool showTitlebar;
   final String initProvince, initCity, initTown;
   final AddressCallback onChanged;
   final AddressCallback onConfirm;
   final ThemeData theme;
-
-  final Color backgroundColor; // 背景色
-  final Color textColor; // 文字颜色
-  final Widget title;
-  final Widget menu;
-  final double menuHeight;
-  final Widget cancelWidget;
-  final Widget commitWidget;
-  final Decoration headDecoration; // 头部样式
   final bool addAllItem;
+
+  final PickerStyle pickerStyle;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -98,6 +66,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
         initCity: initCity,
         initTown: initTown,
         addAllItem: addAllItem,
+        pickerStyle: pickerStyle,
         route: this,
       ),
     );
@@ -115,6 +84,7 @@ class _PickerContentView extends StatefulWidget {
     this.initProvince,
     this.initCity,
     this.initTown,
+    this.pickerStyle,
     this.addAllItem,
     @required this.route,
   }) : super(key: key);
@@ -122,12 +92,15 @@ class _PickerContentView extends StatefulWidget {
   final String initProvince, initCity, initTown;
   final AddressPickerRoute route;
   final bool addAllItem;
+  final PickerStyle pickerStyle;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.initProvince, this.initCity, this.initTown, this.addAllItem);
+  State<StatefulWidget> createState() =>
+      _PickerState(this.initProvince, this.initCity, this.initTown, this.addAllItem, this.pickerStyle);
 }
 
 class _PickerState extends State<_PickerContentView> {
+  final PickerStyle _pickerStyle;
   String _currentProvince, _currentCity, _currentTown;
   var cities = [];
   var towns = [];
@@ -144,7 +117,7 @@ class _PickerState extends State<_PickerContentView> {
 
   FixedExtentScrollController provinceScrollCtrl, cityScrollCtrl, townScrollCtrl;
 
-  _PickerState(this._currentProvince, this._currentCity, this._currentTown, this.addAllItem) {
+  _PickerState(this._currentProvince, this._currentCity, this._currentTown, this.addAllItem, this._pickerStyle) {
     provinces = Address.provinces;
     hasTown = this._currentTown != null;
 
@@ -168,8 +141,7 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value,
-                  showTitleActions: widget.route.showTitlebar, showMenu: widget.route.menu != null),
+              delegate: _BottomPickerLayout(widget.route.animation.value, this._pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -291,15 +263,15 @@ class _PickerState extends State<_PickerContentView> {
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
-    if (!widget.route.showTitlebar && widget.route.menu == null) {
+    if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
     List viewList = <Widget>[];
-    if (widget.route.showTitlebar) {
+    if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
-    if (widget.route.menu != null) {
-      viewList.add(widget.route.menu);
+    if (_pickerStyle.menu != null) {
+      viewList.add(_pickerStyle.menu);
     }
     viewList.add(itemView);
 
@@ -307,116 +279,95 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   Widget _renderItemView() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            height: _pickerHeight,
-            color: widget.route.backgroundColor,
-            child: CupertinoPicker.builder(
-              scrollController: provinceScrollCtrl,
-              itemExtent: _pickerItemHeight,
-              onSelectedItemChanged: (int index) {
-                _setProvince(index);
-              },
-              childCount: Address.provinces.length,
-              itemBuilder: (_, index) {
-                String text = Address.provinces[index];
-                return Align(
-                    alignment: Alignment.center,
-                    child: Text(text,
-                        style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
-                        textAlign: TextAlign.start));
-              },
+    return Container(
+      height: _pickerStyle.pickerHeight,
+      color: _pickerStyle.backgroundColor,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              child: CupertinoPicker.builder(
+                scrollController: provinceScrollCtrl,
+                itemExtent: _pickerStyle.pickerItemHeight,
+                onSelectedItemChanged: (int index) {
+                  _setProvince(index);
+                },
+                childCount: Address.provinces.length,
+                itemBuilder: (_, index) {
+                  String text = Address.provinces[index];
+                  return Align(
+                      alignment: Alignment.center,
+                      child: Text(text,
+                          style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
+                          textAlign: TextAlign.start));
+                },
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: Container(
-              padding: EdgeInsets.all(8.0),
-              height: _pickerHeight,
-              color: widget.route.backgroundColor,
-              child: CupertinoPicker.builder(
-                scrollController: cityScrollCtrl,
-                itemExtent: _pickerItemHeight,
-                onSelectedItemChanged: (int index) {
-                  _setCity(index);
-                },
-                childCount: cities.length,
-                itemBuilder: (_, index) {
-                  String text = cities[index]['name'];
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Text('$text',
-                        style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
-                        textAlign: TextAlign.start),
-                  );
-                },
-              )),
-        ),
-        hasTown
-            ? Expanded(
-                child: Container(
-                    padding: EdgeInsets.all(8.0),
-                    height: _pickerHeight,
-                    color: widget.route.backgroundColor,
-                    child: CupertinoPicker.builder(
-                      scrollController: townScrollCtrl,
-                      itemExtent: _pickerItemHeight,
-                      onSelectedItemChanged: (int index) {
-                        _setTown(index);
-                      },
-                      childCount: towns.length,
-                      itemBuilder: (_, index) {
-                        String text = towns[index];
-                        return Align(
-                          alignment: Alignment.center,
-                          child: Text(text,
-                              style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
-                              textAlign: TextAlign.start),
-                        );
-                      },
-                    )),
-              )
-            : Center()
-      ],
+          Expanded(
+            child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: CupertinoPicker.builder(
+                  scrollController: cityScrollCtrl,
+                  itemExtent: _pickerStyle.pickerItemHeight,
+                  onSelectedItemChanged: (int index) {
+                    _setCity(index);
+                  },
+                  childCount: cities.length,
+                  itemBuilder: (_, index) {
+                    String text = cities[index]['name'];
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Text('$text',
+                          style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
+                          textAlign: TextAlign.start),
+                    );
+                  },
+                )),
+          ),
+          hasTown
+              ? Expanded(
+                  child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: CupertinoPicker.builder(
+                        scrollController: townScrollCtrl,
+                        itemExtent: _pickerStyle.pickerItemHeight,
+                        onSelectedItemChanged: (int index) {
+                          _setTown(index);
+                        },
+                        childCount: towns.length,
+                        itemBuilder: (_, index) {
+                          String text = towns[index];
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Text(text,
+                                style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
+                                textAlign: TextAlign.start),
+                          );
+                        },
+                      )),
+                )
+              : SizedBox()
+        ],
+      ),
     );
   }
 
   // 选择器上面的view
   Widget _titleView() {
-    final commitButton = Container(
-      height: _pickerTitleHeight,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
-    );
-
-    final cancelButton = Container(
-      height: _pickerTitleHeight,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.only(left: 22, right: 12),
-      child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
-    );
-
-    final headDecoration = BoxDecoration(color: widget.route.backgroundColor);
-
     return Container(
-      height: _pickerTitleHeight,
-      decoration: (widget.route.headDecoration == null) ? headDecoration : widget.route.headDecoration,
+      height: _pickerStyle.pickerTitleHeight,
+      decoration: _pickerStyle.headDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
-          InkWell(
-              onTap: () => Navigator.pop(context),
-              child: (widget.route.cancelWidget == null) ? cancelButton : widget.route.cancelWidget),
+          InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
 
-          /// 分割线
-          (widget.route.title != null) ? widget.route.title : SizedBox(),
+          /// 标题
+          Expanded(child: _pickerStyle.title),
 
           /// 确认按钮
           InkWell(
@@ -424,7 +375,7 @@ class _PickerState extends State<_PickerContentView> {
                 widget.route?.onConfirm(_currentProvince, _currentCity, _currentTown);
                 Navigator.pop(context);
               },
-              child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)
+              child: _pickerStyle.commitButton)
         ],
       ),
     );
@@ -432,20 +383,19 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.showTitleActions, this.showMenu});
+  _BottomPickerLayout(this.progress, this.pickerStyle);
 
   final double progress;
-  final bool showTitleActions;
-  final bool showMenu;
+  final PickerStyle pickerStyle;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = _pickerHeight;
-    if (showTitleActions) {
-      maxHeight += _pickerTitleHeight;
+    double maxHeight = pickerStyle.pickerHeight;
+    if (pickerStyle.showTitleBar) {
+      maxHeight += pickerStyle.pickerTitleHeight;
     }
-    if (showMenu) {
-      maxHeight += _pickerMenuHeight;
+    if (pickerStyle.menu != null) {
+      maxHeight += pickerStyle.menuHeight;
     }
 
     return BoxConstraints(

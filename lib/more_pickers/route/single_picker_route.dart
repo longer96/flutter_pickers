@@ -24,7 +24,6 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final SingleCallback onConfirm;
   final ThemeData theme;
 
-
   final String suffix;
   final PickerStyle pickerStyle;
 
@@ -65,7 +64,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
       child: _PickerContentView(
         data: mData,
         selectData: selectData,
-        pickerStyle :pickerStyle,
+        pickerStyle: pickerStyle,
         route: this,
       ),
     );
@@ -127,7 +126,7 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value, pickerStyle : _pickerStyle),
+              delegate: _BottomPickerLayout(widget.route.animation.value, pickerStyle: _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -276,12 +275,10 @@ class _PickerState extends State<_PickerContentView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
-          InkWell(
-              onTap: () => Navigator.pop(context),
-              child: _pickerStyle.cancelButton),
+          InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
 
           /// 标题
-           Expanded(child: _pickerStyle.title),
+          Expanded(child: _pickerStyle.title),
 
           /// 确认按钮
           InkWell(
@@ -297,10 +294,9 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.pickerStyle});
+  _BottomPickerLayout(this.progress, {this.pickerStyle});
 
   final double progress;
-  final int itemCount;
   final PickerStyle pickerStyle;
 
   @override

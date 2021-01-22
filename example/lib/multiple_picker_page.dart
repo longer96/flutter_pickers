@@ -168,7 +168,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
         ]));
 
     Widget _cancelButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(left: 22),
       decoration:
           BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
@@ -176,7 +176,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
     );
 
     Widget _commitButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
@@ -187,7 +187,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
         color: Colors.grey[800],
         borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = MyText('自定义选择器', color: Colors.white, size: 14);
+    Widget title = Center(child: MyText('自定义选择器', color: Colors.white, size: 14));
 
     var pickerStyle = PickerStyle(
       menu: _headMenuView,

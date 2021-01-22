@@ -205,16 +205,13 @@ class _PickerState extends State<_PickerContentView> {
 
   Widget _renderItemView() {
     // 选择器
-    List<Widget> pickerList = [];
-
-    pickerList = List.generate(this._data.length, (index) => pickerView(index)).toList();
+    List<Widget> pickerList  = List.generate(this._data.length, (index) => pickerView(index)).toList();
 
     return Container(
       height: _pickerStyle.pickerHeight,
       color: _pickerStyle.backgroundColor,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: pickerList,
+        children: pickerList
       ),
     );
   }
@@ -259,7 +256,7 @@ class _PickerState extends State<_PickerContentView> {
           /// 取消按钮
           InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
 
-          /// 分割线
+          /// 标题
           Expanded(child: _pickerStyle.title),
 
           /// 确认按钮
@@ -276,10 +273,9 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.pickerStyle});
+  _BottomPickerLayout(this.progress, {this.pickerStyle});
 
   final double progress;
-  final int itemCount;
   final PickerStyle pickerStyle;
 
   @override

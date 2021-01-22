@@ -19,9 +19,7 @@ class Pickers {
     BuildContext context, {
     @required dynamic data,
     dynamic selectData,
-
     PickerStyle pickerStyle,
-
     SingleCallback onChanged,
     SingleCallback onConfirm,
   }) {
@@ -55,19 +53,7 @@ class Pickers {
     @required dynamic data,
     @required dynamic selectData,
     dynamic suffix,
-
     PickerStyle pickerStyle,
-
-    // bool showTitleBar: true,
-    // Widget menu,
-    // double menuHeight,
-    // Widget cancelWidget,
-    // Widget commitWidget,
-    // Widget title,
-    // Decoration headDecoration,
-    // Color backgroundColor: Colors.white,
-    // Color textColor: Colors.black87,
-
     MultipleCallback onChanged,
     MultipleCallback onConfirm,
   }) {
@@ -91,17 +77,7 @@ class Pickers {
           selectData: selectData,
           suffix: suffix,
 
-          // menu: menu,
-          // menuHeight: menuHeight,
-          // cancelWidget: cancelWidget,
-          // commitWidget: commitWidget,
-          // title: title,
-          // backgroundColor: backgroundColor,
-          // textColor: textColor,
-          // showTitleBar: showTitleBar,
-          // headDecoration: headDecoration,
-          pickerStyle :pickerStyle,
-
+          pickerStyle: pickerStyle,
 
           onChanged: onChanged,
           onConfirm: onConfirm,
@@ -117,52 +93,33 @@ class Pickers {
   /// [initTown]    初始化 区
   /// [onChanged]   选择器发生变动
   /// [onConfirm]   选择器提交
-  /// [showTitleBar]   是否显示头部 默认：true
-  /// [menu]   头部和选择器之间的菜单widget,默认空 不显示
-  /// [menuHeight]   头部和选择器之间的菜单高度  固定高度：36
-  /// [cancelWidget] 取消按钮
-  /// [commitWidget] 确认按钮
-  /// [title] 头部 中间的标题  默认null 不显示
-  /// [backgroundColor] 选择器背景色 默认白色
-  /// [textColor] 选择器文字颜色  默认黑色
-  /// [headDecoration] 头部Container Decoration 样式
-  /// 默认：BoxDecoration(color: backgroundColor)
   /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
   static void showAddressPicker(
     BuildContext context, {
-    bool showTitleBar: true,
-    Widget menu,
-    double menuHeight,
-    Widget cancelWidget,
-    Widget commitWidget,
-    Widget title,
-    Decoration headDecoration,
-    bool addAllItem: true,
-    Color backgroundColor: Colors.white,
-    Color textColor: Colors.black87,
+    PickerStyle pickerStyle,
     String initProvince: '',
     String initCity: '',
     String initTown,
+    bool addAllItem: true,
     AddressCallback onChanged,
     AddressCallback onConfirm,
   }) {
+    if (pickerStyle == null) {
+      pickerStyle = DefaultPickerStyle();
+    }
+    if (pickerStyle.context == null) {
+      pickerStyle.context = context;
+    }
+
     Navigator.push(
         context,
         AddressPickerRoute(
-          menu: menu,
-          menuHeight: menuHeight,
-          cancelWidget: cancelWidget,
-          commitWidget: commitWidget,
-          title: title,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          showTitlebar: showTitleBar,
+          pickerStyle: pickerStyle,
           initProvince: initProvince,
           initCity: initCity,
           initTown: initTown,
           onChanged: onChanged,
           onConfirm: onConfirm,
-          headDecoration: headDecoration,
           addAllItem: addAllItem,
           theme: Theme.of(context),
           barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
