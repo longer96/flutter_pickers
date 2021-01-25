@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_pickers/time_picker/model/suffix.dart';
 
 class DatePickerPage extends StatefulWidget {
@@ -181,9 +182,18 @@ class _DatePickerPageState extends State<DatePickerPage> {
   void _onClickItem() {
     Pickers.showDatePicker(
       context,
-      mode: DateMode.YMDHMS,
+      mode: DateMode.YM,
       suffix: Suffix.normal(),
-      showTitleBar: true,
+
+      // selectDate: PDuration(month: 2),
+      minDate: PDuration(year: 2010, month: 2, day: 4),
+      maxDate: PDuration(year: 2011, month: 2, day: 22),
+
+
+      // selectDate: PDuration(hour: 18, minute: 36, second: 36),
+      // minDate: PDuration(hour: 12, minute: 12, second: 3),
+      // maxDate: PDuration(hour: 18, minute: 40),
+
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
       },

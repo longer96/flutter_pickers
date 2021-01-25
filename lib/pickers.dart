@@ -10,6 +10,8 @@ import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_pickers/time_picker/route/date_picker_route.dart';
 import 'package:flutter_pickers/time_picker/model/suffix.dart';
 
+import 'time_picker/model/date_item_model.dart';
+
 /// [onChanged]   选择器发生变动
 /// [onConfirm]   选择器提交
 /// [suffix] 后缀   默认：null 不显示
@@ -76,9 +78,7 @@ class Pickers {
           data: data,
           selectData: selectData,
           suffix: suffix,
-
           pickerStyle: pickerStyle,
-
           onChanged: onChanged,
           onConfirm: onConfirm,
           // theme: Theme.of(context, shadowThemeOnly: true),
@@ -127,73 +127,65 @@ class Pickers {
   }
 
   /// 时间选择器
-  /// [Suffix] : 每列时间对应的单位  默认：中文常规
-  ///   Suffix(years: '年',month: '月');
-  /// [initDate] : 初始化时间  默认现在
+  /// [Suffix] : 每列时间对应的单位  默认：中文常规  Suffix(years: '年',month: '月');
+  /// [selectDate] : 初始化选中时间  默认现在
   ///    PDuration.now();
   ///    PDuration.parse(DateTime.parse('20210139'));
   ///    PDuration(year: 2020,month: 2);
-  /// [maxDate] : 最大时间 用法同上  tip: 该限制不与时间关联 只针对单个item 的限制，比如 maxDate>day = 3  minDate>day = 10,那么所有的月份都只显示3-10之间
+  /// [maxDate] : 最大时间 用法同上
+  ///     tip: 当只有单列数据，该限制不产生关联 只针对单列item限制，比如 maxDate>day = 3  minDate>day = 10,那么所有的月份都只显示3-10之间
   /// [minDate] : 最小时间 用法同上
   /// [mode] : 时间选择器所显示样式  16 种时间样式 默认：DateMode.YMD
   static void showDatePicker(
     BuildContext context, {
     DateMode mode: DateMode.YMD,
-    PDuration initDate,
+    PDuration selectDate,
     PDuration maxDate,
     PDuration minDate,
     Suffix suffix,
-
-    // style  begin
-    bool showTitleBar: true,
-    Widget menu,
-    double menuHeight,
-    Widget cancelWidget,
-    Widget commitWidget,
-    Widget title,
-    Decoration headDecoration,
-    Color backgroundColor: Colors.white,
-    Color textColor: Colors.black87,
-    // style  end
-
+    PickerStyle pickerStyle,
     DateCallback onChanged,
     DateCallback onConfirm,
   }) {
-    if (initDate == null) initDate = PDuration.now();
-    if (suffix == null) suffix = Suffix.normal();
-    if (maxDate == null) maxDate = PDuration(year: 2100);
-    if (minDate == null) minDate = PDuration(year: 1900);
-
-    if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode) && initDate.year == null) {
-      print('picker   Tip >>> initDate未设置years，默认设置为now().year');
-      initDate.year = DateTime.now().year;
+    if (pickerStyle == null) {
+      pickerStyle = DefaultPickerStyle();
+    }
+    if (pickerStyle.context == null) {
+      pickerStyle.context = context;
     }
 
-    // 初始化 时间限制 maxDate minDate
-    // maxDate.max();
-    // minDate.min();
+    if (selectDate == null) selectDate = PDuration.now();
+    if (suffix == null) suffix = Suffix.normal();
+
+    // 解析是否有对应数据
+    DateItemModel dateItemModel = DateItemModel.parse(mode);
+
+    /// 如果有年item ，必须限制
+    if (maxDate == null && dateItemModel.year) {
+      maxDate = PDuration(year: 2100);
+    }
+    if (minDate == null && dateItemModel.year) {
+      minDate = PDuration(year: 1900);
+    }
+
+    if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode) && intEmpty(selectDate.year)) {
+      print('picker  Tip >>> initDate未设置years，默认设置为now().year');
+      selectDate.year = DateTime.now().year;
+    }
+    if(dateItemModel.day) {
+      assert(minDate.year > 1582, 'minDate Year must > 1582');
+    }
+
 
     Navigator.push(
         context,
         DatePickerRoute(
           mode: mode,
-          initDate: initDate,
-          maxDate: maxDate,
-          minDate: minDate,
+          initDate: selectDate,
+          maxDate: maxDate ?? PDuration(),
+          minDate: minDate ?? PDuration(),
           suffix: suffix,
-
-          // style  begin
-          menu: menu,
-          menuHeight: menuHeight,
-          cancelWidget: cancelWidget,
-          commitWidget: commitWidget,
-          title: title,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          showTitleBar: showTitleBar,
-          headDecoration: headDecoration,
-          // style  end
-
+          pickerStyle: pickerStyle,
           onChanged: onChanged,
           onConfirm: onConfirm,
           // theme: Theme.of(context, shadowThemeOnly: true),

@@ -9,12 +9,18 @@ import 'package:flutter_pickers/time_picker/model/date_type.dart';
 ///
 ///     var m = PDuration(year: 2011);
 ///     print('longer2 >>> ${m.toString()}');
-///      {year: 2011, month: null, day: null, hour: null, minute: null, second: null}
+///     {year: 2011, month: 0, day: 0, hour: 0, minute: 0, second: 0}
 ///
 ///     var d = PDuration.parse(DateTime.parse('20200304'));
 ///     print('longer3 >>> ${d.toString()}');
 ///     {year: 2020, month: 3, day: 4, hour: 0, minute: 0, second: 0}
-///
+
+bool intEmpty(int value) {
+return (value == null || value == 0);
+}
+bool intNotEmpty(int value) {
+return (value != null && value != 0);
+}
 class PDuration {
   int year;
   int month;
@@ -23,7 +29,7 @@ class PDuration {
   int minute;
   int second;
 
-  PDuration({this.year, this.month, this.day, this.hour, this.minute, this.second});
+  PDuration({this.year :0, this.month :0, this.day :0, this.hour :0, this.minute: 0, this.second :0});
 
   // /// maxDate 会用上
   // void max() {
@@ -49,9 +55,6 @@ class PDuration {
   //   this.second = intEmpty(this.second) ? minInt : this.second;
   // }
 
-  static bool intEmpty(int value) {
-    return (value == null || value == 0);
-  }
 
   // 注意默认会设为0 不是null
   PDuration.parse(DateTime dateTime) {

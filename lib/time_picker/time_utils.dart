@@ -1,5 +1,4 @@
 class TimeUtils {
-
   /// 年
   static List calcYears({int begin = 1900, int end = 2100}) => _calcCount(begin, end);
 
@@ -11,9 +10,14 @@ class TimeUtils {
   }
 
   /// 日
-  static List calcDay(int year, int month) {
+  static List calcDay(int year, int month, {int begin = 1, int end = 31}) {
+    begin = begin < 1 ? 1 : begin;
+
     int days = _calcDateCount(year, month);
-    return List.generate(days, (index) => index + 1);
+    if (end > days) {
+      end = days;
+    }
+    return _calcCount(begin, end);
   }
 
   /// 时

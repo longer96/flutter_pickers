@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_item_model.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/model/date_time_data.dart';
@@ -13,54 +14,30 @@ import '../time_utils.dart';
 
 typedef DateCallback(PDuration res);
 
-const double _pickerHeight = 220.0;
-const double _pickerTitleHeight = 44.0;
-const double _pickerItemHeight = 40.0;
-double _pickerMenuHeight = 36.0;
-
 class DatePickerRoute<T> extends PopupRoute<T> {
   DatePickerRoute({
     this.mode,
     this.initDate,
+    this.pickerStyle,
     this.maxDate,
     this.minDate,
     this.suffix,
-    this.menu,
-    this.menuHeight,
-    this.cancelWidget,
-    this.commitWidget,
-    this.headDecoration,
-    this.title,
-    this.backgroundColor,
-    this.textColor,
-    this.showTitleBar,
     this.onChanged,
     this.onConfirm,
     this.theme,
     this.barrierLabel,
     RouteSettings settings,
-  }) : super(settings: settings) {
-    if (menuHeight != null) _pickerMenuHeight = menuHeight;
-  }
+  }) : super(settings: settings);
 
   final DateMode mode;
   final PDuration initDate;
   final PDuration maxDate;
   final PDuration minDate;
   final Suffix suffix;
-
-  final bool showTitleBar;
+  final ThemeData theme;
   final DateCallback onChanged;
   final DateCallback onConfirm;
-  final ThemeData theme;
-  final Color backgroundColor; // 背景色
-  final Color textColor; // 文字颜色
-  final Widget title;
-  final Widget menu;
-  final double menuHeight;
-  final Widget cancelWidget;
-  final Widget commitWidget;
-  final Decoration headDecoration; // 头部样式
+  final PickerStyle pickerStyle;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -93,6 +70,7 @@ class DatePickerRoute<T> extends PopupRoute<T> {
         initData: initDate,
         maxDate: maxDate,
         minDate: minDate,
+        pickerStyle: pickerStyle,
         route: this,
       ),
     );
@@ -109,6 +87,7 @@ class _PickerContentView extends StatefulWidget {
     Key key,
     this.mode,
     this.initData,
+    this.pickerStyle,
     this.maxDate,
     this.minDate,
     @required this.route,
@@ -117,21 +96,25 @@ class _PickerContentView extends StatefulWidget {
   final DateMode mode;
   final PDuration initData;
   final DatePickerRoute route;
+  final PickerStyle pickerStyle;
 
   // 限制时间
   final PDuration maxDate;
   final PDuration minDate;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.mode, this.initData, this.maxDate, this.minDate);
+  State<StatefulWidget> createState() =>
+      _PickerState(this.mode, this.initData, this.maxDate, this.minDate, this.pickerStyle);
 }
 
 class _PickerState extends State<_PickerContentView> {
+  final PickerStyle _pickerStyle;
+
   // 是否显示 [年月日时分秒]
   DateItemModel _dateItemModel;
 
   // 初始 设置选中的数据
-  final PDuration _initData;
+  final PDuration _initSelectData;
 
   // 选中的数据  用于回传
   PDuration _selectData;
@@ -146,12 +129,12 @@ class _PickerState extends State<_PickerContentView> {
   Animation<double> animation;
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
-  // 选择器 高度
+  // 选择器 高度  单独提出来，用来解决修改数据 不及时更新的BUG
   double pickerItemHeight;
 
-  _PickerState(DateMode mode, this._initData, this.maxDate, this.minDate) {
+  _PickerState(DateMode mode, this._initSelectData, this.maxDate, this.minDate, this._pickerStyle) {
     this._dateItemModel = DateItemModel.parse(mode);
-    this.pickerItemHeight = _pickerItemHeight;
+    this.pickerItemHeight = _pickerStyle.pickerItemHeight;
     _init();
   }
 
@@ -159,31 +142,41 @@ class _PickerState extends State<_PickerContentView> {
     scrollCtrl.clear();
 
     _dateTimeData = DateTimeData();
-    int index = 0;
+    int index = 0; // 初始选中值  Index
     _selectData = PDuration();
 
-    /// 年
+    /// -------年
     if (_dateItemModel.year) {
       index = 0;
-      _dateTimeData.year = TimeUtils.calcYears();
+      _dateTimeData.year = TimeUtils.calcYears(begin: minDate.year, end: maxDate.year);
 
-      if (_initData.year != null) {
-        index = _dateTimeData.year.indexOf(_initData.year);
+      if (_initSelectData.year != null) {
+        index = _dateTimeData.year.indexOf(_initSelectData.year);
         index = index < 0 ? 0 : index;
       }
       _selectData.year = _dateTimeData.year[index];
       scrollCtrl[DateType.Year] = FixedExtentScrollController(initialItem: index);
     }
 
-    /// 月
+    /// ------月
     // 选中的月 用于之后 day 的计算
     int selectMonth = 1;
     if (_dateItemModel.month) {
       index = 0;
-      _dateTimeData.month = TimeUtils.calcMonth();
+      int begin = 1;
+      int end = 12;
+      // 限制区域
+      if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
+        begin = minDate.month;
+      }
+      if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
+        end = maxDate.month;
+      }
 
-      if (_initData.month != null) {
-        index = _dateTimeData.month.indexOf(_initData.month);
+      _dateTimeData.month = TimeUtils.calcMonth(begin: begin, end: end);
+
+      if (_initSelectData.month != null) {
+        index = _dateTimeData.month.indexOf(_initSelectData.month);
         index = index < 0 ? 0 : index;
       }
       selectMonth = _dateTimeData.month[index];
@@ -191,52 +184,121 @@ class _PickerState extends State<_PickerContentView> {
       scrollCtrl[DateType.Month] = FixedExtentScrollController(initialItem: index);
     }
 
-    /// 日
+    /// -------日   （有日肯定有 年月数据）
     if (_dateItemModel.day) {
       index = 0;
-      _dateTimeData.day = TimeUtils.calcDay(_initData.year, selectMonth);
+      int begin = 1;
+      int end = 31;
+      // 限制区域
+      if (intNotEmpty(minDate.day) && intNotEmpty(minDate.month)) {
+        if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
+          begin = minDate.day;
+        }
+        if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
+          end = maxDate.day;
+        }
+      }
 
-      if (_initData.day != null) {
-        index = _dateTimeData.day.indexOf(_initData.day);
+      _dateTimeData.day = TimeUtils.calcDay(_initSelectData.year, selectMonth, begin: begin, end: end);
+
+      if (_initSelectData.day != null) {
+        index = _dateTimeData.day.indexOf(_initSelectData.day);
         index = index < 0 ? 0 : index;
       }
       _selectData.day = _dateTimeData.day[index];
       scrollCtrl[DateType.Day] = FixedExtentScrollController(initialItem: index);
     }
 
-    /// 时
+    /// ---------时
     if (_dateItemModel.hour) {
       index = 0;
-      _dateTimeData.hour = TimeUtils.calcHour();
+      int begin = 0;
+      int end = 23;
+      // 限制区域
+      if (intNotEmpty(minDate.hour)) {
+        begin = minDate.hour;
+      }
+      if (intNotEmpty(maxDate.hour)) {
+        end = maxDate.hour;
+      }
 
-      if (_initData.hour != null) {
-        index = _dateTimeData.hour.indexOf(_initData.hour);
+      _dateTimeData.hour = TimeUtils.calcHour(begin: begin, end: end);
+
+      if (_initSelectData.hour != null) {
+        index = _dateTimeData.hour.indexOf(_initSelectData.hour);
         index = index < 0 ? 0 : index;
       }
       _selectData.hour = _dateTimeData.hour[index];
       scrollCtrl[DateType.Hour] = FixedExtentScrollController(initialItem: index);
     }
 
-    /// 分
+    /// ---------分
     if (_dateItemModel.minute) {
       index = 0;
-      _dateTimeData.minute = TimeUtils.calcMinAndSecond();
+      int begin = 0;
+      int end = 59;
+      // 限制区域
+      if (intNotEmpty(minDate.minute) || intNotEmpty(maxDate.minute)) {
+        if (_dateItemModel.hour) {
+          // 如果有上级 还有时间，要根据时间再判断
+          if (_selectData.hour == minDate.hour) {
+            begin = minDate.minute;
+          }
+          if (_selectData.hour == maxDate.hour) {
+            end = maxDate.minute;
+          }
+          print('longer >>> _selectData.hour${_selectData.hour}  minDate.hour: ${minDate.hour}');
+        } else {
+          // 上级没有时间限制 直接取
+          if (intNotEmpty(minDate.minute)) {
+            begin = minDate.minute;
+          }
+          if (intNotEmpty(maxDate.minute)) {
+            end = maxDate.minute;
+          }
+        }
+      }
 
-      if (_initData.minute != null) {
-        index = _dateTimeData.minute.indexOf(_initData.minute);
+      _dateTimeData.minute = TimeUtils.calcMinAndSecond(begin: begin, end: end);
+
+      if (_initSelectData.minute != null) {
+        index = _dateTimeData.minute.indexOf(_initSelectData.minute);
         index = index < 0 ? 0 : index;
       }
       _selectData.minute = _dateTimeData.minute[index];
       scrollCtrl[DateType.Minute] = FixedExtentScrollController(initialItem: index);
     }
 
-    /// 秒
+    /// --------秒
     if (_dateItemModel.second) {
       index = 0;
-      _dateTimeData.second = TimeUtils.calcMinAndSecond();
+      int begin = 0;
+      int end = 59;
+      // 限制区域
+      if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
+        if (_dateItemModel.hour && _dateItemModel.minute) {
+          // 如果有上级 还有时间，要根据时间再判断
+          if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
+            begin = minDate.second;
+          }
+          if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
+            end = maxDate.second;
+          }
+        } else {
+          // 上级没有时间限制 直接取
+          if (intNotEmpty(minDate.second)) {
+            begin = minDate.second;
+          }
+          if (intNotEmpty(maxDate.second)) {
+            end = maxDate.second;
+          }
+        }
+      }
 
-      if (_initData.second != null) {
-        index = _dateTimeData.second.indexOf(_initData.second);
+      _dateTimeData.second = TimeUtils.calcMinAndSecond(begin: begin, end: end);
+
+      if (_initSelectData.second != null) {
+        index = _dateTimeData.second.indexOf(_initSelectData.second);
         index = index < 0 ? 0 : index;
       }
       _selectData.second = _dateTimeData.second[index];
@@ -260,8 +322,7 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value,
-                  showTitleActions: widget.route.showTitleBar, showMenu: widget.route.menu != null),
+              delegate: _BottomPickerLayout(widget.route.animation.value, _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -276,60 +337,188 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _setPicker(DateType dateType, int selectIndex) {
+    // 得到新的选中的数据
     var selectValue = _dateTimeData.getListByName(dateType)[selectIndex];
+    // 更新选中数据
     _selectData.setSingle(dateType, selectValue);
 
-    // 如果有day的picker 需要判断是否需要变动
-    if (_dateItemModel.day) {
-      _checkUpdateDay(dateType, selectIndex);
+    switch (dateType) {
+      case DateType.Year:
+        _setYear(selectIndex);
+        break;
+      case DateType.Month:
+        break;
+      case DateType.Day:
+        break;
+      case DateType.Hour:
+        break;
+      case DateType.Minute:
+        break;
+      case DateType.Second:
+        break;
     }
-
     _notifyLocationChanged();
   }
 
-  // 检查是否需要更新 Day picker data
-  void _checkUpdateDay(DateType dateType, int selectIndex) {
-    // 如果是月或者年 可能会带动日的变化
-    if (dateType == DateType.Year || dateType == DateType.Month) {
-      // 年 月
-      var selectYear;
-      var selectMonth;
-
-      if (dateType == DateType.Year) {
-        selectYear = _dateTimeData.year[selectIndex];
-        // 月 Picker 肯定不为空
-        selectMonth = _selectData.month;
-      } else if (dateType == DateType.Month) {
-        selectMonth = _dateTimeData.month[selectIndex];
-
-        // 年 Picker 可能为空，如果为空，我们从_initData 里面取数据
-        if (_dateItemModel.year) {
-          selectYear = _selectData.year;
-        } else {
-          selectYear = _initData.year;
+  // -------------------- set   begin ------------
+  void _setYear(int selectIndex) {
+    // 可能造成 月 日 list的改变
+    if (_dateItemModel.month) {
+      if (!_dateItemModel.day) {
+        /// 如果只有月
+        int begin = 1;
+        int end = 12;
+        // 限制区域
+        if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
+          begin = minDate.month;
         }
-      }
-
-      var resultDays = TimeUtils.calcDay(selectYear, selectMonth);
-
-      /// key ：年月拼接 就不会重复了 fixme
-      /// 最好别使用key 会生成新的widget
-      /// 官方的bug : https://github.com/flutter/flutter/issues/22999
-      /// 临时方法 通过修改height
-      // 如果天数一样不用更新
-      if (resultDays.length != _dateTimeData.day.length) {
-        //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天 fixme
-        if (_selectData.day > resultDays[resultDays.length - 1]) {
-          scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+        if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
+          end = maxDate.month;
         }
 
-        setState(() {
-          _dateTimeData.day = resultDays;
-          pickerItemHeight = _pickerItemHeight - Random().nextDouble() / 100000000;
-        });
+        var resultMonth = TimeUtils.calcMonth(begin: begin, end: end);
+
+        if (resultMonth.length != _dateTimeData.month.length ||
+            _dateTimeData.month.first != resultMonth.first ||
+            _dateTimeData.month.last != resultMonth.last) {
+          //可能 选中的月份 由于设置了新数据后没有了
+          int jumpToIndex = 0;
+          // 小于不用考虑
+          if (_selectData.month > resultMonth.last) {
+            jumpToIndex = resultMonth.length - 1;
+          } else {
+            jumpToIndex = resultMonth.indexOf(_selectData.month);
+          }
+          print('longer >>> _selectData.month${_selectData.month}  jumpToIndex:${jumpToIndex}');
+          jumpToIndex = jumpToIndex < 0 ? 0 : jumpToIndex;
+          _selectData.month = resultMonth[jumpToIndex];
+          scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndex);
+
+          setState(() {
+            _dateTimeData.month = resultMonth;
+            pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          });
+        }
+      } else {
+        // 有月 和 日
+        int begin = 1;
+        int end = 12;
+        // 限制区域
+        if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
+          begin = minDate.month;
+        }
+        if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
+          end = maxDate.month;
+        }
+
+        var resultMonth = TimeUtils.calcMonth(begin: begin, end: end);
+
+        if (resultMonth.length != _dateTimeData.month.length ||
+            _dateTimeData.month.first != resultMonth.first ||
+            _dateTimeData.month.last != resultMonth.last) {
+          //可能 选中的月份 由于设置了新数据后没有了
+          int jumpToIndex = 0;
+          // 小于不用考虑 会进else
+          if (_selectData.month > resultMonth.last) {
+            jumpToIndex = resultMonth.length - 1;
+          } else {
+            jumpToIndex = resultMonth.indexOf(_selectData.month);
+          }
+          jumpToIndex = jumpToIndex < 0 ? 0 : jumpToIndex;
+          _selectData.month = resultMonth[jumpToIndex];
+          scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndex);
+
+          setState(() {
+            _dateTimeData.month = resultMonth;
+            pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          });
+        }
+
+        // 计算日 长度
+        // 有月 和 日
+        int beginDay = 1;
+        int endDay = 31;
+        // 限制区域
+        if (intNotEmpty(minDate.month) && intNotEmpty(maxDate.month)) {
+          if (_selectData.year == minDate.year && _selectData.month == minDate.minute) {
+            beginDay = minDate.month;
+          }
+          if (_selectData.year == maxDate.year && _selectData.month == maxDate.minute) {
+            endDay = minDate.month;
+          }
+        }
+        var resultDay = TimeUtils.calcDay(_selectData.year, _selectData.month, begin: beginDay, end: endDay);
+
+        if (resultDay.length != _dateTimeData.day.length ||
+            _dateTimeData.day.first != resultDay.first ||
+            _dateTimeData.day.last != resultDay.last) {
+          //可能 选中的年 月份 由于设置了新数据后没有了
+          int jumpToIndex = 0;
+          // 小于不用考虑 会进else
+          if (_selectData.day > resultDay.last) {
+            jumpToIndex = resultDay.length - 1;
+          } else {
+            jumpToIndex = resultDay.indexOf(_selectData.day);
+          }
+          jumpToIndex = jumpToIndex < 0 ? 0 : jumpToIndex;
+          _selectData.day = resultDay[jumpToIndex];
+
+          scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndex);
+
+          setState(() {
+            _dateTimeData.day = resultDay;
+            pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          });
+        }
       }
     }
   }
+
+  // 检查是否需要更新 Day picker data
+  // void _checkUpdateDay(DateType dateType, int selectIndex) {
+  //   // 如果是月或者年 可能会带动日的变化
+  //   if (dateType == DateType.Year || dateType == DateType.Month) {
+  //     // 年 月
+  //     var selectYear;
+  //     var selectMonth;
+  //
+  //     if (dateType == DateType.Year) {
+  //       selectYear = _dateTimeData.year[selectIndex];
+  //       // 月 Picker 肯定不为空
+  //       selectMonth = _selectData.month;
+  //     } else if (dateType == DateType.Month) {
+  //       selectMonth = _dateTimeData.month[selectIndex];
+  //
+  //       // 年 Picker 可能为空，如果为空，我们从_initData 里面取数据
+  //       if (_dateItemModel.year) {
+  //         selectYear = _selectData.year;
+  //       } else {
+  //         selectYear = _initSelectData.year;
+  //       }
+  //     }
+  //
+  //     var resultDays = TimeUtils.calcDay(selectYear, selectMonth);
+  //
+  //     /// key ：年月拼接 就不会重复了 fixme
+  //     /// 最好别使用key 会生成新的widget
+  //     /// 官方的bug : https://github.com/flutter/flutter/issues/22999
+  //     /// 临时方法 通过修改height
+  //     // 如果天数一样不用更新
+  //     if (resultDays.length != _dateTimeData.day.length) {
+  //       //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天 fixme
+  //       if (_selectData.day > resultDays[resultDays.length - 1]) {
+  //         scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
+  //       }
+  //
+  //       setState(() {
+  //         _dateTimeData.day = resultDays;
+  //         pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+  //       });
+  //     }
+  //   }
+  // }
+
+  // -------------------- set   end ------------
 
   void _notifyLocationChanged() {
     if (widget.route.onChanged != null) {
@@ -358,15 +547,15 @@ class _PickerState extends State<_PickerContentView> {
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
-    if (!widget.route.showTitleBar && widget.route.menu == null) {
+    if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
     List viewList = <Widget>[];
-    if (widget.route.showTitleBar) {
+    if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
-    if (widget.route.menu != null) {
-      viewList.add(widget.route.menu);
+    if (_pickerStyle.menu != null) {
+      viewList.add(_pickerStyle.menu);
     }
     viewList.add(itemView);
 
@@ -384,8 +573,8 @@ class _PickerState extends State<_PickerContentView> {
     if (_dateItemModel.second) pickerList.add(pickerView(DateType.Second));
 
     return Container(
-      height: _pickerHeight,
-      color: widget.route.backgroundColor,
+      height: _pickerStyle.pickerHeight,
+      color: _pickerStyle.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: pickerList,
@@ -395,9 +584,6 @@ class _PickerState extends State<_PickerContentView> {
 
   ///  CupertinoPicker.builder
   Widget pickerView(DateType dateType) {
-    // 清洗数据
-    // List data = filteData(dateType);
-
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -415,7 +601,7 @@ class _PickerState extends State<_PickerContentView> {
             return Align(
                 alignment: Alignment.center,
                 child: Text(text,
-                    style: TextStyle(color: widget.route.textColor, fontSize: _pickerFontSize(text)),
+                    style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
                     textAlign: TextAlign.start));
           },
         ),
@@ -459,36 +645,18 @@ class _PickerState extends State<_PickerContentView> {
 
   // 选择器上面的view
   Widget _titleView() {
-    final commitButton = Container(
-      height: _pickerTitleHeight,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
-    );
-
-    final cancelButton = Container(
-      alignment: Alignment.center,
-      height: _pickerTitleHeight,
-      padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
-    );
-
-    final headDecoration = BoxDecoration(color: Colors.white);
-
     return Container(
-      height: _pickerTitleHeight,
-      decoration: (widget.route.headDecoration == null) ? headDecoration : widget.route.headDecoration,
+      height: _pickerStyle.pickerTitleHeight,
+      decoration: _pickerStyle.headDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
-          InkWell(
-              onTap: () => Navigator.pop(context),
-              child: (widget.route.cancelWidget == null) ? cancelButton : widget.route.cancelWidget),
+          InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
 
           /// 分割线
-          (widget.route.title != null) ? widget.route.title : SizedBox(),
+          Expanded(child: _pickerStyle.title),
 
           /// 确认按钮
           InkWell(
@@ -496,7 +664,7 @@ class _PickerState extends State<_PickerContentView> {
                 widget.route?.onConfirm(_selectData);
                 Navigator.pop(context);
               },
-              child: (widget.route.commitWidget == null) ? commitButton : widget.route.commitWidget)
+              child: _pickerStyle.commitButton)
         ],
       ),
     );
@@ -504,21 +672,19 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.showTitleActions, this.showMenu});
+  _BottomPickerLayout(this.progress, this.pickerStyle);
 
   final double progress;
-  final int itemCount;
-  final bool showTitleActions;
-  final bool showMenu;
+  final PickerStyle pickerStyle;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = _pickerHeight;
-    if (showTitleActions) {
-      maxHeight += _pickerTitleHeight;
+    double maxHeight = pickerStyle.pickerHeight;
+    if (pickerStyle.showTitleBar) {
+      maxHeight += pickerStyle.pickerTitleHeight;
     }
-    if (showMenu) {
-      maxHeight += _pickerMenuHeight;
+    if (pickerStyle.menu != null) {
+      maxHeight += pickerStyle.menuHeight;
     }
 
     return BoxConstraints(
