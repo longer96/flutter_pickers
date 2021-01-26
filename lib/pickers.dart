@@ -52,17 +52,16 @@ class Pickers {
   /// 通用 多列选择器
   static void showMultiplePicker(
     BuildContext context, {
-    @required dynamic data,
-    @required dynamic selectData,
-    dynamic suffix,
+    @required List data,
+    List selectData,
+    List suffix,
     PickerStyle pickerStyle,
     MultipleCallback onChanged,
     MultipleCallback onConfirm,
   }) {
     assert(data != null, 'params: data can not be null');
-    assert((data is List), 'params : data must List');
-    if (selectData != null) {
-      assert((data is List), 'params : selectData must List');
+    if (selectData == null){
+      selectData = [];
     }
 
     if (pickerStyle == null) {

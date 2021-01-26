@@ -2,6 +2,7 @@ import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 class MultiplePickerPage extends StatefulWidget {
@@ -26,6 +27,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
     List.generate(60, (index) => index.toString()).toList(),
     List.generate(60, (index) => index.toString()).toList(),
   ];
+  final timeData3 = [
+    ['今天', '明天', '后天'],
+    List.generate(6, (index) => "${(index + 8)}:00-${(index + 9)}:00").toList(),
+  ];
   List timeData2Select = [5, 13, 32];
 
   final divider = Divider(height: 1, indent: 20);
@@ -44,7 +49,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       body: ListView(children: [
         _item('时间(传入不同类型)'),
         _item2('时间(多列)'),
-        _item3('自定义样式'),
+        _item3('时间段)'),
+        _item4('自定义样式'),
       ]),
     );
   }
@@ -93,6 +99,24 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem3(),
+            trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[MyText(listTime.toString(), color: Colors.grey, rightpadding: 18), rightIcon]),
+          ),
+        ),
+        divider,
+      ],
+    );
+  }
+
+  Widget _item4(title) {
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          child: ListTile(
+            title: Text(title),
+            onTap: () => _onClickItem4(),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
               MyText(timeData2Select.toString(), color: Colors.grey, rightpadding: 18),
               rightIcon
@@ -157,6 +181,17 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   }
 
   void _onClickItem3() {
+    Pickers.showMultiplePicker(
+      context,
+      pickerStyle: NoTitleStyle(),
+      data: timeData3,
+      onChanged: (p) {
+       print('longer >>> $p');
+      },
+    );
+  }
+
+  void _onClickItem4() {
     double menuHeight = 36.0;
     Widget _headMenuView = Container(
         color: Colors.grey[700],

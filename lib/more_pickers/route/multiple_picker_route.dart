@@ -173,18 +173,6 @@ class _PickerState extends State<_PickerContentView> {
     }
   }
 
-  double _pickerFontSize(String text) {
-    if (text == null || text.length <= 6) {
-      return 18.0;
-    } else if (text.length < 9) {
-      return 16.0;
-    } else if (text.length < 13) {
-      return 12.0;
-    } else {
-      return 10.0;
-    }
-  }
-
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
@@ -236,7 +224,7 @@ class _PickerState extends State<_PickerContentView> {
             return Align(
                 alignment: Alignment.center,
                 child: Text(text,
-                    style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
+                    style: TextStyle(color: _pickerStyle.textColor, fontSize: 18.0),
                     textAlign: TextAlign.start));
           },
         ),
