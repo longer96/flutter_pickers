@@ -1,23 +1,16 @@
-
-
-
-class PicketUtil{
+class PicketUtil {
   /// 字符串不为空
   static bool strNoEmpty(String value) {
     if (value == null) return false;
 
-    return value
-        .trim()
-        .isNotEmpty;
+    return value.trim().isNotEmpty;
   }
 
   /// 字符串为空
   static bool strEmpty(String value) {
     if (value == null) return true;
 
-    return value
-        .trim()
-        .isEmpty;
+    return value.trim().isEmpty;
   }
 
   /// MAp不为空
@@ -49,7 +42,4 @@ class PicketUtil{
 
     return false;
   }
-
-
-
 }

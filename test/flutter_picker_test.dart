@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_pickers/address_picker/locations_data.dart';
 import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
@@ -7,7 +8,12 @@ import 'package:flutter_pickers/time_picker/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  List fruits = ['apples', 'bananas', 1];
+  List foods = ['apples', 'bananas' ,1];
 
+  var a = listEquals(fruits, foods);
+  print('longer >>> ${a}');
+  
   // test('adds one to input values', () {
   //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "510104");
   //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "5104");

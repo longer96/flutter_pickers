@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_item_model.dart';
@@ -145,6 +146,7 @@ class _PickerState extends State<_PickerContentView> {
     int index = 0; // 初始选中值  Index
     _selectData = PDuration();
 
+    /// minDate 和 maxDate 都初始化了，可以省略很多空判断，直接比较选中值 是否相等 _selectData.month == minDate.month
     /// -------年
     if (_dateItemModel.year) {
       index = 0;
@@ -190,7 +192,7 @@ class _PickerState extends State<_PickerContentView> {
       int begin = 1;
       int end = 31;
       // 限制区域
-      if (intNotEmpty(minDate.day) && intNotEmpty(minDate.month)) {
+      if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
         if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
           begin = minDate.day;
         }
@@ -240,14 +242,13 @@ class _PickerState extends State<_PickerContentView> {
       // 限制区域
       if (intNotEmpty(minDate.minute) || intNotEmpty(maxDate.minute)) {
         if (_dateItemModel.hour) {
-          // 如果有上级 还有时间，要根据时间再判断
+          // 如果有上级 还有时，要根据时再判断
           if (_selectData.hour == minDate.hour) {
             begin = minDate.minute;
           }
           if (_selectData.hour == maxDate.hour) {
             end = maxDate.minute;
           }
-          print('longer >>> _selectData.hour${_selectData.hour}  minDate.hour: ${minDate.hour}');
         } else {
           // 上级没有时间限制 直接取
           if (intNotEmpty(minDate.minute)) {
@@ -277,15 +278,23 @@ class _PickerState extends State<_PickerContentView> {
       // 限制区域
       if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
         if (_dateItemModel.hour && _dateItemModel.minute) {
-          // 如果有上级 还有时间，要根据时间再判断
+          // 如果有上级 还有时 分，要根据时分再判断
           if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
             begin = minDate.second;
           }
           if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
             end = maxDate.second;
           }
+        } else if (_dateItemModel.minute) {
+          /// 上级没有时，只有分限制
+          if (_selectData.minute == minDate.minute) {
+            begin = minDate.second;
+          }
+          if (_selectData.minute == maxDate.minute) {
+            end = maxDate.second;
+          }
         } else {
-          // 上级没有时间限制 直接取
+          /// 上级没有时间限制 直接取
           if (intNotEmpty(minDate.second)) {
             begin = minDate.second;
           }
@@ -344,15 +353,18 @@ class _PickerState extends State<_PickerContentView> {
 
     switch (dateType) {
       case DateType.Year:
-        _setYear(selectIndex);
+        _setYear();
         break;
       case DateType.Month:
+        _setMonth();
         break;
       case DateType.Day:
         break;
       case DateType.Hour:
+        _setHour();
         break;
       case DateType.Minute:
+        _setMinute();
         break;
       case DateType.Second:
         break;
@@ -361,162 +373,266 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   // -------------------- set   begin ------------
-  void _setYear(int selectIndex) {
+  void _setYear() {
     // 可能造成 月 日 list的改变
     if (_dateItemModel.month) {
-      if (!_dateItemModel.day) {
-        /// 如果只有月
-        int begin = 1;
-        int end = 12;
-        // 限制区域
-        if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
-          begin = minDate.month;
+      // 月的数据是否需要更新
+      bool updateMonth = false;
+      bool updateDay = false;
+
+      /// 如果只有月
+      int beginMonth = 1;
+      int endMonth = 12;
+      // 限制区域
+      if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
+        beginMonth = minDate.month;
+      }
+      if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
+        endMonth = maxDate.month;
+      }
+
+      var resultMonth = TimeUtils.calcMonth(begin: beginMonth, end: endMonth);
+
+      int jumpToIndexMonth = 0;
+
+      if (!listEquals(_dateTimeData.month, resultMonth)) {
+        //可能 选中的月份 由于设置了新数据后没有了
+        // 小于不用考虑 会进else
+        if (_selectData.month > resultMonth.last) {
+          jumpToIndexMonth = resultMonth.length - 1;
+        } else {
+          jumpToIndexMonth = resultMonth.indexOf(_selectData.month);
         }
-        if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
-          end = maxDate.month;
-        }
+        jumpToIndexMonth = jumpToIndexMonth < 0 ? 0 : jumpToIndexMonth;
+        _selectData.month = resultMonth[jumpToIndexMonth];
+        updateMonth = true;
+      }
 
-        var resultMonth = TimeUtils.calcMonth(begin: begin, end: end);
-
-        if (resultMonth.length != _dateTimeData.month.length ||
-            _dateTimeData.month.first != resultMonth.first ||
-            _dateTimeData.month.last != resultMonth.last) {
-          //可能 选中的月份 由于设置了新数据后没有了
-          int jumpToIndex = 0;
-          // 小于不用考虑
-          if (_selectData.month > resultMonth.last) {
-            jumpToIndex = resultMonth.length - 1;
-          } else {
-            jumpToIndex = resultMonth.indexOf(_selectData.month);
-          }
-          print('longer >>> _selectData.month${_selectData.month}  jumpToIndex:${jumpToIndex}');
-          jumpToIndex = jumpToIndex < 0 ? 0 : jumpToIndex;
-          _selectData.month = resultMonth[jumpToIndex];
-          scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndex);
-
-          setState(() {
-            _dateTimeData.month = resultMonth;
-            pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
-          });
-        }
-      } else {
-        // 有月 和 日
-        int begin = 1;
-        int end = 12;
-        // 限制区域
-        if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
-          begin = minDate.month;
-        }
-        if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
-          end = maxDate.month;
-        }
-
-        var resultMonth = TimeUtils.calcMonth(begin: begin, end: end);
-
-        if (resultMonth.length != _dateTimeData.month.length ||
-            _dateTimeData.month.first != resultMonth.first ||
-            _dateTimeData.month.last != resultMonth.last) {
-          //可能 选中的月份 由于设置了新数据后没有了
-          int jumpToIndex = 0;
-          // 小于不用考虑 会进else
-          if (_selectData.month > resultMonth.last) {
-            jumpToIndex = resultMonth.length - 1;
-          } else {
-            jumpToIndex = resultMonth.indexOf(_selectData.month);
-          }
-          jumpToIndex = jumpToIndex < 0 ? 0 : jumpToIndex;
-          _selectData.month = resultMonth[jumpToIndex];
-          scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndex);
-
-          setState(() {
-            _dateTimeData.month = resultMonth;
-            pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
-          });
-        }
-
-        // 计算日 长度
-        // 有月 和 日
+      /// 还有 日
+      int jumpToIndexDay = 0;
+      // 新的day 数据
+      var resultDay;
+      if (_dateItemModel.day) {
         int beginDay = 1;
         int endDay = 31;
         // 限制区域
-        if (intNotEmpty(minDate.month) && intNotEmpty(maxDate.month)) {
-          if (_selectData.year == minDate.year && _selectData.month == minDate.minute) {
-            beginDay = minDate.month;
+        if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
+          if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
+            beginDay = minDate.day;
           }
-          if (_selectData.year == maxDate.year && _selectData.month == maxDate.minute) {
-            endDay = minDate.month;
+          if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
+            endDay = maxDate.day;
           }
         }
-        var resultDay = TimeUtils.calcDay(_selectData.year, _selectData.month, begin: beginDay, end: endDay);
+        resultDay = TimeUtils.calcDay(_selectData.year, _selectData.month, begin: beginDay, end: endDay);
 
-        if (resultDay.length != _dateTimeData.day.length ||
-            _dateTimeData.day.first != resultDay.first ||
-            _dateTimeData.day.last != resultDay.last) {
+        if (!listEquals(_dateTimeData.day, resultDay)) {
           //可能 选中的年 月份 由于设置了新数据后没有了
-          int jumpToIndex = 0;
           // 小于不用考虑 会进else
           if (_selectData.day > resultDay.last) {
-            jumpToIndex = resultDay.length - 1;
+            jumpToIndexDay = resultDay.length - 1;
           } else {
-            jumpToIndex = resultDay.indexOf(_selectData.day);
+            jumpToIndexDay = resultDay.indexOf(_selectData.day);
           }
-          jumpToIndex = jumpToIndex < 0 ? 0 : jumpToIndex;
-          _selectData.day = resultDay[jumpToIndex];
-
-          scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndex);
-
-          setState(() {
-            _dateTimeData.day = resultDay;
-            pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
-          });
+          jumpToIndexDay = jumpToIndexDay < 0 ? 0 : jumpToIndexDay;
+          _selectData.day = resultDay[jumpToIndexDay];
+          updateDay = true;
         }
+      }
+
+      if (updateMonth || updateDay) {
+        setState(() {
+          if (updateMonth) {
+            _dateTimeData.month = resultMonth;
+            scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndexMonth);
+          }
+          if (updateDay) {
+            _dateTimeData.day = resultDay;
+            scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+          }
+          pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        });
       }
     }
   }
 
-  // 检查是否需要更新 Day picker data
-  // void _checkUpdateDay(DateType dateType, int selectIndex) {
-  //   // 如果是月或者年 可能会带动日的变化
-  //   if (dateType == DateType.Year || dateType == DateType.Month) {
-  //     // 年 月
-  //     var selectYear;
-  //     var selectMonth;
-  //
-  //     if (dateType == DateType.Year) {
-  //       selectYear = _dateTimeData.year[selectIndex];
-  //       // 月 Picker 肯定不为空
-  //       selectMonth = _selectData.month;
-  //     } else if (dateType == DateType.Month) {
-  //       selectMonth = _dateTimeData.month[selectIndex];
-  //
-  //       // 年 Picker 可能为空，如果为空，我们从_initData 里面取数据
-  //       if (_dateItemModel.year) {
-  //         selectYear = _selectData.year;
-  //       } else {
-  //         selectYear = _initSelectData.year;
-  //       }
-  //     }
-  //
-  //     var resultDays = TimeUtils.calcDay(selectYear, selectMonth);
-  //
-  //     /// key ：年月拼接 就不会重复了 fixme
-  //     /// 最好别使用key 会生成新的widget
-  //     /// 官方的bug : https://github.com/flutter/flutter/issues/22999
-  //     /// 临时方法 通过修改height
-  //     // 如果天数一样不用更新
-  //     if (resultDays.length != _dateTimeData.day.length) {
-  //       //可能 选中的天数大于 新的一个月的长度，设置选中在最后一天 fixme
-  //       if (_selectData.day > resultDays[resultDays.length - 1]) {
-  //         scrollCtrl[DateType.Day]?.jumpToItem(resultDays.length - 1);
-  //       }
-  //
-  //       setState(() {
-  //         _dateTimeData.day = resultDays;
-  //         pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
-  //       });
-  //     }
-  //   }
-  // }
+  void _setMonth() {
+    // 可能造成 日 list的改变
+    bool updateDay = false;
+    int jumpToIndexDay = 0;
+    // 新的day 数据
+    var resultDay;
+    if (_dateItemModel.day) {
+      int beginDay = 1;
+      int endDay = 31;
+      // 限制区域
+      if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
+        if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
+          beginDay = minDate.day;
+        }
+        if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
+          endDay = maxDate.day;
+        }
+      }
+      resultDay = TimeUtils.calcDay(_selectData.year, _selectData.month, begin: beginDay, end: endDay);
+
+      if (!listEquals(_dateTimeData.day, resultDay)) {
+        //可能 选中的年 月份 由于设置了新数据后没有了
+        // 小于不用考虑 会进else
+        if (_selectData.day > resultDay.last) {
+          jumpToIndexDay = resultDay.length - 1;
+        } else {
+          jumpToIndexDay = resultDay.indexOf(_selectData.day);
+        }
+        jumpToIndexDay = jumpToIndexDay < 0 ? 0 : jumpToIndexDay;
+        _selectData.day = resultDay[jumpToIndexDay];
+        updateDay = true;
+      }
+    }
+    if (updateDay) {
+      setState(() {
+        _dateTimeData.day = resultDay;
+        scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+        pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+      });
+    }
+  }
+
+  void _setHour() {
+    // 可能造成 分 秒 list的改变
+    if (_dateItemModel.minute) {
+      // 月的数据是否需要更新
+      bool updateMinute = false;
+      bool updateSecond = false;
+
+      /// 如果只有分
+      int beginMinute = 0;
+      int endMinute = 59;
+      // 限制区域
+      if (intNotEmpty(minDate.minute) && _selectData.hour == minDate.hour) {
+        beginMinute = minDate.minute;
+      }
+      if (intNotEmpty(maxDate.minute) && _selectData.hour == maxDate.hour) {
+        endMinute = maxDate.minute;
+      }
+
+      var resultMinute = TimeUtils.calcMinAndSecond(begin: beginMinute, end: endMinute);
+
+      int jumpToIndexMinute = 0;
+
+      if (!listEquals(_dateTimeData.month, resultMinute)) {
+        //可能 选中的时间 由于设置了新数据后没有了
+        // 小于不用考虑 会进else
+        if (_selectData.minute > resultMinute.last) {
+          jumpToIndexMinute = resultMinute.length - 1;
+        } else {
+          jumpToIndexMinute = resultMinute.indexOf(_selectData.minute);
+        }
+        jumpToIndexMinute = jumpToIndexMinute < 0 ? 0 : jumpToIndexMinute;
+        _selectData.minute = resultMinute[jumpToIndexMinute];
+        updateMinute = true;
+      }
+
+      /// 还有 秒
+      int jumpToIndexSecond = 0;
+      // 新的day 数据
+      var resultSecond;
+      if (_dateItemModel.second) {
+        int beginSecond = 0;
+        int endSecond = 59;
+        // 限制区域
+        if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
+          if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
+            beginSecond = minDate.second;
+          }
+          if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
+            endSecond = maxDate.second;
+          }
+        }
+        resultSecond = TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
+
+        if (!listEquals(_dateTimeData.second, resultSecond)) {
+          //可能 选中的时 分 由于设置了新数据后没有了
+          // 小于不用考虑 会进else
+          if (_selectData.second > resultSecond.last) {
+            jumpToIndexSecond = resultSecond.length - 1;
+          } else {
+            jumpToIndexSecond = resultSecond.indexOf(_selectData.second);
+          }
+          jumpToIndexSecond = jumpToIndexSecond < 0 ? 0 : jumpToIndexSecond;
+          _selectData.second = resultSecond[jumpToIndexSecond];
+          updateSecond = true;
+        }
+      }
+
+      if (updateMinute || updateSecond) {
+        setState(() {
+          if (updateMinute) {
+            _dateTimeData.minute = resultMinute;
+            scrollCtrl[DateType.Minute]?.jumpToItem(jumpToIndexMinute);
+          }
+          if (updateSecond) {
+            _dateTimeData.second = resultSecond;
+            scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+          }
+          pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        });
+      }
+    }
+  }
+
+  void _setMinute() {
+    // 可能造成 秒 list的改变
+    bool updateSecond = false;
+    int jumpToIndexSecond = 0;
+    // 新的day 数据
+    var resultSecond;
+    if (_dateItemModel.second) {
+      int beginSecond = 0;
+      int endSecond = 59;
+      // 限制区域
+      if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
+        if (_dateItemModel.hour) {
+          // 如果上面还有 时
+          if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
+            beginSecond = minDate.second;
+          }
+          if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
+            endSecond = maxDate.second;
+          }
+        } else {
+          // 没有时，分秒
+          if (_selectData.minute == minDate.minute) {
+            beginSecond = minDate.second;
+          }
+          if (_selectData.minute == maxDate.minute) {
+            endSecond = maxDate.second;
+          }
+        }
+      }
+      resultSecond = TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
+
+      if (!listEquals(_dateTimeData.second, resultSecond)) {
+        //可能 选中的分 由于设置了新数据后没有了
+        // 小于不用考虑 会进else
+        if (_selectData.second > resultSecond.last) {
+          jumpToIndexSecond = resultSecond.length - 1;
+        } else {
+          jumpToIndexSecond = resultSecond.indexOf(_selectData.second);
+        }
+        jumpToIndexSecond = jumpToIndexSecond < 0 ? 0 : jumpToIndexSecond;
+        _selectData.second = resultSecond[jumpToIndexSecond];
+        updateSecond = true;
+      }
+    }
+    if (updateSecond) {
+      setState(() {
+        _dateTimeData.second = resultSecond;
+        scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+        pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+      });
+    }
+  }
 
   // -------------------- set   end ------------
 
@@ -584,6 +700,7 @@ class _PickerState extends State<_PickerContentView> {
 
   ///  CupertinoPicker.builder
   Widget pickerView(DateType dateType) {
+    print('longer >>> 进来咯');
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -609,40 +726,6 @@ class _PickerState extends State<_PickerContentView> {
     );
   }
 
-  /// 可能设置了时间区间  我们的筛选一下
-  ///  月日 需要根据上级进行判断
-  ///  如果上级有选项需要进行判断
-  List filteData(DateType dateType) {
-    List data = List.from(_dateTimeData.getListByName(dateType));
-
-    int min = minDate.getSingle(dateType);
-    int max = maxDate.getSingle(dateType);
-
-    // 如果都为0 相当于没有设置限制 直接返回
-    if (min == 0 && max == 0) return data;
-
-    // 查询出索引
-    int begin = data.indexOf(min);
-    begin = begin < 0 ? 0 : begin;
-
-    int end = data.indexOf(max);
-    end = end < 0 ? 0 : end;
-
-    // 如果都为0 相当于没有设置限制 直接返回
-    if (begin == 0 && end == 0) return data;
-
-    if (dateType == DateType.Year) {
-      // 年 是多少直接取多少
-      if (begin != 0 && end == 0) {
-        return data.sublist(begin);
-      } else {
-        return data.sublist(begin, end + 1);
-      }
-    }
-
-    return [];
-  }
-
   // 选择器上面的view
   Widget _titleView() {
     return Container(
@@ -655,7 +738,7 @@ class _PickerState extends State<_PickerContentView> {
           /// 取消按钮
           InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
 
-          /// 分割线
+          /// 标题
           Expanded(child: _pickerStyle.title),
 
           /// 确认按钮

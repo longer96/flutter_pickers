@@ -119,16 +119,16 @@ class _DatePickerPageState extends State<DatePickerPage> {
       setState(() {
         date2.clear();
         date2.addAll(['new', 'longer']);
-        scrollController2.animateToItem(1, duration: Duration(seconds: 1),curve: Curves.bounceOut);
-//        scrollController2.jumpToItem(1);
+        // scrollController2.animateToItem(1, duration: Duration(seconds: 1),curve: Curves.bounceOut);
+        scrollController2.jumpToItem(1);
         _height = 300.0 + Random().nextDouble() / 100000000;
       });
     } else {
       setState(() {
         date2.clear();
         date2.addAll(['xxx']);
-        scrollController2.animateToItem(0, duration: Duration(seconds: 1),curve: Curves.bounceOut);
-//        scrollController2.jumpToItem(0);
+        // scrollController2.animateToItem(0, duration: Duration(seconds: 1),curve: Curves.bounceOut);
+        scrollController2.jumpToItem(0);
         _height = 300.0 + Random().nextDouble() / 100000000;
       });
     }
@@ -160,7 +160,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
     );
   }
 
-  Widget _item(title, var data, var selectData, {String label}) {
+  Widget _item(title, var data, var selectData) {
     return Column(
       children: [
         Container(
@@ -182,17 +182,16 @@ class _DatePickerPageState extends State<DatePickerPage> {
   void _onClickItem() {
     Pickers.showDatePicker(
       context,
-      mode: DateMode.YM,
+      mode: DateMode.MS,
       suffix: Suffix.normal(),
 
       // selectDate: PDuration(month: 2),
-      minDate: PDuration(year: 2010, month: 2, day: 4),
-      maxDate: PDuration(year: 2011, month: 2, day: 22),
+      // minDate: PDuration(year: 2020, month: 1, day: 4),
+      // maxDate: PDuration(year: 2021, month: 5, day: 22),
 
-
-      // selectDate: PDuration(hour: 18, minute: 36, second: 36),
-      // minDate: PDuration(hour: 12, minute: 12, second: 3),
-      // maxDate: PDuration(hour: 18, minute: 40),
+      selectDate: PDuration(hour: 18, minute: 36, second: 36),
+      minDate: PDuration(hour: 12, minute: 38, second: 3),
+      maxDate: PDuration(hour: 12,minute: 40, second: 36),
 
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
