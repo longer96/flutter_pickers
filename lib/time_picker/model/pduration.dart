@@ -16,11 +16,13 @@ import 'package:flutter_pickers/time_picker/model/date_type.dart';
 ///     {year: 2020, month: 3, day: 4, hour: 0, minute: 0, second: 0}
 
 bool intEmpty(int value) {
-return (value == null || value == 0);
+  return (value == null || value == 0);
 }
+
 bool intNotEmpty(int value) {
-return (value != null && value != 0);
+  return (value != null && value != 0);
 }
+
 class PDuration {
   int year;
   int month;
@@ -29,7 +31,7 @@ class PDuration {
   int minute;
   int second;
 
-  PDuration({this.year :0, this.month :0, this.day :0, this.hour :0, this.minute: 0, this.second :0});
+  PDuration({this.year: 0, this.month: 0, this.day: 0, this.hour: 0, this.minute: 0, this.second: 0});
 
   // /// maxDate 会用上
   // void max() {
@@ -54,7 +56,6 @@ class PDuration {
   //   this.minute = intEmpty(this.minute) ? minInt : this.minute;
   //   this.second = intEmpty(this.second) ? minInt : this.second;
   // }
-
 
   // 注意默认会设为0 不是null
   PDuration.parse(DateTime dateTime) {

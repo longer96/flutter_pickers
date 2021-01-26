@@ -160,19 +160,25 @@ class Pickers {
     DateItemModel dateItemModel = DateItemModel.parse(mode);
 
     /// 如果有年item ，必须限制
-    if (maxDate == null && dateItemModel.year) {
-      maxDate = PDuration(year: 2100);
-    }
-    if (minDate == null && dateItemModel.year) {
-      minDate = PDuration(year: 1900);
+    if (dateItemModel.year) {
+      if (maxDate == null) {
+        maxDate = PDuration(year: 2100);
+      }
+      // todo
+
+
+      if (minDate == null) {
+        minDate = PDuration(year: 1900);
+      }
     }
 
     if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode) && intEmpty(selectDate.year)) {
       print('picker  Tip >>> initDate未设置years，默认设置为now().year');
       selectDate.year = DateTime.now().year;
     }
-    if(dateItemModel.day) {
-      assert(minDate.year > 1582, 'minDate Year must > 1582');
+    print('longer >>> ${minDate.year}');
+    if(dateItemModel.month || dateItemModel.day) {
+      assert(minDate.year > 1582, 'min Date Year must > 1582');
     }
 
 
