@@ -60,7 +60,7 @@ class Pickers {
     MultipleCallback onConfirm,
   }) {
     assert(data != null, 'params: data can not be null');
-    if (selectData == null){
+    if (selectData == null) {
       selectData = [];
     }
 
@@ -159,28 +159,25 @@ class Pickers {
     // 解析是否有对应数据
     DateItemModel dateItemModel = DateItemModel.parse(mode);
 
-    /// 如果有年item ，必须限制
-    if (dateItemModel.year) {
-      if (maxDate == null) {
-        maxDate = PDuration(year: 2100);
+    if ((dateItemModel.day || dateItemModel.year)) {
+      if (intEmpty(selectDate.year)) {
+        print('picker  Tip >>> initDate未设置years，默认设置为now().year');
+        selectDate.year = DateTime.now().year;
       }
-      // todo
 
+      /// 如果有年item ，必须限制
+      if (maxDate == null) maxDate = PDuration(year: 2100);
+      if (intEmpty(maxDate.year)) maxDate.year = 2100;
 
-      if (minDate == null) {
-        minDate = PDuration(year: 1900);
-      }
+      if (minDate == null) minDate = PDuration(year: 1900);
+      if (intEmpty(minDate.year)) minDate.year = 1900;
+
+      print('longer >>> ${minDate.year}');
     }
 
-    if ([DateMode.MDHMS, DateMode.MDHM, DateMode.MDH, DateMode.MD].contains(mode) && intEmpty(selectDate.year)) {
-      print('picker  Tip >>> initDate未设置years，默认设置为now().year');
-      selectDate.year = DateTime.now().year;
-    }
-    print('longer >>> ${minDate.year}');
-    if(dateItemModel.month || dateItemModel.day) {
+    if (dateItemModel.month || dateItemModel.day) {
       assert(minDate.year > 1582, 'min Date Year must > 1582');
     }
-
 
     Navigator.push(
         context,

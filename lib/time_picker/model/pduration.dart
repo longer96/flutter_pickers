@@ -33,30 +33,6 @@ class PDuration {
 
   PDuration({this.year: 0, this.month: 0, this.day: 0, this.hour: 0, this.minute: 0, this.second: 0});
 
-  // /// maxDate 会用上
-  // void max() {
-  //   // int maxInt = double.infinity.toInt();
-  //   int maxInt = 9999;
-  //   this.year = intEmpty(this.year) ? maxInt : this.year;
-  //   this.month = intEmpty(this.month) ? maxInt : this.month;
-  //   this.day = intEmpty(this.day) ? maxInt : this.day;
-  //   this.hour = intEmpty(this.hour) ? maxInt : this.hour;
-  //   this.minute = intEmpty(this.minute) ? maxInt : this.minute;
-  //   this.second = intEmpty(this.second) ? maxInt : this.second;
-  // }
-  //
-  // /// minDate 会用上
-  // void min() {
-  //   // int minInt = double.negativeInfinity.toInt();
-  //   int minInt = -9999;
-  //   this.year = intEmpty(this.year) ? minInt : this.year;
-  //   this.month = intEmpty(this.month) ? minInt : this.month;
-  //   this.day = intEmpty(this.day) ? minInt : this.day;
-  //   this.hour = intEmpty(this.hour) ? minInt : this.hour;
-  //   this.minute = intEmpty(this.minute) ? minInt : this.minute;
-  //   this.second = intEmpty(this.second) ? minInt : this.second;
-  // }
-
   // 注意默认会设为0 不是null
   PDuration.parse(DateTime dateTime) {
     this.year = dateTime.year;

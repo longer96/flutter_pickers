@@ -143,6 +143,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
+      menuHeight: menuHeight,
       cancelButton: _cancelButton,
       commitButton: _commitButton,
       headDecoration: headDecoration,

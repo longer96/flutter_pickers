@@ -82,6 +82,7 @@ class _StylePickerPageState extends State<StylePickerPage> {
 
     return PickerStyle(
       menu: _headMenuView,
+      menuHeight: menuHeight,
       cancelButton: _cancelButton,
       commitButton: _commitButton,
       headDecoration: headDecoration,

@@ -140,7 +140,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Pickers.showMultiplePicker(
       context,
-      pickerStyle: PickerStyle(menu: _headMenuView),
+      pickerStyle: PickerStyle(menu: _headMenuView, menuHeight: menuHeight),
       data: timeData,
       selectData: [hourse, minute],
       onConfirm: (p) {
@@ -167,7 +167,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     Pickers.showMultiplePicker(
       context,
-      pickerStyle: PickerStyle(menu: _headMenuView),
+      pickerStyle: PickerStyle(menu: _headMenuView, menuHeight: menuHeight),
       data: timeData2,
       selectData: ['', 4, 5, 12],
       onConfirm: (p) {
@@ -186,7 +186,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       pickerStyle: NoTitleStyle(),
       data: timeData3,
       onChanged: (p) {
-       print('longer >>> $p');
+        print('longer >>> $p');
       },
     );
   }
@@ -226,6 +226,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
 
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
+      menuHeight: menuHeight,
       cancelButton: _cancelButton,
       commitButton: _commitButton,
       headDecoration: headDecoration,
@@ -239,9 +240,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       data: timeData2,
       selectData: timeData2Select,
       suffix: ['', '时', '分', '秒'],
-
-      pickerStyle : pickerStyle,
-
+      pickerStyle: pickerStyle,
       onConfirm: (p) {
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {

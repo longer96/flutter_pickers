@@ -700,7 +700,6 @@ class _PickerState extends State<_PickerContentView> {
 
   ///  CupertinoPicker.builder
   Widget pickerView(DateType dateType) {
-    print('longer >>> 进来咯');
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2),
