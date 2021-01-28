@@ -82,7 +82,7 @@ return InkWell(
 ```
 * initTown : 不设置或者设置为null ，不显示区级
 
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/images/p1.jpg"/>
+<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg"/>
 
 | ![效果图1](https://github.com/longer96/flutter_pickers/tree/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/tree/master/img/p2.gif) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
