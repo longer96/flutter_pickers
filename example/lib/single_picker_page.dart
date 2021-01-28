@@ -40,8 +40,27 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         _item('Laber', [123, '空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], 123, label: 'kg'),
         // _item('Laber', [123, 23,235,3,14545,15,123163,18548,9646,1313], 235, label: 'kg'),
         _item2('自定义样式'),
+
+        _demo()
       ]),
     );
+  }
+
+  String initData = 'PHP';
+  Widget _demo() {
+    return InkWell(
+        onTap: () {
+          Pickers.showSinglePicker(context,
+              data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
+              selectData: initData,
+              pickerStyle: DefaultPickerStyle(),
+              onConfirm: (p) {
+                setState(() {
+                  initData = p;
+                });
+              }, onChanged: (p) => print('数据发生改变：$p'));
+        },
+        child: Text('$initData'));
   }
 
   Widget _item(title, var data, var selectData, {String label}) {
@@ -68,10 +87,6 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       context,
       data: data,
       selectData: selectData,
-
-      // showTitleBar: true,
-      // suffix: label,
-
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
         print('longer >>> 返回数据类型：${p.runtimeType}');
@@ -156,18 +171,6 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     Pickers.showSinglePicker(context,
         data: List.generate(200, (index) => (50 + index).toString()),
         selectData: selectHeight,
-
-        // showTitleBar: true,
-        // menu: _headMenuView,
-        // menuHeight: menuHeight,
-        // title: title,
-        // cancelWidget: _cancelButton,
-        // commitWidget: _commitButton,
-        // headDecoration: headDecoration,
-        // textColor: Colors.white,
-        // backgroundColor: Colors.grey[800],
-        // labelWidget: laber,
-
         pickerStyle: pickerStyle, onConfirm: (p) {
       setState(() {
         selectHeight = p;

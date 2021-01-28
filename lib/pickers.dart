@@ -14,7 +14,7 @@ import 'time_picker/model/date_item_model.dart';
 
 /// [onChanged]   选择器发生变动
 /// [onConfirm]   选择器提交
-/// [suffix] 后缀   默认：null 不显示
+/// [pickerStyle] labelWidget 后缀
 class Pickers {
   /// 单列 通用选择器
   static void showSinglePicker(

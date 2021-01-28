@@ -27,27 +27,30 @@ $ flutter packages get
 
 - [flutter_pickers](#flutter_pickers)
   - [地址选择器](#地址选择器)
-    - [简单使用](#%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8)
-    - [使用 ExtendedNetworkImageProvider](#%e4%bd%bf%e7%94%a8-extendednetworkimageprovider)
+    - [简单使用](#简单使用)
+    - [更多用法](#更多用法)
+    - [更多方法](#更多方法)
   - [单项选择器](#单项选择器)
+    - [简单使用](#simple use)
+    - [内置数据](#内置数据)
   - [多项选择器](#单项选择器)
   - [时间选择器](#时间选择器)
-    - [简单使用](#%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8)
-    - [模式](#%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8)
+    - [简单使用](#简单使用)
+    - [模式](#模式)
     - [tip](#tip)
   - [样式](#样式)
-    - [内置样式](#)
-    - [自定义样式](#tip)
+    - [内置样式](#内置样式)
+    - [自定义样式](#自定义样式)
     
     
 ## 地址选择器
 
-### 如何使用
+### 简单使用
 <br>
 
 > Pickers.showAddressPicker()
 [区域数据来源](https://github.com/airyland/china-area-data)
-[请戳我查看demo代码](https://github.com/ewdemo/MainActivity.java)
+[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/address_picker_page.dart)
 
 * 支持三级联动
 * 支持自定义颜色、大小等样式
@@ -59,8 +62,8 @@ $ flutter packages get
 
 #### simple use
 ``` dart
-Widget _checkLocation() {
 String initProvince = '四川省', initCity = '成都市', initTown = '双流区';
+Widget _checkLocation() {
 return InkWell(
     onTap: () {
       Pickers.showAddressPicker(
@@ -82,12 +85,9 @@ return InkWell(
 ```
 * initTown : 不设置或者设置为null ，不显示区级
 
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg"/>
-
-| ![效果图1](https://github.com/longer96/flutter_pickers/tree/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/tree/master/img/p2.gif) |
+| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p2.gif) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                     三级选择器动图                      |                     二级静态图                      |
-
 
 
 
@@ -115,7 +115,7 @@ AddressPicker.showPicker(
 ```
 
 
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/tree/master/img/p3.gif"/>
+<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/p3.jpg"/>
 
 
 | 参数         | 描述                  | 默认                 |
@@ -123,35 +123,68 @@ AddressPicker.showPicker(
 | initProvince  | 初始化 省          | ''|
 | initCity      | 初始化 市          | ''|
 | initTown      | 初始化 区          | ''|
-| onChanged     | 选择器发生变动 return (String province, String city, String town)      | null|
-| onConfirm     | 选择器提交 return (String province, String city, String town)      | null|
-| showTitlebar  |是否显示头部(确认、取消所在位置)| true|
-|menu|头部和选择器之间的菜单widget,null:不显示|null|
-|menuHeight|头部和选择器之间的菜单高度，menu为空时值为0|36.0|
-|cancelWidget|取消按钮|-|
-|commitWidget|确认按钮|-|
-|title|head 中间的标题widget,null:不显示|null|
-|textColor|选择器文字颜色|black87|
-|backgroundColor|选择器背景色|white|
-|headDecoration|头部Container Decoration 样式|BoxDecoration(color: backgroundColor)|
+| pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
+| onChanged     | 选择器发生变动 return (String province, String city, String town)  | null|
+| onConfirm     | 选择器提交 return (String province, String city, String town)| null|
 |addAllItem|市、区是否添加 '全部' 选项|true|
 
-
-#### 更多方法
+### 更多方法
 ``` dart
-/// 根据城市名 查询城市code
+/// 根据城市名 查询城市code(有先后顺序)
 List<String> cityCode =  Locations.getTownsCityCode("四川省","成都市","锦江区");
 return [510000,510100,510104]  or  [510000,510000]  or [510000]  or  []
 
 
-/// 通过城市code 查询城市名
+/// 通过城市code 查询城市名(有先后顺序)
 List<String> cityName =  Locations.getCityNameByCode("510000","510100","510104");
 return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川省] or []
 ```
 
 
+## 单项选择器
+
+> Pickers.showAddressPicker()[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/single_picker_page.dart)
+
+### simple use
+
+``` dart
+String initData = 'PHP';
+  Widget _demo() {
+    return InkWell(
+        onTap: () {
+          Pickers.showSinglePicker(context,
+              data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
+              selectData: initData,
+              onConfirm: (p) {
+                setState(() {
+                  initData = p;
+                });
+              }, onChanged: (p) => print('数据发生改变：$p'));
+        },
+        child: Text('$initData'));
+  }
+```
+
+| 参数         | 描述                  | 默认                 |
+| ----------- | --------------------- | ------------------- |
+| data        | 数据源                 | null|
+| selectData  | 选中的数据          | ''|
+| pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
+| onChanged     | 选择器发生变动 return (String data)  | null|
+| onConfirm     | 选择器提交 return (String data)| null|
 
 
+### 内置数据
+> 可直接传给 data:PickerDataType.sex
+- sex, // 性别
+- education, // 学历
+- subject, // 学科
+- constellation, // 星座
+- zodiac, // 生肖
+- ethnicity, // 名族
+
+
+## 多项选择器
 
 
 
@@ -159,9 +192,8 @@ return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川
 
 
 ## License
-flutter_pickers 使用 MIT 许可证，详情见 LICENSE 文件。
+flutter_pickers 使用 MIT 许可证，详情见 [LICENSE](https://github.com/longer96/flutter_pickers/blob/master/LICENSE) 文件。
 
-https://github.com/fluttercandies/extended_image/blob/master/README-ZH.md#extendedimage
 
 
 
