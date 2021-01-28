@@ -82,6 +82,8 @@ return InkWell(
 ```
 * initTown : 不设置或者设置为null ，不显示区级
 
+<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/images/p1.jpg"/>
+
 | ![效果图1](https://github.com/longer96/flutter_pickers/tree/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/tree/master/img/p2.gif) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                     三级选择器动图                      |                     二级静态图                      |
@@ -90,7 +92,7 @@ return InkWell(
 
 
 #### 更多用法
-> demo [_checkLocation3()](https://github.com/ewdemo/MainActivity.java)
+> demo [address_picker_page.dart](https://github.com/longer96/flutter_pickers/blob/master/example/lib/address_picker_page.dart)
 
 ``` dart
 AddressPicker.showPicker(
