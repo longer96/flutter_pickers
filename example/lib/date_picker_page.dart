@@ -1,9 +1,7 @@
-import 'package:example/demo/pic_help.dart';
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
@@ -29,6 +27,8 @@ class _DatePickerPageState extends State<DatePickerPage> {
       body: ListView(
         children: [
           _item('年月日时分秒', DateMode.YMDHMS),
+          _item('年月日', DateMode.YMD),
+          _item('时分秒', DateMode.HMS),
           _item('月日', DateMode.MD),
           _item('计时器', DateMode.HMS),
         ],
@@ -73,13 +73,18 @@ class _DatePickerPageState extends State<DatePickerPage> {
       selectDate: PDuration(hour: 18, minute: 36, second: 36),
       minDate: PDuration(hour: 12, minute: 38, second: 3),
       maxDate: PDuration(hour: 12, minute: 40, second: 36),
-
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
         setState(() {
           switch (model) {
             case DateMode.YMDHMS:
               selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
+              break;
+            case DateMode.YMD:
+              selectData[model] = '${p.year}-${p.month}-${p.day}';
+              break;
+            case DateMode.HMS:
+              selectData[model] = '${p.hour}:${p.minute}:${p.second}';
               break;
           }
         });

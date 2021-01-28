@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primaryColor: Colors.indigoAccent, visualDensity: VisualDensity.adaptivePlatformDensity),
+      theme: ThemeData(primaryColor: Color(0xFF566FD5), visualDensity: VisualDensity.adaptivePlatformDensity),
       home: MyHomePage(),
     );
   }

@@ -18,7 +18,7 @@ set http_proxy=http://127.0.0.1:1087
 
 
 
-## 颜色选择器
+## todo 颜色选择器
 
 
 
@@ -40,9 +40,9 @@ set http_proxy=http://127.0.0.1:1087
 << 以下可以选择2种参数 DateTime  或则自己定的参数
 - maxDate
 - minDate
-- initDate
+- selectDate
 
-### 自动适配时间格式
+
 
 
 - 年月日时分秒的单位 {year:1990, hours: 12}
@@ -54,11 +54,6 @@ set http_proxy=http://127.0.0.1:1087
     tip: 当只有单列数据，该限制不产生关联 只针对单列item限制，比如 maxDate>day = 3  minDate>day = 10,那么所有的月份都只显示3-10之间
     tip: 只设置了分秒，不会生效 要么就时分秒，要么就秒   (可以单独设置分秒了)
 
-``` dart
-  initialDate: type == 1 ? start_time : end_time,
-  firstDate: DateTime(2020),
-  lastDate: DateTime(2100),
-```
 
 
 

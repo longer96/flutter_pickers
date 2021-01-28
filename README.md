@@ -12,7 +12,7 @@ flutter 选择器类库，包括日期及时间选择器（可设置范围）、
 Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^0.0.1
+    flutter_pickers: ^1.0.0
 ```
 
 Install
@@ -22,13 +22,33 @@ $ flutter packages get
 
 文档语言: [English](README-EN.md) | [中文简体](README.md)
 
-## 如何使用
 
+## 目录
+
+- [flutter_pickers](#flutter_pickers)
+  - [地址选择器](#地址选择器)
+    - [简单使用](#%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8)
+    - [使用 ExtendedNetworkImageProvider](#%e4%bd%bf%e7%94%a8-extendednetworkimageprovider)
+  - [单项选择器](#单项选择器)
+  - [多项选择器](#单项选择器)
+  - [时间选择器](#时间选择器)
+    - [简单使用](#%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8)
+    - [模式](#%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8)
+    - [tip](#tip)
+  - [样式](#样式)
+    - [内置样式](#)
+    - [自定义样式](#tip)
+    
+    
+## 地址选择器
+
+### 如何使用
 <br>
-### 地址选择器
-> AddressPicker.showPicker()
+
+> Pickers.showAddressPicker()
 [区域数据来源](https://github.com/airyland/china-area-data)
 [请戳我查看demo代码](https://github.com/ewdemo/MainActivity.java)
+
 * 支持三级联动
 * 支持自定义颜色、大小等样式
 * 支持显示 '全部' 选项
@@ -43,7 +63,7 @@ Widget _checkLocation() {
 String initProvince = '四川省', initCity = '成都市', initTown = '双流区';
 return InkWell(
     onTap: () {
-      AddressPicker.showPicker(
+      Pickers.showAddressPicker(
         context,
         initProvince: initProvince,
         initCity: initCity,
@@ -61,16 +81,10 @@ return InkWell(
 }
 ```
 * initTown : 不设置或者设置为null ，不显示区级
-* 城市编码 转 城市名
-* 城市编码 转 城市名
 
-
-三级选择器动图
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/CDTU/blob/master/images/%E8%AF%BE%E8%A1%A8.png"/>
-
-二级静态图
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/CDTU/blob/master/images/%E8%AF%BE%E8%A1%A8.png"/>
-
+| ![效果图1](https://github.com/longer96/flutter_pickers/tree/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/tree/master/img/p2.gif) |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                     三级选择器动图                      |                     二级静态图                      |
 
 
 
@@ -99,7 +113,7 @@ AddressPicker.showPicker(
 ```
 
 
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/CDTU/blob/master/images/%E8%AF%BE%E8%A1%A8.png"/>
+<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/tree/master/img/p3.gif"/>
 
 
 | 参数         | 描述                  | 默认                 |
@@ -137,6 +151,15 @@ return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川
 
 
 
+
+
+
+
+
+## License
+flutter_pickers 使用 MIT 许可证，详情见 LICENSE 文件。
+
+https://github.com/fluttercandies/extended_image/blob/master/README-ZH.md#extendedimage
 
 
 

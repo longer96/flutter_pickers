@@ -1,15 +1,8 @@
 import 'dart:math';
 
-import 'package:example/demo/pic_help.dart';
 import 'package:example/widget/my_app_bar.dart';
-import 'package:example/widget/my_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/more_pickers/init_data.dart';
-import 'package:flutter_pickers/pickers.dart';
-import 'package:flutter_pickers/time_picker/model/date_mode.dart';
-import 'package:flutter_pickers/time_picker/model/pduration.dart';
-import 'package:flutter_pickers/time_picker/model/suffix.dart';
 
 class DatePickerPage extends StatefulWidget {
   @override
@@ -147,13 +140,4 @@ class _DatePickerPageState extends State<DatePickerPage> {
   }
 
   ////////////////////////end
-
-  void show(context, timeFormat, dateParam) {
-    PickHelper.openDateTimePicker(
-      context,
-      maxValue: DateTime.now().add(Duration(days: 999)),
-      minValue: DateTime.now(),
-      onConfirm: (_, __) {},
-    );
-  }
 }
