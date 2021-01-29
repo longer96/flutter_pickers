@@ -61,7 +61,7 @@ class DefaultPickerStyle extends PickerStyle {
   }
 }
 
-/// 关闭默认样式
+/// 关闭按钮样式
 class ClosePickerStyle extends PickerStyle {
   /// 日间
   ClosePickerStyle({bool haveRadius: false, String title}) {

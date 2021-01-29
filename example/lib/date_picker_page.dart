@@ -30,10 +30,26 @@ class _DatePickerPageState extends State<DatePickerPage> {
           _item('年月日', DateMode.YMD),
           _item('时分秒', DateMode.HMS),
           _item('月日', DateMode.MD),
+          _item('月', DateMode.S),
           _item('计时器', DateMode.HMS),
+          demo(),
         ],
       ),
     );
+  }
+
+  Widget demo() {
+    return FlatButton(
+        onPressed: () {
+          Pickers.showDatePicker(
+            context,
+            onConfirm: (p) {
+              print('longer >>> 返回数据：$p');
+            },
+            // onChanged: (p) => print(p),
+          );
+        },
+        child: Text('Demo'));
   }
 
   Widget _item(title, model) {
@@ -67,12 +83,12 @@ class _DatePickerPageState extends State<DatePickerPage> {
       suffix: Suffix.normal(),
 
       // selectDate: PDuration(month: 2),
-      // minDate: PDuration(year: 2020, month: 1, day: 4),
-      // maxDate: PDuration(year: 2021, month: 5, day: 22),
+      minDate: PDuration(year: 2020, month: 2, day: 10),
+      maxDate: PDuration(second: 22),
 
-      selectDate: PDuration(hour: 18, minute: 36, second: 36),
-      minDate: PDuration(hour: 12, minute: 38, second: 3),
-      maxDate: PDuration(hour: 12, minute: 40, second: 36),
+      // selectDate: PDuration(hour: 18, minute: 36, second: 36),
+      // minDate: PDuration(hour: 12, minute: 38, second: 3),
+      // maxDate: PDuration(hour: 12, minute: 40, second: 36),
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
         setState(() {

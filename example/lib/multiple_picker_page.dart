@@ -51,7 +51,20 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
         _item2('时间(多列)'),
         _item3('时间段)'),
         _item4('自定义样式'),
+        RaisedButton(onPressed: _showDemo, child: Text('Demo'))
       ]),
+    );
+  }
+
+  void _showDemo(){
+    Pickers.showMultiplePicker(
+      context,
+      data: timeData2,
+      selectData: timeData2Select,
+      suffix: ['', '时', '分', '秒'],
+      onConfirm: (p) {
+        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
+      },
     );
   }
 

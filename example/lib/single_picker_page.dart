@@ -47,9 +47,11 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
   }
 
   String initData = 'PHP';
+
   Widget _demo() {
-    return InkWell(
-        onTap: () {
+    return FlatButton(
+      color: Colors.white,
+        onPressed: () {
           Pickers.showSinglePicker(context,
               data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
               selectData: initData,
@@ -58,9 +60,10 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
                 setState(() {
                   initData = p;
                 });
-              }, onChanged: (p) => print('数据发生改变：$p'));
+              },
+              onChanged: (p) => print('数据发生改变：$p'));
         },
-        child: Text('$initData'));
+        child: Text('Demo : $initData'));
   }
 
   Widget _item(title, var data, var selectData, {String label}) {

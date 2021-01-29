@@ -135,17 +135,15 @@ class Pickers {
   ///     tip: 当只有单列数据，该限制不产生关联 只针对单列item限制，比如 maxDate>day = 3  minDate>day = 10,那么所有的月份都只显示3-10之间
   /// [minDate] : 最小时间 用法同上
   /// [mode] : 时间选择器所显示样式  16 种时间样式 默认：DateMode.YMD
-  static void showDatePicker(
-    BuildContext context, {
-    DateMode mode: DateMode.YMD,
-    PDuration selectDate,
-    PDuration maxDate,
-    PDuration minDate,
-    Suffix suffix,
-    PickerStyle pickerStyle,
-    DateCallback onChanged,
-    DateCallback onConfirm,
-  }) {
+  static void showDatePicker(BuildContext context,
+      {DateMode mode: DateMode.YMD,
+      PDuration selectDate,
+      PDuration maxDate,
+      PDuration minDate,
+      Suffix suffix,
+      PickerStyle pickerStyle,
+      DateCallback onChanged,
+      DateCallback onConfirm}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
     }
@@ -173,10 +171,10 @@ class Pickers {
       if (intEmpty(minDate.year)) minDate.year = 1900;
 
       print('longer >>> ${minDate.year}');
-    }
 
-    if (dateItemModel.month || dateItemModel.day) {
-      assert(minDate.year > 1582, 'min Date Year must > 1582');
+      if (dateItemModel.month || dateItemModel.day) {
+        assert(minDate.year > 1582, 'min Date Year must > 1582');
+      }
     }
 
     Navigator.push(
@@ -184,8 +182,8 @@ class Pickers {
         DatePickerRoute(
           mode: mode,
           initDate: selectDate,
-          maxDate: maxDate ?? PDuration(),
-          minDate: minDate ?? PDuration(),
+          maxDate: maxDate,
+          minDate: minDate,
           suffix: suffix,
           pickerStyle: pickerStyle,
           onChanged: onChanged,
