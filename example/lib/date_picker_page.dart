@@ -27,12 +27,18 @@ class _DatePickerPageState extends State<DatePickerPage> {
       body: ListView(
         children: [
           _item('年月日时分秒', DateMode.YMDHMS),
+          _item('年月日时分', DateMode.YMDHM),
+          _item('年月日时', DateMode.YMDH),
           _item('年月日', DateMode.YMD),
+          _item('年月', DateMode.YM),
+          _item('年', DateMode.Y),
+          _item('月日时分秒', DateMode.MDHMS),
           _item('时分秒', DateMode.HMS),
           _item('月日', DateMode.MD),
           _item('月', DateMode.S),
-          _item('计时器', DateMode.HMS),
+          _item('仿计时器', DateMode.HMS),
           demo(),
+          SizedBox(height: 80)
         ],
       ),
     );

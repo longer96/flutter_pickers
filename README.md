@@ -6,6 +6,9 @@ flutter_pickers
 flutter 选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）等…… 欢迎Fork & pr贡献您的代码，大家共同学习
 
 
+## Example
+[Web版Demo](http://flutter.eeaarr.cn)
+
 ## 用法
 1.Depend
 ``` pubspec.yaml
@@ -91,7 +94,7 @@ return InkWell(
 
 
 
-#### 更多用法
+### 更多用法
 > demo [address_picker_page.dart](https://github.com/longer96/flutter_pickers/blob/master/example/lib/address_picker_page.dart)
 
 ``` dart
@@ -143,35 +146,35 @@ return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川
 ## 单项选择器
 > Pickers.showSinglePicker()[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/single_picker_page.dart)
 
-- 单选和多选支持数据混传num string
+- 单选和多选支持数据源混传 num string
 
 ### 简单使用.
 
 ``` dart
 String initData = 'PHP';
-  Widget _demo() {
+Widget _demo() {
     return InkWell(
-        onTap: () {
-          Pickers.showSinglePicker(context,
-              data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
-              selectData: initData,
-              onConfirm: (p) {
-                setState(() {
-                  initData = p;
-                });
-              }, onChanged: (p) => print('数据发生改变：$p'));
-        },
-        child: Text('$initData'));
-  }
+    onTap: () {
+      Pickers.showSinglePicker(context,
+          data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
+          selectData: initData,
+          onConfirm: (p) {
+            setState(() {
+              initData = p;
+            });
+          }, onChanged: (p) => print('数据发生改变：$p'));
+    },
+    child: Text('$initData'));
+}
 ```
 
 | 参数         | 描述                  | 默认                 |
 | ----------- | --------------------- | ------------------- |
 | data        | 数据源                 | null|
 | selectData  | 选中的数据              | ''|
-| pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
+| pickerStyle   | 详见[样式](#样式)     | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (String data)  | null|
-| onConfirm     | 选择器提交 return (String data)| null|
+| onConfirm     | 选择器提交 return (String data)      | null|
 
 
 ### 内置数据
@@ -181,10 +184,11 @@ String initData = 'PHP';
 - subject       // 学科
 - constellation // 星座
 - zodiac        // 生肖
-- ethnicity     // 名族
+- ethnicity     // 民族
+
 
 ## 多项选择器
-> Pickers.showMultiplePicker()[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
+> Pickers.showMultiplePicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
 
 ``` dart
   final timeData = [
@@ -207,11 +211,11 @@ String initData = 'PHP';
   }
 ```
 
-| 参数         | 描述                  | 默认                 |
-| ----------- | --------------------- | ------------------- |
-| data        | 数据源                 | null|
-| selectData  | 选中的数据              | ''|
-| suffix      | item后缀               | null|
+| 参数           | 描述                  | 默认                 |
+| -----------   | --------------------- | ------------------- |
+| data          | 数据源                 | null|
+| selectData    | 选中的数据              | ''|
+| suffix        | item后缀               | null|
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (List data)  | null|
 | onConfirm     | 选择器提交 return (List data)| null|
@@ -220,7 +224,7 @@ String initData = 'PHP';
 图片
 
 ## 时间选择器
-> Pickers.showDatePicker()[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/date_picker_page.dart)
+> Pickers.showDatePicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/date_picker_page.dart)
 
 * 16种模式「年月日时分秒」
 * 自定义后缀
@@ -229,19 +233,19 @@ String initData = 'PHP';
 
 ### 简单使用..
 ``` dart
-  Widget demo() {
+Widget demo() {
     return FlatButton(
-        onPressed: () {
-          Pickers.showDatePicker(
-            context,
-            onConfirm: (p) {
-              print('longer >>> 返回数据：$p');
-            },
-            // onChanged: (p) => print(p),
-          );
+    onPressed: () {
+      Pickers.showDatePicker(
+        context,
+        onConfirm: (p) {
+          print('longer >>> 返回数据：$p');
         },
-        child: Text('Demo'));
-  }
+        // onChanged: (p) => print(p),
+      );
+    },
+    child: Text('Demo'));
+}
 ```
 
 ### 更多方法.
@@ -269,8 +273,8 @@ String initData = 'PHP';
 | ----------- | --------------------- | ------------------- |
 | mode        | 时间选择器所显示样式  16 种时间样式| DateMode.YMD|
 | selectData  | PDuration()初始化选中时间 | 默认现在：PDuration.now()|
-| minDate        | PDuration()最小时间   | PDuration(year: 1900)|
-| maxDate        | PDuration()最大时间   | PDuration(year: 2100)|
+| minDate       | PDuration()最小时间   | PDuration(year: 1900)|
+| maxDate       | PDuration()最大时间   | PDuration(year: 2100)|
 | suffix        | 每列时间对应的单位         | Suffix.normal()|
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (PDuration data)  | null|
@@ -279,7 +283,7 @@ String initData = 'PHP';
 
 ### 参数说明
 - PDuration()
-selectDate，minDate，maxDate 和 返回的数据类型都是PDuration()
+> selectDate，minDate，maxDate 和返回的数据类型 都是PDuration()
 ```
     // 可以自定义设置年月日时分秒
     PDuration(year: 2020, month: 1, day: 4, hour: 12, minute: 40, second: 36);
@@ -340,9 +344,8 @@ selectDate，minDate，maxDate 和 返回的数据类型都是PDuration()
 
 
 ### 内置样式
-> style_picker_page.dart[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
+> style_picker_page.dart [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
 > [default_style.dart 源码](https://github.com/longer96/flutter_pickers/blob/master/lib/style/default_style.dart)
-
 
 
 - 以下4种样式是使用 PickerStyle 类进行封装的。
@@ -353,16 +356,16 @@ selectDate，minDate，maxDate 和 返回的数据类型都是PDuration()
 
 | ![样式1：BRDatePickerModeTime](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type1.png?raw=true) | ![样式2：BRDatePickerModeDate](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type2.png?raw=true) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                 默认样式：DefaultPickerStyle()                |              无标题样式：NoTitleStyle()              |
-|                                                              |                                                              |
+|                 默认样式：DefaultPickerStyle()                 |              无标题样式：NoTitleStyle()              |
+|                                                              |                                                     |
 | ![样式3：BRDatePickerModeDateAndTime](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type3.png?raw=true) | ![样式4：BRDatePickerModeCountDownTimer](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type4.png?raw=true) |
-|                 关闭按钮样式：ClosePickerStyle()                  |            圆角按钮样式：RaisedPickerStyle()             |
+|                 关闭按钮样式：ClosePickerStyle()               |            圆角按钮样式：RaisedPickerStyle()          |
 
 
 
 ### 自定义样式
-> style_picker_page.dart[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
-> picker_style.dart[样式基类](https://github.com/longer96/flutter_pickers/blob/master/lib/style/picker_style.dart)
+> style_picker_page.dart [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
+> picker_style.dart [样式基类](https://github.com/longer96/flutter_pickers/blob/master/lib/style/picker_style.dart)
 
 ```dart
 /// [showTitleBar] 是否显示头部（选择器以上的控件） 默认：true

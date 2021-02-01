@@ -40,7 +40,6 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   //   'English': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
   //   '中文': ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
   // };
-  var dataSelect = ['中文', '六月'];
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +48,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       body: ListView(children: [
         _item('时间(传入不同类型)'),
         _item2('时间(多列)'),
-        _item3('时间段)'),
+        _item3('时间段'),
         _item4('自定义样式'),
-        RaisedButton(onPressed: _showDemo, child: Text('Demo'))
+        RaisedButton(onPressed: _showDemo, child: Text('Demo')),
+        SizedBox(height: 80)
       ]),
     );
   }
@@ -210,9 +210,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
         color: Colors.grey[700],
         height: menuHeight,
         child: Row(children: [
-          Expanded(child: Center(child: MyText('日期', color: Colors.white))),
-          Expanded(child: Center(child: MyText('时', color: Colors.white))),
-          Expanded(child: Center(child: MyText('分', color: Colors.white))),
+          Expanded(child: Center(child: MyText('早晚'))),
+          Expanded(child: Center(child: MyText('时'))),
+          Expanded(child: Center(child: MyText('分'))),
+          Expanded(child: Center(child: MyText('秒'))),
         ]));
 
     Widget _cancelButton = Container(

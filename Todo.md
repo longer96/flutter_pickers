@@ -15,6 +15,15 @@ set http_proxy=http://127.0.0.1:1087
 '''
 
 
+### web
+- flutter channel 列出所有版本
+- flutter channel dev  切换
+- flutter config --enable-web
+- flutter create .   开始创建web目录文件，执行完毕后，在项目中多了个一个web目录
+- flutter run -d chrome
+- flutter build web 打包web
+
+
 ## todo 
 - 颜色选择器
 - 多项选择器联动问题

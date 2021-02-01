@@ -157,6 +157,9 @@ class Pickers {
     // 解析是否有对应数据
     DateItemModel dateItemModel = DateItemModel.parse(mode);
 
+    if (maxDate == null) maxDate = PDuration(year: 2100);
+    if (minDate == null) minDate = PDuration(year: 1900);
+
     if ((dateItemModel.day || dateItemModel.year)) {
       if (intEmpty(selectDate.year)) {
         print('picker  Tip >>> initDate未设置years，默认设置为now().year');
@@ -164,10 +167,7 @@ class Pickers {
       }
 
       /// 如果有年item ，必须限制
-      if (maxDate == null) maxDate = PDuration(year: 2100);
       if (intEmpty(maxDate.year)) maxDate.year = 2100;
-
-      if (minDate == null) minDate = PDuration(year: 1900);
       if (intEmpty(minDate.year)) minDate.year = 1900;
 
       print('longer >>> ${minDate.year}');
