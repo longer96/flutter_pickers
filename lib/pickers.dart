@@ -170,7 +170,7 @@ class Pickers {
       if (intEmpty(maxDate.year)) maxDate.year = 2100;
       if (intEmpty(minDate.year)) minDate.year = 1900;
 
-      print('longer >>> ${minDate.year}');
+      // print('longer >>> ${minDate.year}');
 
       if (dateItemModel.month || dateItemModel.day) {
         assert(minDate.year > 1582, 'min Date Year must > 1582');

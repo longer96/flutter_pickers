@@ -52,33 +52,33 @@ class _StylePickerPageState extends State<StylePickerPage> {
   }
 
   PickerStyle customizeStyle() {
-    double menuHeight = 36.0;
+    double menuHeight = 46.0;
     Widget _headMenuView = Container(
-        color: Colors.grey[700], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
+        color: Colors.deepPurple[400], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(left: 22),
       decoration:
-          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
-      child: MyText('取消', color: Colors.white, size: 14),
+          BoxDecoration(border: Border.all(color: Colors.amberAccent, width: 1), borderRadius: BorderRadius.circular(4)),
+      child: MyText('close', color: Colors.amberAccent, size: 14),
     );
 
     Widget _commitButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(right: 22),
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
-      child: MyText('确认', color: Colors.white, size: 14),
+      decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(4)),
+      child: MyText('confirm', color: Colors.white, size: 14),
     );
 
     // 头部样式
     Decoration headDecoration = BoxDecoration(
-        color: Colors.grey[800],
+        color: Colors.deepPurple,
         borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = Center(child: MyText('身高选择器', color: Colors.white, size: 14));
+    Widget title = Center(child: MyText('身高选择器', color: Colors.cyanAccent, size: 14));
 
-    Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
+    Widget laber = MyText('cm', color: Colors.deepOrangeAccent, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
 
     return PickerStyle(
       menu: _headMenuView,
@@ -88,8 +88,8 @@ class _StylePickerPageState extends State<StylePickerPage> {
       headDecoration: headDecoration,
       title: title,
       labelWidget: laber,
-      textColor: Colors.white,
-      backgroundColor: Colors.grey[800],
+      textColor: Colors.deepOrangeAccent,
+      backgroundColor: Colors.deepPurple,
     );
   }
 }

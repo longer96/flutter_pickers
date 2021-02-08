@@ -7,6 +7,7 @@ import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_pickers/time_picker/model/suffix.dart';
+import 'package:flutter_pickers/utils/check.dart';
 
 class DatePickerPage extends StatefulWidget {
   @override
@@ -15,7 +16,18 @@ class DatePickerPage extends StatefulWidget {
 
 class _DatePickerPageState extends State<DatePickerPage> {
   String stateText = '';
-  var selectData = {DateMode.YMDHMS: ''};
+  var selectData = {
+    DateMode.YMDHMS: '',
+    DateMode.YMDHM: '',
+    DateMode.YMDH: '',
+    DateMode.YMD: '',
+    DateMode.YM: '',
+    DateMode.Y: '',
+    DateMode.MDHMS: '',
+    DateMode.HMS: '',
+    DateMode.MD: '',
+    DateMode.S: '',
+  };
 
   final divider = Divider(height: 1, indent: 20);
   final rightIcon = Icon(Icons.keyboard_arrow_right);
@@ -66,15 +78,17 @@ class _DatePickerPageState extends State<DatePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () {
-              if ('计时器' == title) {
+              if ('仿计时器' == title) {
                 _onClickItem2();
               } else {
                 _onClickItem(model);
               }
             },
-            trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[MyText(selectData[model] ?? '暂无', color: Colors.grey, rightpadding: 18), rightIcon]),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              MyText(PicketUtil.strEmpty(selectData[model]) ? '暂无' : selectData[model],
+                  color: Colors.grey, rightpadding: 18),
+              rightIcon
+            ]),
           ),
         ),
         divider,
@@ -102,11 +116,32 @@ class _DatePickerPageState extends State<DatePickerPage> {
             case DateMode.YMDHMS:
               selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
               break;
+            case DateMode.YMDHM:
+              selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}';
+              break;
+            case DateMode.YMDH:
+              selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}';
+              break;
             case DateMode.YMD:
               selectData[model] = '${p.year}-${p.month}-${p.day}';
               break;
+            case DateMode.YM:
+              selectData[model] = '${p.year}-${p.month}';
+              break;
+            case DateMode.Y:
+              selectData[model] = '${p.year}-${p.month}';
+              break;
+            case DateMode.MDHMS:
+              selectData[model] = '${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
+              break;
             case DateMode.HMS:
               selectData[model] = '${p.hour}:${p.minute}:${p.second}';
+              break;
+            case DateMode.MD:
+              selectData[model] = '${p.month}-${p.day}';
+              break;
+            case DateMode.S:
+              selectData[model] = '${p.second}';
               break;
           }
         });
