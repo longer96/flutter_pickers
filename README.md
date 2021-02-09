@@ -59,8 +59,8 @@ import 'package:flutter_pickers/pickers.dart';
     
 ## 地址选择器
 > Pickers.showAddressPicker()
-[区域数据来源](https://github.com/airyland/china-area-data)
-[请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/address_picker_page.dart)
+- [区域数据来源](https://github.com/airyland/china-area-data)
+- [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/address_picker_page.dart)
 
 * 支持三级联动
 * 支持自定义颜色、大小等样式
