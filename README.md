@@ -68,7 +68,7 @@ import 'package:flutter_pickers/pickers.dart';
 https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg?raw=true
 图片pic:1
 图片pic:2
-| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p2.gif) |
+| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg) |
 | :---------: | :------: |
 | 三级选择器动图|二级静态图|
 
