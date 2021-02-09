@@ -11,11 +11,9 @@ flutter 选择器类库，包括日期及时间选择器（可设置范围）、
 
 
 <br><br>
-<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif1.gif"/>  
-<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif2.gif"/>
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif1.gif"/>  <img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif2.gif"/>
 <br><br>
-<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif3.gif"/>  
-<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif4.gif"/>
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif3.gif"/>  <img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif4.gif"/>
 
 
 ## 用法
@@ -158,9 +156,7 @@ return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川
 
 
 <br><br>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic4.png"/>  
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic5.png"/>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic6.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic4.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic5.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic6.png"/>
 
 
 
@@ -207,8 +203,7 @@ Widget _demo() {
 
 
 <br><br>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic7.png"/>  
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic8.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic7.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic8.png"/>
 
 ### 示例代码
 ``` dart
@@ -253,14 +248,10 @@ Widget _demo() {
 
 
 <br><br>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic9.png"/>  
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic10.png"/>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic11.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic9.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic10.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic11.png"/>
 
 <br><br>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic12.png"/>  
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic13.png"/>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic14.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic12.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic13.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic14.png"/>
 
 
 ### 简单使用..
@@ -431,12 +422,5 @@ class PickerStyle {}
 
 ## License
 flutter_pickers 使用 MIT 许可证，详情见 [LICENSE](https://github.com/longer96/flutter_pickers/blob/master/LICENSE) 文件。
-
-
-
-
-
-
-
 
 
