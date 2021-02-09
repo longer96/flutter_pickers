@@ -1,7 +1,9 @@
-[![pub package](https://img.shields.io/pub/v/flutter_pickers.svg)](https://pub.dev/packages/flutter_pickers)  [![GitHub stars](https://img.shields.io/github/stars/longer96/flutter_pickers.svg?style=social)](https://github.com/longer96/flutter_pickers/stargazers)   [![GitHub forks](https://img.shields.io/github/forks/longer96/flutter_pickers.svg?style=social)](https://github.com/longer96/flutter_pickers/network)
 
 flutter_pickers
 ====
+[![pub package](https://img.shields.io/pub/v/flutter_pickers.svg)](https://pub.dev/packages/flutter_pickers)  [![GitHub stars](https://img.shields.io/github/stars/longer96/flutter_pickers.svg?style=social)](https://github.com/longer96/flutter_pickers/stargazers)   [![GitHub forks](https://img.shields.io/github/forks/longer96/flutter_pickers.svg?style=social)](https://github.com/longer96/flutter_pickers/network)
+
+文档语言: [English](README-EN.md) | [中文简体](README.md)
 
 flutter 选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、民族、学历、星座、年龄、身高、体重、温度等）、城市地址选择器（分省级、地级及县级）、多项选择器等…… 欢迎Fork & pr贡献您的代码，大家共同学习
 
@@ -33,7 +35,6 @@ $ flutter packages get
 import 'package:flutter_pickers/pickers.dart';
 ```
 
-文档语言: [English](README-EN.md) | [中文简体](README.md)
 
 
 ## 目录
@@ -68,7 +69,6 @@ import 'package:flutter_pickers/pickers.dart';
 * 支持查询城市码
 * 实时回调
 
-<br>
 | ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/pic1.png)  | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/pic2.png) |
 | :---------: | :------: |
 | 三级选择器动图 | 二级静态图 |
@@ -247,7 +247,7 @@ Widget _demo() {
 * 自定义显示样式
 
 
-<br>
+<br><br>
 <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic9.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic10.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic11.png"/>
 
 <br><br>
@@ -374,9 +374,9 @@ Widget demo() {
 - 以下4种样式是使用 PickerStyle 类进行封装的。
 - 都内置了夜间模式，如 NoTitleStyle.dark()
 - 除了NoTitleStyle, 其它的样式可以传入
-  - haveRadius: 是否圆角  
-  - title:标题  
-  - color:确定按钮颜色
+  - haveRadius： 是否圆角  
+  - title： 标题  
+  - color： 确定按钮颜色
 
 
 | ![样式1](https://github.com/longer96/flutter_pickers/blob/master/img/s1-1.png) | ![样式1](https://github.com/longer96/flutter_pickers/blob/master/img/s1-2.png) |
