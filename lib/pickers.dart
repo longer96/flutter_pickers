@@ -14,13 +14,15 @@ import 'time_picker/model/date_item_model.dart';
 
 /// [onChanged]   选择器发生变动
 /// [onConfirm]   选择器提交
-/// [pickerStyle] labelWidget 后缀
+/// [pickerStyle] 样式
+/// [suffix] 后缀
 class Pickers {
   /// 单列 通用选择器
   static void showSinglePicker(
     BuildContext context, {
     @required dynamic data,
     dynamic selectData,
+    String suffix,
     PickerStyle pickerStyle,
     SingleCallback onChanged,
     SingleCallback onConfirm,
@@ -39,6 +41,7 @@ class Pickers {
         context,
         SinglePickerRoute(
           data: data,
+          suffix: suffix,
           selectData: selectData,
           pickerStyle: pickerStyle,
           onChanged: onChanged,

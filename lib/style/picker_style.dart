@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 /// [textColor]  选择器的文字颜色 默认黑色
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
-/// [labelWidget] 自定义单位widget   默认：null  SinglePickerRoute 选择器可用
 ///
 class PickerStyle {
   BuildContext _context;
@@ -27,7 +26,6 @@ class PickerStyle {
 
   Widget _cancelButton;
   Widget _commitButton;
-  Widget _labelWidget;
   Widget _title;
   Decoration _headDecoration;
   Color _backgroundColor;
@@ -43,7 +41,6 @@ class PickerStyle {
       double menuHeight,
       Widget cancelButton,
       Widget commitButton,
-      Widget labelWidget,
       Widget title,
       Decoration headDecoration,
       Color backgroundColor,
@@ -59,7 +56,6 @@ class PickerStyle {
 
     this._cancelButton = cancelButton;
     this._commitButton = commitButton;
-    this._labelWidget = labelWidget;
     this._title = title;
     this._headDecoration = headDecoration;
     this._backgroundColor = backgroundColor;
@@ -99,10 +95,6 @@ class PickerStyle {
     _commitButton = value;
   }
 
-  set labelWidget(Widget value) {
-    _labelWidget = value;
-  }
-
   set title(Widget value) {
     _title = value;
   }
@@ -129,8 +121,6 @@ class PickerStyle {
   Color get backgroundColor => this._backgroundColor ?? Colors.white;
 
   Decoration get headDecoration => this._headDecoration ?? BoxDecoration(color: Colors.white);
-
-  Widget get labelWidget => this._labelWidget;
 
   Widget get menu => this._menu;
 

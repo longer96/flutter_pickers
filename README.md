@@ -7,7 +7,11 @@ flutter 选择器类库，包括日期及时间选择器（可设置范围）、
 
 
 ## Example
-[Web版Demo](http://flutter.eeaarr.cn)
+[Web版在线Demo](http://flutter.eeaarr.cn)
+[Web版在线Demo](http://f.v6471.com)
+
+图片gif：1  图片gif：2
+图片gif：3  图片gif：4
 
 ## 用法
 1.Depend
@@ -50,8 +54,6 @@ import 'package:flutter_pickers/pickers.dart';
     
     
 ## 地址选择器
-<br>
-
 > Pickers.showAddressPicker()
 [区域数据来源](https://github.com/airyland/china-area-data)
 [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/address_picker_page.dart)
@@ -62,6 +64,14 @@ import 'package:flutter_pickers/pickers.dart';
 * 支持只选择 省市 2级
 * 支持查询城市码
 * 实时回调
+
+
+图片pic:1
+图片pic:2
+| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p2.gif) |
+| :---------: | :------: |
+| 三级选择器动图|二级静态图|
+
 
 ### 简单使用
 ``` dart
@@ -88,10 +98,6 @@ return InkWell(
 ```
 * initTown : 不设置或者设置为null ，不显示区级
 
-| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p2.gif) |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                     三级选择器动图                      |                     二级静态图                      |
-
 
 
 ### 更多用法
@@ -116,9 +122,10 @@ AddressPicker.showPicker(
   onConfirm: (p, c, t) {},
 );
 ```
+<br><br>
 
-
-<br><br><img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/p3.jpg"/>
+图片pic:3
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/p3.jpg"/>
 
 
 | 参数         | 描述                  | 默认                 |
@@ -148,8 +155,12 @@ return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川
 
 - 单选和多选支持数据源混传 num string
 
-### 简单使用.
 
+图片pic:4 图片pic:5  图片pic:6
+
+
+
+### 简单使用.
 ``` dart
 String initData = 'PHP';
 Widget _demo() {
@@ -190,6 +201,10 @@ Widget _demo() {
 ## 多项选择器
 > Pickers.showMultiplePicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
 
+
+图片pic:7  图片pic:8
+
+### 示例代码
 ``` dart
   final timeData = [
     ['上午', '下午'],
@@ -221,7 +236,6 @@ Widget _demo() {
 | onConfirm     | 选择器提交 return (List data)| null|
 
 
-图片
 
 ## 时间选择器
 > Pickers.showDatePicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/date_picker_page.dart)
@@ -230,6 +244,11 @@ Widget _demo() {
 * 自定义后缀
 * 最大|最小 时间
 * 自定义显示样式
+
+
+图片pic:9    图片pic:10  图片pic:11
+图片pic:12   图片pic:13  图片pic:14
+
 
 ### 简单使用..
 ``` dart
@@ -354,6 +373,14 @@ Widget demo() {
 
 图片
 
+
+一个样式2个图
+
+图片pic:15
+图片pic:16
+图片pic:17
+
+
 | ![样式1：BRDatePickerModeTime](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type1.png?raw=true) | ![样式2：BRDatePickerModeDate](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type2.png?raw=true) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 |                 默认样式：DefaultPickerStyle()                 |              无标题样式：NoTitleStyle()              |
@@ -362,6 +389,9 @@ Widget demo() {
 |                 关闭按钮样式：ClosePickerStyle()               |            圆角按钮样式：RaisedPickerStyle()          |
 
 
+<br>
+
+截图标记
 
 ### 自定义样式
 > style_picker_page.dart [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
@@ -369,7 +399,7 @@ Widget demo() {
 
 ```dart
 /// [showTitleBar] 是否显示头部（选择器以上的控件） 默认：true
-/// [menu] 头部和选择器之间的菜单widget,默认null 不显示
+/// [menu] 头部和选择器之间的菜单widget，默认null 不显示
 /// [title] 头部 中间的标题  默认SizedBox() 不显示
 /// [pickerHeight] 选择器下面 picker 的整体高度  固定高度：220.0
 /// [pickerTitleHeight]  选择器上面 title 确认、取消的整体高度  固定高度：44.0
@@ -381,11 +411,10 @@ Widget demo() {
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
 /// [labelWidget] 自定义单位widget   默认：null  SinglePickerRoute 选择器可用
-///
+
 class PickerStyle {}
 ```
-截图标记
-样式图
+
 
 
 ## License

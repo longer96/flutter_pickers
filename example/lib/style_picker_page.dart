@@ -57,7 +57,7 @@ class _StylePickerPageState extends State<StylePickerPage> {
         color: Colors.deepPurple[400], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       margin: const EdgeInsets.only(left: 22),
       decoration:
           BoxDecoration(border: Border.all(color: Colors.amberAccent, width: 1), borderRadius: BorderRadius.circular(4)),
@@ -65,7 +65,7 @@ class _StylePickerPageState extends State<StylePickerPage> {
     );
 
     Widget _commitButton = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(4)),
       child: MyText('confirm', color: Colors.white, size: 14),
@@ -78,17 +78,17 @@ class _StylePickerPageState extends State<StylePickerPage> {
 
     Widget title = Center(child: MyText('身高选择器', color: Colors.cyanAccent, size: 14));
 
-    Widget laber = MyText('cm', color: Colors.deepOrangeAccent, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
-
     return PickerStyle(
       menu: _headMenuView,
       menuHeight: menuHeight,
+      pickerHeight: 320,
+      pickerTitleHeight: 60,
+      pickerItemHeight: 50,
       cancelButton: _cancelButton,
       commitButton: _commitButton,
       headDecoration: headDecoration,
       title: title,
-      labelWidget: laber,
-      textColor: Colors.deepOrangeAccent,
+      textColor: Colors.amberAccent,
       backgroundColor: Colors.deepPurple,
     );
   }

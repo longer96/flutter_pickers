@@ -91,6 +91,8 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       context,
       data: data,
       selectData: selectData,
+      pickerStyle: DefaultPickerStyle(),
+      suffix: label,
       onConfirm: (p) {
         print('longer >>> 返回数据：$p');
         print('longer >>> 返回数据类型：${p.runtimeType}');
@@ -158,8 +160,6 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
     Widget title = Center(child: MyText('身高选择器', color: Colors.white, size: 14));
 
-    Widget laber = MyText('cm', color: Colors.white, size: 22, fontWeight: FontWeight.w500, letfpadding: 90);
-
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
       menuHeight: menuHeight,
@@ -167,7 +167,6 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       commitButton: _commitButton,
       headDecoration: headDecoration,
       title: title,
-      labelWidget: laber,
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
     );
@@ -175,6 +174,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     Pickers.showSinglePicker(context,
         data: List.generate(200, (index) => (50 + index).toString()),
         selectData: selectHeight,
+        suffix: 'cm',
         pickerStyle: pickerStyle, onConfirm: (p) {
       setState(() {
         selectHeight = p;

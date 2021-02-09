@@ -172,7 +172,7 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   double _pickerLaberPadding(String text) {
-    double left = 80;
+    double left = 60;
 
     if (text != null) {
       left = left + text.length * 12;
@@ -240,25 +240,23 @@ class _PickerState extends State<_PickerContentView> {
 
     Widget view;
     // 单位
-    if ((widget.route.suffix != null && widget.route.suffix != '') || (_pickerStyle.labelWidget != null)) {
-      Widget laberView = Container(
-          alignment: Alignment.center,
-          child: (_pickerStyle.labelWidget == null)
-              ? AnimatedPadding(
-                  duration: Duration(milliseconds: 100),
-                  padding: EdgeInsets.only(left: _laberLeft),
-                  child: Text(widget.route.suffix,
-                      style: TextStyle(color: _pickerStyle.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
-                )
-              : _pickerStyle.labelWidget);
+    if (widget.route.suffix != null && widget.route.suffix != '') {
+      Widget laberView = Center(child: AnimatedPadding(
+        duration: Duration(milliseconds: 100),
+        padding: EdgeInsets.only(left: _laberLeft),
+        child: Text(widget.route.suffix,
+            style: TextStyle(color: _pickerStyle.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
+      ));
 
-      view = Stack(children: [cPicker, laberView]);
+      view = Stack(
+
+          children: [cPicker, laberView]);
     } else {
       view = cPicker;
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 40),
       height: _pickerStyle.pickerHeight,
       color: _pickerStyle.backgroundColor,
       child: view,
