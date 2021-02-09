@@ -69,9 +69,9 @@ import 'package:flutter_pickers/pickers.dart';
 * 实时回调
 
 <br>
-| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/pic1.png) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/pic2.png) |
+| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/pic1.png)  | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/pic2.png) |
 | :---------: | :------: |
-| 三级选择器动图|二级静态图|
+| 三级选择器动图 | 二级静态图 |
 
 
 ### 简单使用
@@ -203,7 +203,7 @@ Widget _demo() {
 
 
 <br><br>
-<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic7.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic8.png"/>
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic7.png"/>  <img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic8.png"/>
 
 ### 示例代码
 ``` dart
@@ -247,7 +247,7 @@ Widget _demo() {
 * 自定义显示样式
 
 
-<br><br>
+<br>
 <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic9.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic10.png"/>  <img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic11.png"/>
 
 <br><br>
@@ -393,13 +393,14 @@ Widget demo() {
 |                 圆角按钮样式：RaisedPickerStyle()               |            圆角按钮样式(暗色)：RaisedPickerStyle.dark()          |
 
 
-<br>
-<br>
-<img width="400px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/style_mark.png"/>
+
 
 ### 自定义样式
 > style_picker_page.dart [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
 > picker_style.dart [样式基类](https://github.com/longer96/flutter_pickers/blob/master/lib/style/picker_style.dart)
+
+<br>
+<img width="600px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/style_mark.png"/>
 
 ```dart
 /// [showTitleBar] 是否显示头部（选择器以上的控件） 默认：true
@@ -422,5 +423,3 @@ class PickerStyle {}
 
 ## License
 flutter_pickers 使用 MIT 许可证，详情见 [LICENSE](https://github.com/longer96/flutter_pickers/blob/master/LICENSE) 文件。
-
-
