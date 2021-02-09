@@ -65,10 +65,10 @@ import 'package:flutter_pickers/pickers.dart';
 * 支持查询城市码
 * 实时回调
 
-
+https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg?raw=true
 图片pic:1
 图片pic:2
-| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.gif) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p2.gif) |
+| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p2.gif) |
 | :---------: | :------: |
 | 三级选择器动图|二级静态图|
 
@@ -371,7 +371,6 @@ Widget demo() {
 - 都内置了夜间模式，如 NoTitleStyle.dark()
 - 除了NoTitleStyle, 其它的样式可以传入haveRadius: 是否圆角  title:标题 color:确定按钮颜色
 
-图片
 
 
 一个样式2个图
@@ -391,7 +390,7 @@ Widget demo() {
 
 <br>
 
-截图标记
+图片截图标记
 
 ### 自定义样式
 > style_picker_page.dart [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
@@ -410,7 +409,6 @@ Widget demo() {
 /// [textColor]  选择器的文字颜色 默认黑色
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
-/// [labelWidget] 自定义单位widget   默认：null  SinglePickerRoute 选择器可用
 
 class PickerStyle {}
 ```
