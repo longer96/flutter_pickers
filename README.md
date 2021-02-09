@@ -3,15 +3,20 @@
 flutter_pickers
 ====
 
-flutter 选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）等…… 欢迎Fork & pr贡献您的代码，大家共同学习
+flutter 选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、民族、学历、星座、年龄、身高、体重、温度等）、城市地址选择器（分省级、地级及县级）、多项选择器等…… 欢迎Fork & pr贡献您的代码，大家共同学习
 
 
 ## Example
 [Web版在线Demo](http://flutter.eeaarr.cn)
-[Web版在线Demo](http://f.v6471.com)
 
-图片gif：1  图片gif：2
-图片gif：3  图片gif：4
+
+<br><br>
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif1.gif"/>  
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif2.gif"/>
+<br><br>
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif3.gif"/>  
+<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/gif4.gif"/>
+
 
 ## 用法
 1.Depend
@@ -65,10 +70,8 @@ import 'package:flutter_pickers/pickers.dart';
 * 支持查询城市码
 * 实时回调
 
-https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg?raw=true
-图片pic:1
-图片pic:2
-| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/p1.jpg) |
+<br>
+| ![效果图1](https://github.com/longer96/flutter_pickers/blob/master/img/pic1.png) | ![效果图2](https://github.com/longer96/flutter_pickers/blob/master/img/pic2.png) |
 | :---------: | :------: |
 | 三级选择器动图|二级静态图|
 
@@ -122,10 +125,8 @@ AddressPicker.showPicker(
   onConfirm: (p, c, t) {},
 );
 ```
-<br><br>
-
-图片pic:3
-<img width="300px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/p3.jpg"/>
+<br>
+<img width="350px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic3.png"/>
 
 
 | 参数         | 描述                  | 默认                 |
@@ -156,7 +157,10 @@ return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川
 - 单选和多选支持数据源混传 num string
 
 
-图片pic:4 图片pic:5  图片pic:6
+<br><br>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic4.png"/>  
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic5.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic6.png"/>
 
 
 
@@ -202,7 +206,9 @@ Widget _demo() {
 > Pickers.showMultiplePicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
 
 
-图片pic:7  图片pic:8
+<br><br>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic7.png"/>  
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic8.png"/>
 
 ### 示例代码
 ``` dart
@@ -246,8 +252,15 @@ Widget _demo() {
 * 自定义显示样式
 
 
-图片pic:9    图片pic:10  图片pic:11
-图片pic:12   图片pic:13  图片pic:14
+<br><br>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic9.png"/>  
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic10.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic11.png"/>
+
+<br><br>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic12.png"/>  
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic13.png"/>
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic14.png"/>
 
 
 ### 简单使用..
@@ -369,28 +382,29 @@ Widget demo() {
 
 - 以下4种样式是使用 PickerStyle 类进行封装的。
 - 都内置了夜间模式，如 NoTitleStyle.dark()
-- 除了NoTitleStyle, 其它的样式可以传入haveRadius: 是否圆角  title:标题 color:确定按钮颜色
+- 除了NoTitleStyle, 其它的样式可以传入
+  - haveRadius: 是否圆角  
+  - title:标题  
+  - color:确定按钮颜色
 
 
-
-一个样式2个图
-
-图片pic:15
-图片pic:16
-图片pic:17
-
-
-| ![样式1：BRDatePickerModeTime](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type1.png?raw=true) | ![样式2：BRDatePickerModeDate](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type2.png?raw=true) |
+| ![样式1](https://github.com/longer96/flutter_pickers/blob/master/img/s1-1.png) | ![样式1](https://github.com/longer96/flutter_pickers/blob/master/img/s1-2.png) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                 默认样式：DefaultPickerStyle()                 |              无标题样式：NoTitleStyle()              |
+|                 默认样式：DefaultPickerStyle()                |              默认样式(暗色)：DefaultPickerStyle.dark()              |
 |                                                              |                                                     |
-| ![样式3：BRDatePickerModeDateAndTime](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type3.png?raw=true) | ![样式4：BRDatePickerModeCountDownTimer](https://github.com/91renb/BRPickerView/blob/master/BRPickerViewDemo/images/date_type4.png?raw=true) |
-|                 关闭按钮样式：ClosePickerStyle()               |            圆角按钮样式：RaisedPickerStyle()          |
+| ![样式2](https://github.com/longer96/flutter_pickers/blob/master/img/s2-1.png) | ![样式2](https://github.com/longer96/flutter_pickers/blob/master/img/s2-2.png) |
+|                 无标题样式：NoTitleStyle()                    |            无标题样式(暗色)：NoTitleStyle.dark()     |
+|                                                              |                                                     |
+| ![样式3](https://github.com/longer96/flutter_pickers/blob/master/img/s3-1.png) | ![样式3](https://github.com/longer96/flutter_pickers/blob/master/img/s3-2.png) |
+|                 关闭按钮样式：ClosePickerStyle()               |            关闭按钮样式(暗色)：ClosePickerStyle.dark()          |
+|                                                              |                                                     |
+| ![样式4](https://github.com/longer96/flutter_pickers/blob/master/img/s4-1.png) | ![样式4](https://github.com/longer96/flutter_pickers/blob/master/img/s4-2.png) |
+|                 圆角按钮样式：RaisedPickerStyle()               |            圆角按钮样式(暗色)：RaisedPickerStyle.dark()          |
 
 
 <br>
-
-图片截图标记
+<br>
+<img width="400px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/style_mark.png"/>
 
 ### 自定义样式
 > style_picker_page.dart [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/style_picker_page.dart)
