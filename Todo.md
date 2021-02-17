@@ -1,9 +1,10 @@
 
 
-### flutter packages pub publish --dry-run
+### 检查发布是否OK
+- flutter packages pub publish --dry-run
 
 - 上传的时候取消国内镜像
-- flutter packages pub publish -v 
+- 发布命令：flutter packages pub publish -v 
 - 验证是否可以访问外网 curl google.com
 
 ### 打开代理之后，命令行设置外网代理
@@ -13,6 +14,18 @@ export http_proxy=http://127.0.0.1:1087
 set https_proxy=https://127.0.0.1:1087
 set http_proxy=http://127.0.0.1:1087
 '''
+
+
+windows
+```
+set http_proxy=127.0.0.1:1080
+set https_proxy=127.0.0.1:1080
+取消代理
+unset http_proxy
+unset https_proxy
+```
+
+
 
 
 ### web

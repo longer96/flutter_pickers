@@ -21,7 +21,7 @@ flutter 选择器库，包括日期及时间选择器（可设置范围）、单
 1.Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^1.0.0
+    flutter_pickers: ^1.0.1
 ```
 
 2.Get
