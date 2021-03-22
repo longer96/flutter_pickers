@@ -74,3 +74,4 @@ build/
 !**/ios/**/default.perspectivev3
 /example/ios/Podfile
 !/example/ios/Runner.xcodeproj/
+!/web/

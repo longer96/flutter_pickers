@@ -25,7 +25,10 @@ unset http_proxy
 unset https_proxy
 ```
 
-
+### web上传到服务器
+- https://github.com/MMMzq/bot_toast/blob/master/README_zh.md
+- github 有提供静态web环境
+- gh_pages 分支
 
 
 ### web

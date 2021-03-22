@@ -8,7 +8,8 @@ flutter 选择器库，包括日期及时间选择器（可设置范围）、单
 
 
 ## Example
-[Web版在线Demo](http://flutter.eeaarr.cn)
+[Web版在线Demo](https://longer96.github.io/flutter_pickers/)
+flutter.eeaarr.cn (上面进不去 试试这个)
 
 
 <br><br>
