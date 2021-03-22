@@ -1,6 +1,7 @@
 class TimeUtils {
   /// 年
-  static List calcYears({int begin = 1900, int end = 2100}) => _calcCount(begin, end);
+  static List calcYears({int begin = 1900, int end = 2100}) =>
+      _calcCount(begin, end);
 
   /// 月
   static List calcMonth({int begin = 1, int end = 12}) {
@@ -66,7 +67,7 @@ class TimeUtils {
     return (v < 10) ? "0$v" : "$v";
   }
 
-  String _checkStr(String v) {
-    return v == null ? "" : v;
-  }
+  // String _checkStr(String v) {
+  //   return v == null ? "" : v;
+  // }
 }
