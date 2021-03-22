@@ -14,6 +14,7 @@
 *.ipr
 *.iws
 .idea/
+web/.idea
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -74,4 +75,10 @@ build/
 !**/ios/**/default.perspectivev3
 /example/ios/Podfile
 !/example/ios/Runner.xcodeproj/
-!/web/
+/web/
+/web/.idea/
+/web/.idea/misc.xml
+/web/.idea/modules.xml
+/web/.idea/vcs.xml
+/web/.idea/web.iml
+/web/.idea/
