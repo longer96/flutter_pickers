@@ -18,27 +18,27 @@ typedef DateCallback(PDuration res);
 class DatePickerRoute<T> extends PopupRoute<T> {
   DatePickerRoute({
     this.mode,
-    this.initDate,
+    required this.initDate,
     this.pickerStyle,
-    this.maxDate,
-    this.minDate,
+    required this.maxDate,
+    required this.minDate,
     this.suffix,
     this.onChanged,
     this.onConfirm,
     this.theme,
     this.barrierLabel,
-    RouteSettings settings,
+    RouteSettings? settings,
   }) : super(settings: settings);
 
-  final DateMode mode;
-  final PDuration initDate;
-  final PDuration maxDate;
-  final PDuration minDate;
-  final Suffix suffix;
-  final ThemeData theme;
-  final DateCallback onChanged;
-  final DateCallback onConfirm;
-  final PickerStyle pickerStyle;
+  final DateMode? mode;
+  late final PDuration initDate;
+  late final PDuration maxDate;
+  late final PDuration minDate;
+  final Suffix? suffix;
+  final ThemeData? theme;
+  final DateCallback? onChanged;
+  final DateCallback? onConfirm;
+  final PickerStyle? pickerStyle;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -47,18 +47,18 @@ class DatePickerRoute<T> extends PopupRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  final String barrierLabel;
+  final String? barrierLabel;
 
   @override
   Color get barrierColor => Colors.black54;
 
-  AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator.overlay);
-    return _animationController;
+    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
+    return _animationController!;
   }
 
   @override
@@ -71,12 +71,12 @@ class DatePickerRoute<T> extends PopupRoute<T> {
         initData: initDate,
         maxDate: maxDate,
         minDate: minDate,
-        pickerStyle: pickerStyle,
+        pickerStyle: pickerStyle!,
         route: this,
       ),
     );
     if (theme != null) {
-      bottomSheet = Theme(data: theme, child: bottomSheet);
+      bottomSheet = Theme(data: theme!, child: bottomSheet);
     }
 
     return bottomSheet;
@@ -85,23 +85,23 @@ class DatePickerRoute<T> extends PopupRoute<T> {
 
 class _PickerContentView extends StatefulWidget {
   _PickerContentView({
-    Key key,
+    Key? key,
     this.mode,
-    this.initData,
-    this.pickerStyle,
-    this.maxDate,
-    this.minDate,
-    @required this.route,
+    required this.initData,
+    required this.pickerStyle,
+    required this.maxDate,
+    required this.minDate,
+    required this.route,
   }) : super(key: key);
 
-  final DateMode mode;
-  final PDuration initData;
-  final DatePickerRoute route;
-  final PickerStyle pickerStyle;
+  final DateMode? mode;
+  late final PDuration initData;
+  late final DatePickerRoute route;
+  late final PickerStyle pickerStyle;
 
   // 限制时间
-  final PDuration maxDate;
-  final PDuration minDate;
+  late final PDuration maxDate;
+  late final PDuration minDate;
 
   @override
   State<StatefulWidget> createState() =>
@@ -109,32 +109,32 @@ class _PickerContentView extends StatefulWidget {
 }
 
 class _PickerState extends State<_PickerContentView> {
-  final PickerStyle _pickerStyle;
+  late final PickerStyle _pickerStyle;
 
   // 是否显示 [年月日时分秒]
-  DateItemModel _dateItemModel;
+  late DateItemModel _dateItemModel;
 
   // 初始 设置选中的数据
-  final PDuration _initSelectData;
+  late final PDuration _initSelectData;
 
   // 选中的数据  用于回传
-  PDuration _selectData;
+  late PDuration _selectData;
 
   // 所有item 对应的数据
-  DateTimeData _dateTimeData;
+  late DateTimeData _dateTimeData;
 
   // 限制时间
-  final PDuration maxDate;
-  final PDuration minDate;
+  late final PDuration maxDate;
+  late final PDuration minDate;
 
-  Animation<double> animation;
+  Animation<double>? animation;
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
   // 选择器 高度  单独提出来，用来解决修改数据 不及时更新的BUG
-  double pickerItemHeight;
+  late double pickerItemHeight;
 
-  _PickerState(DateMode mode, this._initSelectData, this.maxDate, this.minDate, this._pickerStyle) {
-    this._dateItemModel = DateItemModel.parse(mode);
+  _PickerState(DateMode? mode, this._initSelectData, this.maxDate, this.minDate, this._pickerStyle) {
+    this._dateItemModel = DateItemModel.parse(mode!);
     this.pickerItemHeight = _pickerStyle.pickerItemHeight;
     _init();
   }
@@ -150,7 +150,7 @@ class _PickerState extends State<_PickerContentView> {
     /// -------年
     if (_dateItemModel.year) {
       index = 0;
-      _dateTimeData.year = TimeUtils.calcYears(begin: minDate.year, end: maxDate.year);
+      _dateTimeData.year = TimeUtils.calcYears(begin: minDate.year!, end: maxDate.year!);
 
       if (_initSelectData.year != null) {
         index = _dateTimeData.year.indexOf(_initSelectData.year);
@@ -169,10 +169,10 @@ class _PickerState extends State<_PickerContentView> {
       int end = 12;
       // 限制区域
       if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
-        begin = minDate.month;
+        begin = minDate.month!;
       }
       if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
-        end = maxDate.month;
+        end = maxDate.month!;
       }
 
       _dateTimeData.month = TimeUtils.calcMonth(begin: begin, end: end);
@@ -194,14 +194,14 @@ class _PickerState extends State<_PickerContentView> {
       // 限制区域
       if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
         if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
-          begin = minDate.day;
+          begin = minDate.day!;
         }
         if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
-          end = maxDate.day;
+          end = maxDate.day!;
         }
       }
 
-      _dateTimeData.day = TimeUtils.calcDay(_initSelectData.year, selectMonth, begin: begin, end: end);
+      _dateTimeData.day = TimeUtils.calcDay(_initSelectData.year!, selectMonth, begin: begin, end: end);
 
       if (_initSelectData.day != null) {
         index = _dateTimeData.day.indexOf(_initSelectData.day);
@@ -218,10 +218,10 @@ class _PickerState extends State<_PickerContentView> {
       int end = 23;
       // 限制区域
       if (intNotEmpty(minDate.hour)) {
-        begin = minDate.hour;
+        begin = minDate.hour!;
       }
       if (intNotEmpty(maxDate.hour)) {
-        end = maxDate.hour;
+        end = maxDate.hour!;
       }
 
       _dateTimeData.hour = TimeUtils.calcHour(begin: begin, end: end);
@@ -244,18 +244,18 @@ class _PickerState extends State<_PickerContentView> {
         if (_dateItemModel.hour) {
           // 如果有上级 还有时，要根据时再判断
           if (_selectData.hour == minDate.hour) {
-            begin = minDate.minute;
+            begin = minDate.minute!;
           }
           if (_selectData.hour == maxDate.hour) {
-            end = maxDate.minute;
+            end = maxDate.minute!;
           }
         } else {
           // 上级没有时间限制 直接取
           if (intNotEmpty(minDate.minute)) {
-            begin = minDate.minute;
+            begin = minDate.minute!;
           }
           if (intNotEmpty(maxDate.minute)) {
-            end = maxDate.minute;
+            end = maxDate.minute!;
           }
         }
       }
@@ -280,26 +280,26 @@ class _PickerState extends State<_PickerContentView> {
         if (_dateItemModel.hour && _dateItemModel.minute) {
           // 如果有上级 还有时 分，要根据时分再判断
           if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
-            begin = minDate.second;
+            begin = minDate.second!;
           }
           if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
-            end = maxDate.second;
+            end = maxDate.second!;
           }
         } else if (_dateItemModel.minute) {
           /// 上级没有时，只有分限制
           if (_selectData.minute == minDate.minute) {
-            begin = minDate.second;
+            begin = minDate.second!;
           }
           if (_selectData.minute == maxDate.minute) {
-            end = maxDate.second;
+            end = maxDate.second!;
           }
         } else {
           /// 上级没有时间限制 直接取
           if (intNotEmpty(minDate.second)) {
-            begin = minDate.second;
+            begin = minDate.second!;
           }
           if (intNotEmpty(maxDate.second)) {
-            end = maxDate.second;
+            end = maxDate.second!;
           }
         }
       }
@@ -327,11 +327,11 @@ class _PickerState extends State<_PickerContentView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: AnimatedBuilder(
-        animation: widget.route.animation,
-        builder: (BuildContext context, Widget child) {
+        animation: widget.route.animation!,
+        builder: (BuildContext context, Widget? child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value, _pickerStyle),
+              delegate: _BottomPickerLayout(widget.route.animation!.value, _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -385,10 +385,10 @@ class _PickerState extends State<_PickerContentView> {
       int endMonth = 12;
       // 限制区域
       if (intNotEmpty(minDate.month) && _selectData.year == minDate.year) {
-        beginMonth = minDate.month;
+        beginMonth = minDate.month!;
       }
       if (intNotEmpty(maxDate.month) && _selectData.year == maxDate.year) {
-        endMonth = maxDate.month;
+        endMonth = maxDate.month!;
       }
 
       var resultMonth = TimeUtils.calcMonth(begin: beginMonth, end: endMonth);
@@ -398,7 +398,7 @@ class _PickerState extends State<_PickerContentView> {
       if (!listEquals(_dateTimeData.month, resultMonth)) {
         //可能 选中的月份 由于设置了新数据后没有了
         // 小于不用考虑 会进else
-        if (_selectData.month > resultMonth.last) {
+        if (_selectData.month! > resultMonth.last) {
           jumpToIndexMonth = resultMonth.length - 1;
         } else {
           jumpToIndexMonth = resultMonth.indexOf(_selectData.month);
@@ -418,18 +418,18 @@ class _PickerState extends State<_PickerContentView> {
         // 限制区域
         if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
           if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
-            beginDay = minDate.day;
+            beginDay = minDate.day!;
           }
           if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
-            endDay = maxDate.day;
+            endDay = maxDate.day!;
           }
         }
-        resultDay = TimeUtils.calcDay(_selectData.year, _selectData.month, begin: beginDay, end: endDay);
+        resultDay = TimeUtils.calcDay(_selectData.year!, _selectData.month!, begin: beginDay, end: endDay);
 
         if (!listEquals(_dateTimeData.day, resultDay)) {
           //可能 选中的年 月份 由于设置了新数据后没有了
           // 小于不用考虑 会进else
-          if (_selectData.day > resultDay.last) {
+          if (_selectData.day! > resultDay.last) {
             jumpToIndexDay = resultDay.length - 1;
           } else {
             jumpToIndexDay = resultDay.indexOf(_selectData.day);
@@ -468,18 +468,18 @@ class _PickerState extends State<_PickerContentView> {
       // 限制区域
       if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
         if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
-          beginDay = minDate.day;
+          beginDay = minDate.day!;
         }
         if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
-          endDay = maxDate.day;
+          endDay = maxDate.day!;
         }
       }
-      resultDay = TimeUtils.calcDay(_selectData.year, _selectData.month, begin: beginDay, end: endDay);
+      resultDay = TimeUtils.calcDay(_selectData.year!, _selectData.month!, begin: beginDay, end: endDay);
 
       if (!listEquals(_dateTimeData.day, resultDay)) {
         //可能 选中的年 月份 由于设置了新数据后没有了
         // 小于不用考虑 会进else
-        if (_selectData.day > resultDay.last) {
+        if (_selectData.day! > resultDay.last) {
           jumpToIndexDay = resultDay.length - 1;
         } else {
           jumpToIndexDay = resultDay.indexOf(_selectData.day);
@@ -510,10 +510,10 @@ class _PickerState extends State<_PickerContentView> {
       int endMinute = 59;
       // 限制区域
       if (intNotEmpty(minDate.minute) && _selectData.hour == minDate.hour) {
-        beginMinute = minDate.minute;
+        beginMinute = minDate.minute!;
       }
       if (intNotEmpty(maxDate.minute) && _selectData.hour == maxDate.hour) {
-        endMinute = maxDate.minute;
+        endMinute = maxDate.minute!;
       }
 
       var resultMinute = TimeUtils.calcMinAndSecond(begin: beginMinute, end: endMinute);
@@ -523,7 +523,7 @@ class _PickerState extends State<_PickerContentView> {
       if (!listEquals(_dateTimeData.month, resultMinute)) {
         //可能 选中的时间 由于设置了新数据后没有了
         // 小于不用考虑 会进else
-        if (_selectData.minute > resultMinute.last) {
+        if (_selectData.minute! > resultMinute.last) {
           jumpToIndexMinute = resultMinute.length - 1;
         } else {
           jumpToIndexMinute = resultMinute.indexOf(_selectData.minute);
@@ -543,10 +543,10 @@ class _PickerState extends State<_PickerContentView> {
         // 限制区域
         if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
           if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
-            beginSecond = minDate.second;
+            beginSecond = minDate.second!;
           }
           if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
-            endSecond = maxDate.second;
+            endSecond = maxDate.second!;
           }
         }
         resultSecond = TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
@@ -554,7 +554,7 @@ class _PickerState extends State<_PickerContentView> {
         if (!listEquals(_dateTimeData.second, resultSecond)) {
           //可能 选中的时 分 由于设置了新数据后没有了
           // 小于不用考虑 会进else
-          if (_selectData.second > resultSecond.last) {
+          if (_selectData.second! > resultSecond.last) {
             jumpToIndexSecond = resultSecond.length - 1;
           } else {
             jumpToIndexSecond = resultSecond.indexOf(_selectData.second);
@@ -595,18 +595,18 @@ class _PickerState extends State<_PickerContentView> {
         if (_dateItemModel.hour) {
           // 如果上面还有 时
           if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
-            beginSecond = minDate.second;
+            beginSecond = minDate.second!;
           }
           if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
-            endSecond = maxDate.second;
+            endSecond = maxDate.second!;
           }
         } else {
           // 没有时，分秒
           if (_selectData.minute == minDate.minute) {
-            beginSecond = minDate.second;
+            beginSecond = minDate.second!;
           }
           if (_selectData.minute == maxDate.minute) {
-            endSecond = maxDate.second;
+            endSecond = maxDate.second!;
           }
         }
       }
@@ -615,7 +615,7 @@ class _PickerState extends State<_PickerContentView> {
       if (!listEquals(_dateTimeData.second, resultSecond)) {
         //可能 选中的分 由于设置了新数据后没有了
         // 小于不用考虑 会进else
-        if (_selectData.second > resultSecond.last) {
+        if (_selectData.second! > resultSecond.last) {
           jumpToIndexSecond = resultSecond.length - 1;
         } else {
           jumpToIndexSecond = resultSecond.indexOf(_selectData.second);
@@ -638,12 +638,12 @@ class _PickerState extends State<_PickerContentView> {
 
   void _notifyLocationChanged() {
     if (widget.route.onChanged != null) {
-      widget.route.onChanged(_selectData);
+      widget.route.onChanged!(_selectData);
     }
   }
 
   double _pickerFontSize(String text) {
-    if (text == null) return 18.0;
+    if (text == '') return 18.0;
 
     if (_dateItemModel.length == 6 && (text.length > 4 && text.length <= 6)) {
       return 16.0;
@@ -666,12 +666,12 @@ class _PickerState extends State<_PickerContentView> {
     if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
-    List viewList = <Widget>[];
+    List<Widget> viewList = <Widget>[];
     if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
     if (_pickerStyle.menu != null) {
-      viewList.add(_pickerStyle.menu);
+      viewList.add(_pickerStyle.menu!);
     }
     viewList.add(itemView);
 
@@ -713,7 +713,7 @@ class _PickerState extends State<_PickerContentView> {
           onSelectedItemChanged: (int selectIndex) => _setPicker(dateType, selectIndex),
           childCount: _dateTimeData.getListByName(dateType).length,
           itemBuilder: (_, index) {
-            String text = '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix.getSingle(dateType)}';
+            String text = '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix?.getSingle(dateType)}';
             return Align(
                 alignment: Alignment.center,
                 child: Text(text,
@@ -743,7 +743,9 @@ class _PickerState extends State<_PickerContentView> {
           /// 确认按钮
           InkWell(
               onTap: () {
-                widget.route?.onConfirm(_selectData);
+                if (widget.route.onConfirm != null) {
+                  widget.route.onConfirm!(_selectData);
+                }
                 Navigator.pop(context);
               },
               child: _pickerStyle.commitButton)

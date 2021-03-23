@@ -15,21 +15,21 @@ import 'package:flutter_pickers/time_picker/model/date_type.dart';
 ///     print('longer3 >>> ${d.toString()}');
 ///     {year: 2020, month: 3, day: 4, hour: 0, minute: 0, second: 0}
 
-bool intEmpty(int value) {
+bool intEmpty(int? value) {
   return (value == null || value == 0);
 }
 
-bool intNotEmpty(int value) {
+bool intNotEmpty(int? value) {
   return (value != null && value != 0);
 }
 
 class PDuration {
-  int year;
-  int month;
-  int day;
-  int hour;
-  int minute;
-  int second;
+  int? year;
+  int? month;
+  int? day;
+  int? hour;
+  int? minute;
+  int? second;
 
   PDuration({this.year: 0, this.month: 0, this.day: 0, this.hour: 0, this.minute: 0, this.second: 0});
 
@@ -92,7 +92,6 @@ class PDuration {
       case DateType.Second:
         return this.second ?? 0;
     }
-    return 0;
   }
 
   @override

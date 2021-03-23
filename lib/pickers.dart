@@ -20,14 +20,13 @@ class Pickers {
   /// 单列 通用选择器
   static void showSinglePicker(
     BuildContext context, {
-    @required dynamic data,
+    required dynamic data,
     dynamic selectData,
-    String suffix,
-    PickerStyle pickerStyle,
-    SingleCallback onChanged,
-    SingleCallback onConfirm,
+    String? suffix,
+    PickerStyle? pickerStyle,
+    SingleCallback? onChanged,
+    SingleCallback? onConfirm,
   }) {
-    assert(data != null, 'params: data can not be null');
     assert((data is List) || (data is PickerDataType), 'params : data must List or PickerDataType');
 
     if (pickerStyle == null) {
@@ -55,14 +54,13 @@ class Pickers {
   /// 通用 多列选择器
   static void showMultiplePicker(
     BuildContext context, {
-    @required List data,
-    List selectData,
-    List suffix,
-    PickerStyle pickerStyle,
-    MultipleCallback onChanged,
-    MultipleCallback onConfirm,
+    required List<List> data,
+    List? selectData,
+    List? suffix,
+    PickerStyle? pickerStyle,
+    MultipleCallback? onChanged,
+    MultipleCallback? onConfirm,
   }) {
-    assert(data != null, 'params: data can not be null');
     if (selectData == null) {
       selectData = [];
     }
@@ -98,13 +96,13 @@ class Pickers {
   /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
   static void showAddressPicker(
     BuildContext context, {
-    PickerStyle pickerStyle,
+    PickerStyle? pickerStyle,
     String initProvince: '',
     String initCity: '',
-    String initTown,
+    String? initTown,
     bool addAllItem: true,
-    AddressCallback onChanged,
-    AddressCallback onConfirm,
+    AddressCallback? onChanged,
+    AddressCallback? onConfirm,
   }) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
@@ -140,13 +138,13 @@ class Pickers {
   /// [mode] : 时间选择器所显示样式  16 种时间样式 默认：DateMode.YMD
   static void showDatePicker(BuildContext context,
       {DateMode mode: DateMode.YMD,
-      PDuration selectDate,
-      PDuration maxDate,
-      PDuration minDate,
-      Suffix suffix,
-      PickerStyle pickerStyle,
-      DateCallback onChanged,
-      DateCallback onConfirm}) {
+      PDuration? selectDate,
+      PDuration? maxDate,
+      PDuration? minDate,
+      Suffix? suffix,
+      PickerStyle? pickerStyle,
+      DateCallback? onChanged,
+      DateCallback? onConfirm}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
     }
@@ -176,7 +174,7 @@ class Pickers {
       // print('longer >>> ${minDate.year}');
 
       if (dateItemModel.month || dateItemModel.day) {
-        assert(minDate.year > 1582, 'min Date Year must > 1582');
+        assert(minDate.year! > 1582, 'min Date Year must > 1582');
       }
     }
 

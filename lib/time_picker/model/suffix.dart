@@ -2,12 +2,12 @@ import 'package:flutter_pickers/time_picker/model/date_type.dart';
 
 /// 后缀标签
 class Suffix {
-  String years;
-  String month;
-  String days;
-  String hours;
-  String minutes;
-  String seconds;
+  late String years;
+  late String month;
+  late String days;
+  late String hours;
+  late String minutes;
+  late String seconds;
 
   Suffix.normal() {
     this.years = '年';

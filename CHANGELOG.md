@@ -1,4 +1,7 @@
 
+## [2.0.0]
+* null safely
+
 ## [1.0.2]
 * Optimized some details
 

@@ -15,36 +15,36 @@ import 'package:flutter/material.dart';
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
 ///
 class PickerStyle {
-  BuildContext _context;
+  BuildContext? _context;
 
-  bool _showTitleBar;
-  Widget _menu;
-  double _pickerHeight;
-  double _pickerTitleHeight;
-  double _pickerItemHeight;
-  double _menuHeight;
+  bool? _showTitleBar;
+  Widget? _menu;
+  double? _pickerHeight;
+  double? _pickerTitleHeight;
+  double? _pickerItemHeight;
+  double? _menuHeight;
 
-  Widget _cancelButton;
-  Widget _commitButton;
-  Widget _title;
-  Decoration _headDecoration;
-  Color _backgroundColor;
-  Color _textColor;
+  Widget? _cancelButton;
+  Widget? _commitButton;
+  Widget? _title;
+  Decoration? _headDecoration;
+  Color? _backgroundColor;
+  Color? _textColor;
 
   PickerStyle(
-      {BuildContext context,
-      bool showTitleBar,
-      Widget menu,
-      double pickerHeight,
-      double pickerTitleHeight,
-      double pickerItemHeight,
-      double menuHeight,
-      Widget cancelButton,
-      Widget commitButton,
-      Widget title,
-      Decoration headDecoration,
-      Color backgroundColor,
-      Color textColor}) {
+      {BuildContext? context,
+      bool? showTitleBar,
+      Widget? menu,
+      double? pickerHeight,
+      double? pickerTitleHeight,
+      double? pickerItemHeight,
+      double? menuHeight,
+      Widget? cancelButton,
+      Widget? commitButton,
+      Widget? title,
+      Decoration? headDecoration,
+      Color? backgroundColor,
+      Color? textColor}) {
     this._context = context;
     this._showTitleBar = showTitleBar;
     this._menu = menu;
@@ -62,8 +62,7 @@ class PickerStyle {
     this._textColor = textColor;
   }
 
-
-  set context(BuildContext value) {
+  set context(BuildContext? value) {
     _context = value;
   }
 
@@ -71,7 +70,7 @@ class PickerStyle {
     _menuHeight = value;
   }
 
-  set menu(Widget value) {
+  set menu(Widget? value) {
     _menu = value;
   }
 
@@ -115,14 +114,15 @@ class PickerStyle {
     _showTitleBar = value;
   }
 
-  BuildContext get context => this._context;
+  BuildContext? get context => this._context;
 
   /// 选择器背景色 默认白色
   Color get backgroundColor => this._backgroundColor ?? Colors.white;
 
-  Decoration get headDecoration => this._headDecoration ?? BoxDecoration(color: Colors.white);
+  Decoration get headDecoration =>
+      this._headDecoration ?? BoxDecoration(color: Colors.white);
 
-  Widget get menu => this._menu;
+  Widget? get menu => this._menu;
 
   double get menuHeight => this._menuHeight ?? 36.0;
 
@@ -147,7 +147,9 @@ class PickerStyle {
         Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 12, right: 22),
-          child: Text('确定', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0)),
+          child: Text('确定',
+              style: TextStyle(
+                  color: Theme.of(context!).primaryColor, fontSize: 16.0)),
         );
   }
 
@@ -156,8 +158,10 @@ class PickerStyle {
         Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 22, right: 12),
-          child: Text('取消', style: TextStyle(color: Theme.of(context).unselectedWidgetColor, fontSize: 16.0)),
+          child: Text('取消',
+              style: TextStyle(
+                  color: Theme.of(context!).unselectedWidgetColor,
+                  fontSize: 16.0)),
         );
   }
-
 }

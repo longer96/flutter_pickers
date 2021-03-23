@@ -7,24 +7,24 @@ typedef SingleCallback(var data);
 
 class SinglePickerRoute<T> extends PopupRoute<T> {
   SinglePickerRoute({
-    this.data,
+    required this.data,
     this.selectData,
     this.suffix,
     this.onChanged,
     this.onConfirm,
-    this.theme,
+    required this.theme,
     this.barrierLabel,
-    this.pickerStyle,
-    RouteSettings settings,
+    required this.pickerStyle,
+    RouteSettings? settings,
   }) : super(settings: settings);
 
   final dynamic selectData;
   final dynamic data;
-  final SingleCallback onChanged;
-  final SingleCallback onConfirm;
+  final SingleCallback? onChanged;
+  final SingleCallback? onConfirm;
   final ThemeData theme;
 
-  final String suffix;
+  final String? suffix;
   final PickerStyle pickerStyle;
 
   @override
@@ -34,17 +34,16 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  final String barrierLabel;
+  final String? barrierLabel;
 
   @override
   Color get barrierColor => Colors.black54;
 
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   AnimationController createAnimationController() {
-    assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator.overlay);
+    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
     return _animationController;
   }
 
@@ -53,7 +52,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     List mData = [];
     // 初始化数据
     if (data is PickerDataType) {
-      mData = pickerData[data];
+      mData = pickerData[data]!;
     } else if (data is List) {
       mData.addAll(data);
     }
@@ -68,9 +67,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
         route: this,
       ),
     );
-    if (theme != null) {
-      bottomSheet = Theme(data: theme, child: bottomSheet);
-    }
+    bottomSheet = Theme(data: theme, child: bottomSheet);
 
     return bottomSheet;
   }
@@ -78,11 +75,11 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
 
 class _PickerContentView extends StatefulWidget {
   _PickerContentView({
-    Key key,
-    this.data,
+    Key? key,
+    required this.data,
     this.selectData,
-    this.pickerStyle,
-    @required this.route,
+    required this.pickerStyle,
+    required this.route,
   }) : super(key: key);
 
   final List data;
@@ -99,13 +96,10 @@ class _PickerState extends State<_PickerContentView> {
   var _selectData;
   List _data = [];
 
-  AnimationController controller;
-  Animation<double> animation;
-
-  FixedExtentScrollController scrollCtrl;
+  late FixedExtentScrollController scrollCtrl;
 
   // 单位widget Padding left
-  double _laberLeft;
+  late double _laberLeft;
 
   _PickerState(this._data, this._selectData, this._pickerStyle) {
     _init();
@@ -122,11 +116,11 @@ class _PickerState extends State<_PickerContentView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: AnimatedBuilder(
-        animation: widget.route.animation,
-        builder: (BuildContext context, Widget child) {
+        animation: widget.route.animation!,
+        builder: (BuildContext context, Widget? child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value, pickerStyle: _pickerStyle),
+              delegate: _BottomPickerLayout(widget.route.animation!.value, pickerStyle: _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -167,7 +161,7 @@ class _PickerState extends State<_PickerContentView> {
 
   void _notifyLocationChanged() {
     if (widget.route.onChanged != null) {
-      widget.route.onChanged(_selectData);
+      widget.route.onChanged!(_selectData);
     }
   }
 
@@ -198,12 +192,12 @@ class _PickerState extends State<_PickerContentView> {
     if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
-    List viewList = <Widget>[];
+    List<Widget> viewList = <Widget>[];
     if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
     if (_pickerStyle.menu != null) {
-      viewList.add(_pickerStyle.menu);
+      viewList.add(_pickerStyle.menu!);
     }
     viewList.add(itemView);
 
@@ -241,16 +235,15 @@ class _PickerState extends State<_PickerContentView> {
     Widget view;
     // 单位
     if (widget.route.suffix != null && widget.route.suffix != '') {
-      Widget laberView = Center(child: AnimatedPadding(
+      Widget laberView = Center(
+          child: AnimatedPadding(
         duration: Duration(milliseconds: 100),
         padding: EdgeInsets.only(left: _laberLeft),
-        child: Text(widget.route.suffix,
+        child: Text(widget.route.suffix!,
             style: TextStyle(color: _pickerStyle.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
       ));
 
-      view = Stack(
-
-          children: [cPicker, laberView]);
+      view = Stack(children: [cPicker, laberView]);
     } else {
       view = cPicker;
     }
@@ -281,7 +274,9 @@ class _PickerState extends State<_PickerContentView> {
           /// 确认按钮
           InkWell(
               onTap: () {
-                widget.route?.onConfirm(_selectData);
+                if (widget.route.onConfirm != null) {
+                  widget.route.onConfirm!(_selectData);
+                }
                 Navigator.pop(context);
               },
               child: _pickerStyle.commitButton)
@@ -292,7 +287,7 @@ class _PickerState extends State<_PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.pickerStyle});
+  _BottomPickerLayout(this.progress, {required this.pickerStyle});
 
   final double progress;
   final PickerStyle pickerStyle;

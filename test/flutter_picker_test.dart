@@ -9,20 +9,29 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   List fruits = ['apples', 'bananas', 1];
-  List foods = ['apples', 'bananas' ,1];
+  List foods = ['apples', 'bananas', 1];
 
-  var a = listEquals(fruits, foods);
-  print('longer >>> ${a}');
-  
-  // test('adds one to input values', () {
-  //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "510104");
-  //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "5104");
-  //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510102");
-  //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100");
-  //   Address.getCityNameByCode(provinceCode: "510000", cityCode: "5101020");
-  //   Address.getCityNameByCode(provinceCode: "5100", cityCode: "5101020");
-  //   Address.getCityNameByCode();
-  // });
+  // var a = listEquals(fruits, foods);
+  // print('longer >>> ${a}');
+
+  test('通过城市code 返回城市名', () {
+    Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "510104");
+    Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "5104");
+    Address.getCityNameByCode(provinceCode: "510000", cityCode: "510102");
+    Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100");
+    Address.getCityNameByCode(provinceCode: "510000", cityCode: "5101020");
+    Address.getCityNameByCode(provinceCode: "5100", cityCode: "5101020");
+    Address.getCityNameByCode();
+  });
+
+  test('根据城市名 找到城市编码', () {
+    // Address.getCityCodeByName(provinceName: '四川省', cityName: '成都市', townName: '武侯区');
+    Address.getCityCodeByName(townName: '四川省', cityName: '成都市', provinceName: '武侯区');
+    // Address.getCityCodeByName(provinceName: '四川省');
+    // Address.getCityCodeByName(provinceName: '四川省', cityName: '成都市');
+    // Address.getCityCodeByName(cityName: '成都市');
+    // Address.getCityCodeByName();
+  });
 
   // test('adds one to input values', () {
   //   print('longer >>> ${DateMode.MDHMS.toString()}');
@@ -44,5 +53,4 @@ void main() {
   // var m = PDuration(year: 2011);
   // print('longer2 >>> ${m.toString()}');
   // {year: 2011, month: null, day: null, hour: null, minute: null, second: null}
-
 }

@@ -2,22 +2,23 @@
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 
 class DateItemModel {
-  bool year;
-  bool month;
-  bool day;
-  bool hour;
-  bool minute;
-  bool second;
+  late bool year;
+  late bool month;
+  late bool day;
+  late bool hour;
+  late bool minute;
+  late bool second;
 
-  DateItemModel(this.year, this.month, this.day, this.hour, this.minute, this.second);
+  DateItemModel(
+      this.year, this.month, this.day, this.hour, this.minute, this.second);
 
   DateItemModel.parse(DateMode dateMode) {
-    this.year = DateModeMap[dateMode].contains('年');
-    this.month = DateModeMap[dateMode].contains('月');
-    this.day = DateModeMap[dateMode].contains('日');
-    this.hour = DateModeMap[dateMode].contains('时');
-    this.minute = DateModeMap[dateMode].contains('分');
-    this.second = DateModeMap[dateMode].contains('秒');
+    this.year = DateModeMap[dateMode]!.contains('年');
+    this.month = DateModeMap[dateMode]!.contains('月');
+    this.day = DateModeMap[dateMode]!.contains('日');
+    this.hour = DateModeMap[dateMode]!.contains('时');
+    this.minute = DateModeMap[dateMode]!.contains('分');
+    this.second = DateModeMap[dateMode]!.contains('秒');
   }
 
   // 返回需要显示多少个picker

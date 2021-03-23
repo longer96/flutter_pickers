@@ -4,7 +4,7 @@ import 'package:flutter_pickers/style/picker_style.dart';
 
 import '../locations_data.dart';
 
-typedef AddressCallback(String province, String city, String town);
+typedef AddressCallback(String province, String city, String? town);
 
 /// 自定义 地区选择器
 /// [initProvince] 初始化 省
@@ -15,25 +15,26 @@ typedef AddressCallback(String province, String city, String town);
 /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
 class AddressPickerRoute<T> extends PopupRoute<T> {
   AddressPickerRoute({
-    this.addAllItem,
-    this.pickerStyle,
-    this.initProvince,
-    this.initCity,
+    required this.addAllItem,
+    required this.pickerStyle,
+    required this.initProvince,
+    required this.initCity,
     this.initTown,
     this.onChanged,
     this.onConfirm,
     this.theme,
     this.barrierLabel,
-    RouteSettings settings,
+    RouteSettings? settings,
   }) : super(settings: settings);
 
-  final String initProvince, initCity, initTown;
-  final AddressCallback onChanged;
-  final AddressCallback onConfirm;
-  final ThemeData theme;
+  late final String initProvince, initCity;
+  final String? initTown;
+  final AddressCallback? onChanged;
+  final AddressCallback? onConfirm;
+  final ThemeData? theme;
   final bool addAllItem;
 
-  final PickerStyle pickerStyle;
+  late final PickerStyle pickerStyle;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 200);
@@ -42,18 +43,18 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  final String barrierLabel;
+  final String? barrierLabel;
 
   @override
   Color get barrierColor => Colors.black54;
 
-  AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator.overlay);
-    return _animationController;
+    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
+    return _animationController!;
   }
 
   @override
@@ -71,7 +72,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
       ),
     );
     if (theme != null) {
-      bottomSheet = Theme(data: theme, child: bottomSheet);
+      bottomSheet = Theme(data: theme!, child: bottomSheet);
     }
 
     return bottomSheet;
@@ -80,16 +81,17 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
 
 class _PickerContentView extends StatefulWidget {
   _PickerContentView({
-    Key key,
-    this.initProvince,
-    this.initCity,
+    Key? key,
+    required this.initProvince,
+    required this.initCity,
     this.initTown,
-    this.pickerStyle,
-    this.addAllItem,
-    @required this.route,
+    required this.pickerStyle,
+    required this.addAllItem,
+    required this.route,
   }) : super(key: key);
 
-  final String initProvince, initCity, initTown;
+  final String initProvince, initCity;
+  final String? initTown;
   final AddressPickerRoute route;
   final bool addAllItem;
   final PickerStyle pickerStyle;
@@ -101,7 +103,8 @@ class _PickerContentView extends StatefulWidget {
 
 class _PickerState extends State<_PickerContentView> {
   final PickerStyle _pickerStyle;
-  String _currentProvince, _currentCity, _currentTown;
+  late String _currentProvince, _currentCity;
+  String? _currentTown;
   var cities = [];
   var towns = [];
   var provinces = [];
@@ -110,12 +113,12 @@ class _PickerState extends State<_PickerContentView> {
   bool hasTown = true;
 
   // 是否添加全部
-  final bool addAllItem;
+  late final bool addAllItem;
 
-  AnimationController controller;
-  Animation<double> animation;
+  AnimationController? controller;
+  Animation<double>? animation;
 
-  FixedExtentScrollController provinceScrollCtrl, cityScrollCtrl, townScrollCtrl;
+  late FixedExtentScrollController provinceScrollCtrl, cityScrollCtrl, townScrollCtrl;
 
   _PickerState(this._currentProvince, this._currentCity, this._currentTown, this.addAllItem, this._pickerStyle) {
     provinces = Address.provinces;
@@ -128,7 +131,7 @@ class _PickerState extends State<_PickerContentView> {
   void dispose() {
     provinceScrollCtrl.dispose();
     cityScrollCtrl.dispose();
-    townScrollCtrl?.dispose();
+    townScrollCtrl.dispose();
 
     super.dispose();
   }
@@ -137,11 +140,11 @@ class _PickerState extends State<_PickerContentView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: AnimatedBuilder(
-        animation: widget.route.animation,
-        builder: (BuildContext context, Widget child) {
+        animation: widget.route.animation!,
+        builder: (BuildContext context, Widget? child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation.value, this._pickerStyle),
+              delegate: _BottomPickerLayout(widget.route.animation!.value, this._pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -162,7 +165,7 @@ class _PickerState extends State<_PickerContentView> {
     int tindex = 0;
     pindex = provinces.indexWhere((p) => p == _currentProvince);
     pindex = pindex >= 0 ? pindex : 0;
-    String selectedProvince = provinces[pindex];
+    String? selectedProvince = provinces[pindex];
     if (selectedProvince != null) {
       _currentProvince = selectedProvince;
 
@@ -243,13 +246,13 @@ class _PickerState extends State<_PickerContentView> {
 
   void _notifyLocationChanged() {
     if (widget.route.onChanged != null) {
-      widget.route.onChanged(_currentProvince, _currentCity, _currentTown);
+      widget.route.onChanged!(_currentProvince, _currentCity, _currentTown);
     }
   }
 
   double _pickerFontSize(String text) {
     double ratio = hasTown ? 0.0 : 2.0;
-    if (text == null || text.length <= 6) {
+    if (text.length <= 6) {
       return 18.0;
     } else if (text.length < 9) {
       return 16.0 + ratio;
@@ -266,12 +269,12 @@ class _PickerState extends State<_PickerContentView> {
     if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
       return itemView;
     }
-    List viewList = <Widget>[];
+    List<Widget> viewList = <Widget>[];
     if (_pickerStyle.showTitleBar) {
       viewList.add(_titleView());
     }
     if (_pickerStyle.menu != null) {
-      viewList.add(_pickerStyle.menu);
+      viewList.add(_pickerStyle.menu!);
     }
     viewList.add(itemView);
 
@@ -372,7 +375,9 @@ class _PickerState extends State<_PickerContentView> {
           /// 确认按钮
           InkWell(
               onTap: () {
-                widget.route?.onConfirm(_currentProvince, _currentCity, _currentTown);
+                if (widget.route.onConfirm != null) {
+                  widget.route.onConfirm!(_currentProvince, _currentCity, _currentTown);
+                }
                 Navigator.pop(context);
               },
               child: _pickerStyle.commitButton)
