@@ -140,12 +140,12 @@ AddressPicker.showPicker(
 ### 更多方法
 ``` dart
 /// 根据城市名 查询城市code(有先后顺序)
-List<String> cityCode =  Locations.getTownsCityCode("四川省","成都市","锦江区");
+List<String> cityCode =  Address.getCityCodeByName(townName: '四川省', cityName: '成都市', provinceName: '武侯区');
 return [510000,510100,510104]  or  [510000,510000]  or [510000]  or  []
 
 
 /// 通过城市code 查询城市名(有先后顺序)
-List<String> cityName =  Locations.getCityNameByCode("510000","510100","510104");
+List<String> cityName =  Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "510104");
 return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川省] or []
 ```
 
