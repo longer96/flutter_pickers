@@ -24,7 +24,6 @@ class DateTimeData {
       case DateType.Second:
         return second;
     }
-    return [];
   }
 
   List get year => _year;

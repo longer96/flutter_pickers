@@ -51,13 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _itemView(title, Widget page) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: RaisedButton(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: ElevatedButton(
           onPressed: () {
             Navigator.push(context, new MaterialPageRoute(builder: (context) => page));
           },
           child: MyText(title, color: Colors.white, toppadding: 12, bottompadding: 12),
-          color: Theme.of(context).primaryColor),
-    );
+        ));
   }
 }

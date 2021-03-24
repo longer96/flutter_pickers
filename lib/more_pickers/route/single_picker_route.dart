@@ -165,7 +165,7 @@ class _PickerState extends State<_PickerContentView> {
     }
   }
 
-  double _pickerLaberPadding(String text) {
+  double _pickerLaberPadding(String? text) {
     double left = 60;
 
     if (text != null) {
@@ -175,7 +175,7 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   double _pickerFontSize(String text) {
-    if (text == null || text.length <= 6) {
+    if (text.length <= 6) {
       return 18.0;
     } else if (text.length < 9) {
       return 16.0;

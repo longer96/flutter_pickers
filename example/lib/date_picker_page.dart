@@ -57,7 +57,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
   }
 
   Widget demo() {
-    return FlatButton(
+    return TextButton(
         onPressed: () {
           Pickers.showDatePicker(
             context,

@@ -50,8 +50,8 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
   String initData = 'PHP';
 
   Widget _demo() {
-    return FlatButton(
-      color: Colors.white,
+    return TextButton(
+        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
         onPressed: () {
           Pickers.showSinglePicker(context,
               data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],

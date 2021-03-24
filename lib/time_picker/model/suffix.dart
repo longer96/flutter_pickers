@@ -35,6 +35,5 @@ class Suffix {
       case DateType.Second:
         return this.seconds;
     }
-    return '';
   }
 }

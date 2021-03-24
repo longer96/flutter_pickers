@@ -1,15 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_pickers/address_picker/locations_data.dart';
-import 'package:flutter_pickers/style/default_style.dart';
-import 'package:flutter_pickers/style/picker_style.dart';
-import 'package:flutter_pickers/time_picker/model/date_mode.dart';
-import 'package:flutter_pickers/time_picker/model/pduration.dart';
-import 'package:flutter_pickers/time_picker/time_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  List fruits = ['apples', 'bananas', 1];
-  List foods = ['apples', 'bananas', 1];
+  // List fruits = ['apples', 'bananas', 1];
+  // List foods = ['apples', 'bananas', 1];
 
   // var a = listEquals(fruits, foods);
   // print('longer >>> ${a}');
