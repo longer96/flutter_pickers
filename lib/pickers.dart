@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/address_picker/route/address_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/init_data.dart';
+import 'package:flutter_pickers/more_pickers/route/multiple_link_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/route/multiple_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/route/single_picker_route.dart';
 import 'package:flutter_pickers/style/default_style.dart';
@@ -27,7 +28,8 @@ class Pickers {
     SingleCallback? onChanged,
     SingleCallback? onConfirm,
   }) {
-    assert((data is List) || (data is PickerDataType), 'params : data must List or PickerDataType');
+    assert((data is List) || (data is PickerDataType),
+        'params : data must List or PickerDataType');
 
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
@@ -47,12 +49,14 @@ class Pickers {
           onConfirm: onConfirm,
           // theme: Theme.of(context, shadowThemeOnly: true),
           theme: Theme.of(context),
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
   }
 
   /// 通用 多列选择器
-  static void showMultiplePicker(
+  /// 无关联
+  static void showMultiPicker(
     BuildContext context, {
     required List<List> data,
     List? selectData,
@@ -83,7 +87,51 @@ class Pickers {
           onConfirm: onConfirm,
           // theme: Theme.of(context, shadowThemeOnly: true),
           theme: Theme.of(context),
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        ));
+  }
+
+  /// 通用 多列选择器
+  /// 有关联
+  /// [columeNum] 最大的列数
+  static void showMultiLinkPicker(
+    BuildContext context, {
+    required dynamic data,
+    required int columeNum,
+    List? selectData,
+    List? suffix,
+    PickerStyle? pickerStyle,
+    MultipleLinkCallback? onChanged,
+    MultipleLinkCallback? onConfirm,
+  }) {
+    assert(data is Map, 'params : data must Map');
+
+    if (selectData == null) {
+      selectData = [];
+    }
+
+    if (pickerStyle == null) {
+      pickerStyle = DefaultPickerStyle();
+    }
+    if (pickerStyle.context == null) {
+      pickerStyle.context = context;
+    }
+
+    Navigator.push(
+        context,
+        MultipleLinkPickerRoute(
+          data: data,
+          selectData: selectData,
+          columeNum: columeNum,
+          suffix: suffix,
+          pickerStyle: pickerStyle,
+          onChanged: onChanged,
+          onConfirm: onConfirm,
+          // theme: Theme.of(context, shadowThemeOnly: true),
+          theme: Theme.of(context),
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
   }
 
@@ -122,7 +170,8 @@ class Pickers {
           onConfirm: onConfirm,
           addAllItem: addAllItem,
           theme: Theme.of(context),
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
   }
 
@@ -191,7 +240,8 @@ class Pickers {
           onConfirm: onConfirm,
           // theme: Theme.of(context, shadowThemeOnly: true),
           theme: Theme.of(context),
-          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
   }
 }

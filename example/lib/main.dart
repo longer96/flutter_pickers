@@ -1,4 +1,5 @@
 import 'package:example/date_picker_page.dart';
+import 'package:example/multiple_link_picker_page.dart';
 import 'package:example/multiple_picker_page.dart';
 import 'package:example/style_picker_page.dart';
 import 'package:example/widget/my_app_bar.dart';
@@ -17,7 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primaryColor: Color(0xFF566FD5), visualDensity: VisualDensity.adaptivePlatformDensity),
+      theme: ThemeData(
+          primaryColor: Color(0xFF566FD5),
+          visualDensity: VisualDensity.adaptivePlatformDensity),
       home: MyHomePage(),
     );
   }
@@ -42,7 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         _itemView('地址选择器', AddressPickerPage()),
         _itemView('单列选择器', SinglePickerPage()),
-        _itemView('多列选择器', MultiplePickerPage()),
+        _itemView('多列选择器(无联动)', MultiplePickerPage()),
+        _itemView('多列选择器（联动）', MultipleLinkPickerPage()),
         _itemView('日期选择器', DatePickerPage()),
         _itemView('内置样式', StylePickerPage()),
       ],
@@ -54,9 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.only(bottom: 8),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.push(context, new MaterialPageRoute(builder: (context) => page));
+            Navigator.push(
+                context, new MaterialPageRoute(builder: (context) => page));
           },
-          child: MyText(title, color: Colors.white, toppadding: 12, bottompadding: 12),
+          child: MyText(title,
+              color: Colors.white, toppadding: 12, bottompadding: 12),
         ));
   }
 }

@@ -199,7 +199,7 @@ Widget _demo() {
 
 
 ## 多项选择器
-> Pickers.showMultiplePicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
+> Pickers.showMultiPicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
 
 
 <br><br>
@@ -215,7 +215,7 @@ Widget _demo() {
   ];
 
   void _showDemo(){
-    Pickers.showMultiplePicker(
+    Pickers.showMultiPicker(
       context,
       data: timeData,
       selectData: timeData2Select,

@@ -57,7 +57,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   }
 
   void _showDemo() {
-    Pickers.showMultiplePicker(
+    Pickers.showMultiPicker(
       context,
       data: timeData2,
       selectData: timeData2Select,
@@ -76,9 +76,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem(),
-            trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[MyText('$hourse时 $minute分', color: Colors.grey, rightpadding: 18), rightIcon]),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              MyText('$hourse时 $minute分', color: Colors.grey, rightpadding: 18),
+              rightIcon
+            ]),
           ),
         ),
         divider,
@@ -94,9 +95,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem2(),
-            trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[MyText(listTime.toString(), color: Colors.grey, rightpadding: 18), rightIcon]),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              MyText(listTime.toString(), color: Colors.grey, rightpadding: 18),
+              rightIcon
+            ]),
           ),
         ),
         divider,
@@ -112,9 +114,10 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem3(),
-            trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[MyText(listTime.toString(), color: Colors.grey, rightpadding: 18), rightIcon]),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              MyText(listTime.toString(), color: Colors.grey, rightpadding: 18),
+              rightIcon
+            ]),
           ),
         ),
         divider,
@@ -131,7 +134,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
             title: Text(title),
             onTap: () => _onClickItem4(),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              MyText(timeData2Select.toString(), color: Colors.grey, rightpadding: 18),
+              MyText(timeData2Select.toString(),
+                  color: Colors.grey, rightpadding: 18),
               rightIcon
             ]),
           ),
@@ -151,7 +155,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           Expanded(child: Center(child: MyText('分'))),
         ]));
 
-    Pickers.showMultiplePicker(
+    Pickers.showMultiPicker(
       context,
       pickerStyle: PickerStyle(menu: _headMenuView, menuHeight: menuHeight),
       data: timeData,
@@ -178,7 +182,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           Expanded(child: Center(child: MyText('秒'))),
         ]));
 
-    Pickers.showMultiplePicker(
+    Pickers.showMultiPicker(
       context,
       pickerStyle: PickerStyle(menu: _headMenuView, menuHeight: menuHeight),
       data: timeData2,
@@ -194,7 +198,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   }
 
   void _onClickItem3() {
-    Pickers.showMultiplePicker(
+    Pickers.showMultiPicker(
       context,
       pickerStyle: NoTitleStyle(),
       data: timeData3,
@@ -219,24 +223,29 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
     Widget _cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(left: 22),
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
     Widget _commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(right: 22),
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
     );
 
     // 头部样式
     Decoration headDecoration = BoxDecoration(
         color: Colors.grey[800],
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = Center(child: MyText('自定义选择器', color: Colors.white, size: 14));
+    Widget title =
+        Center(child: MyText('自定义选择器', color: Colors.white, size: 14));
 
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
@@ -249,7 +258,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       backgroundColor: Colors.grey[800],
     );
 
-    Pickers.showMultiplePicker(
+    Pickers.showMultiPicker(
       context,
       data: timeData2,
       selectData: timeData2Select,
