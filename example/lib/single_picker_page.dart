@@ -13,9 +13,9 @@ class SinglePickerPage extends StatefulWidget {
 
 class _SinglePickerPageState extends State<SinglePickerPage> {
   String selectSex = '女';
-  String selectEdu;
-  String selectSubject;
-  String selectConstellation;
+  String? selectEdu;
+  String? selectSubject;
+  String? selectConstellation;
   String selectZodiac = '龙';
   String selectHeight = '165';
   String selectEthnicity = '汉族';
@@ -34,10 +34,19 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         _item('星座', PickerDataType.constellation, selectConstellation),
         _item('生肖', PickerDataType.zodiac, selectZodiac),
         _item('名族', PickerDataType.ethnicity, selectEthnicity),
-        _item('自定义数据 (单列)', ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'], "Dart"),
-        _item('身高', List.generate(200, (index) => (50 + index).toString()), "168", label: 'cm'),
-        _item('温度', List.generate(110, (index) => (33.0 + index * .1).toString()), "37.5", label: '℃'),
-        _item('Laber', [123, '空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], 123, label: 'kg'),
+        _item('自定义数据 (单列)', ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
+            "Dart"),
+        _item(
+            '身高', List.generate(200, (index) => (50 + index).toString()), "168",
+            label: 'cm'),
+        _item(
+            '温度',
+            List.generate(110, (index) => (33.0 + index * .1).toString()),
+            "37.5",
+            label: '℃'),
+        _item('Laber',
+            [123, '空', '空空', '空空空', '空空空空', '空空空空空', '空空空空空空', '空空空空空空空'], 123,
+            label: 'kg'),
         // _item('Laber', [123, 23,235,3,14545,15,123163,18548,9646,1313], 235, label: 'kg'),
         _item2('自定义样式'),
 
@@ -51,7 +60,8 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
   Widget _demo() {
     return TextButton(
-        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.white)),
         onPressed: () {
           Pickers.showSinglePicker(context,
               data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
@@ -67,7 +77,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         child: Text('Demo : $initData'));
   }
 
-  Widget _item(title, var data, var selectData, {String label}) {
+  Widget _item(title, var data, var selectData, {String? label}) {
     return Column(
       children: [
         Container(
@@ -76,7 +86,8 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
             title: Text(title),
             onTap: () => _onClickItem(data, selectData, label: label),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              MyText(selectData.toString() ?? '暂无', color: Colors.grey, rightpadding: 18),
+              MyText(selectData.toString(),
+                  color: Colors.grey, rightpadding: 18),
               rightIcon
             ]),
           ),
@@ -86,7 +97,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     );
   }
 
-  void _onClickItem(var data, var selectData, {String label}) {
+  void _onClickItem(var data, var selectData, {String? label}) {
     Pickers.showSinglePicker(
       context,
       data: data,
@@ -123,9 +134,10 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
           child: ListTile(
             title: Text(title),
             onTap: () => _onClickItem2(),
-            trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[MyText(selectHeight ?? '暂无', color: Colors.grey, rightpadding: 18), rightIcon]),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              MyText(selectHeight, color: Colors.grey, rightpadding: 18),
+              rightIcon
+            ]),
           ),
         ),
         divider,
@@ -136,29 +148,36 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
   void _onClickItem2() {
     double menuHeight = 36.0;
     Widget _headMenuView = Container(
-        color: Colors.grey[700], height: menuHeight, child: Center(child: MyText('净身高', color: Colors.white)));
+        color: Colors.grey[700],
+        height: menuHeight,
+        child: Center(child: MyText('净身高', color: Colors.white)));
 
     Widget _cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       margin: const EdgeInsets.only(left: 22),
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
     Widget _commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       margin: const EdgeInsets.only(right: 22),
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
     );
 
     // 头部样式
     Decoration headDecoration = BoxDecoration(
         color: Colors.grey[800],
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = Center(child: MyText('身高选择器', color: Colors.white, size: 14));
+    Widget title =
+        Center(child: MyText('身高选择器', color: Colors.white, size: 14));
 
     var pickerStyle = PickerStyle(
       menu: _headMenuView,

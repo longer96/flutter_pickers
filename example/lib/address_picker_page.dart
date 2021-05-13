@@ -44,7 +44,8 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
   }
 
   Widget _checkLocation() {
-    Widget textView = Text(spliceCityName(pname: initProvince, cname: initCity, tname: initTown));
+    Widget textView = Text(
+        spliceCityName(pname: initProvince, cname: initCity, tname: initTown));
 
     return InkWell(
       onTap: () {
@@ -57,7 +58,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
             setState(() {
               initProvince = p;
               initCity = c;
-              initTown = t;
+              initTown = t ?? '';
             });
           },
         );
@@ -67,7 +68,8 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
   }
 
   Widget _checkLocation2() {
-    Widget textView = Text(spliceCityName(pname: locations1[0], cname: locations1[1]));
+    Widget textView =
+        Text(spliceCityName(pname: locations1[0], cname: locations1[1]));
 
     return InkWell(
       onTap: () {
@@ -102,24 +104,29 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
     Widget _cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: const EdgeInsets.only(left: 22),
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
     Widget _commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: const EdgeInsets.only(right: 22),
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
     );
 
     // 头部样式
     Decoration headDecoration = BoxDecoration(
         color: Colors.grey[800],
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
-    Widget title = Center(child: MyText('请选择地址', color: Colors.white, size: 14));
+    Widget title =
+        Center(child: MyText('请选择地址', color: Colors.white, size: 14));
 
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
@@ -139,9 +146,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           initProvince: locations2[0],
           initCity: locations2[1],
           initTown: locations2[2],
-
-          pickerStyle : pickerStyle,
-
+          pickerStyle: pickerStyle,
           addAllItem: false,
           onConfirm: (p, c, t) {
             setState(() {
@@ -152,7 +157,9 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           },
         );
       },
-      child: Text(spliceCityName(pname: locations2[0], cname: locations2[1], tname: locations2[2]),
+      child: Text(
+          spliceCityName(
+              pname: locations2[0], cname: locations2[1], tname: locations2[2]),
           style: TextStyle(fontSize: 16)),
     );
   }
@@ -190,7 +197,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
   }
 
   // 拼接城市
-  String spliceCityName({String pname, String cname, String tname}) {
+  String spliceCityName({String? pname, String? cname, String? tname}) {
     if (strEmpty(pname)) return '不限';
     StringBuffer sb = StringBuffer();
     sb.write(pname);
@@ -204,7 +211,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
   }
 
   /// 字符串为空
-  bool strEmpty(String value) {
+  bool strEmpty(String? value) {
     if (value == null) return true;
 
     return value.trim().isEmpty;

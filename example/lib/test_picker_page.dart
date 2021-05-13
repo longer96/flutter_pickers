@@ -54,7 +54,9 @@ class _DatePickerPageState extends State<DatePickerPage> {
   var date3 = ['哈哈哈', '是是是', '水电费'];
   double _height = 300;
 
-  FixedExtentScrollController scrollController1, scrollController2, scrollController3;
+  late FixedExtentScrollController scrollController1,
+      scrollController2,
+      scrollController3;
 
   @override
   void initState() {
@@ -71,10 +73,13 @@ class _DatePickerPageState extends State<DatePickerPage> {
           child: CupertinoPicker.builder(
             scrollController: scrollController1,
             itemExtent: 40,
-            onSelectedItemChanged: (int selectIndex) => _setPicker1(selectIndex),
+            onSelectedItemChanged: (int selectIndex) =>
+                _setPicker1(selectIndex),
             childCount: date1.length,
             itemBuilder: (_, index) {
-              return Align(alignment: Alignment.center, child: Text(date1[index].toString()));
+              return Align(
+                  alignment: Alignment.center,
+                  child: Text(date1[index].toString()));
             },
           ),
         ),
@@ -82,10 +87,13 @@ class _DatePickerPageState extends State<DatePickerPage> {
           child: CupertinoPicker.builder(
             scrollController: scrollController2,
             itemExtent: 40,
-            onSelectedItemChanged: (int selectIndex) => _setPicker2(selectIndex),
+            onSelectedItemChanged: (int selectIndex) =>
+                _setPicker2(selectIndex),
             childCount: date2.length,
             itemBuilder: (_, index) {
-              return Align(alignment: Alignment.center, child: Text(date2[index].toString()));
+              return Align(
+                  alignment: Alignment.center,
+                  child: Text(date2[index].toString()));
             },
           ),
         ),
@@ -96,7 +104,9 @@ class _DatePickerPageState extends State<DatePickerPage> {
             onSelectedItemChanged: (int selectIndex) {},
             childCount: date3.length,
             itemBuilder: (_, index) {
-              return Align(alignment: Alignment.center, child: Text(date3[index].toString()));
+              return Align(
+                  alignment: Alignment.center,
+                  child: Text(date3[index].toString()));
             },
           ),
         )

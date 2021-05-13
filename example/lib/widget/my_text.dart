@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyText extends StatelessWidget {
   const MyText(
     this.data, {
-    Key key,
+    Key? key,
     this.letfpadding = 0,
     this.toppadding = 0,
     this.rightpadding = 0,
@@ -19,7 +19,7 @@ class MyText extends StatelessWidget {
 //        ),
         super(key: key);
 
-  final String data;
+  final String? data;
   final double letfpadding;
   final double toppadding;
   final double rightpadding;
@@ -32,14 +32,14 @@ class MyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-            padding: EdgeInsets.fromLTRB(letfpadding, toppadding, rightpadding, bottompadding),
-            child: Text(
-              data ?? "null",
-              style: TextStyle(color: color, fontSize: size, fontWeight: fontWeight),
-              overflow: TextOverflow.ellipsis,
-              maxLines: maxLines,
-            ),
-          )
-        ;
+      padding: EdgeInsets.fromLTRB(
+          letfpadding, toppadding, rightpadding, bottompadding),
+      child: Text(
+        data ?? "null",
+        style: TextStyle(color: color, fontSize: size, fontWeight: fontWeight),
+        overflow: TextOverflow.ellipsis,
+        maxLines: maxLines,
+      ),
+    );
   }
 }
