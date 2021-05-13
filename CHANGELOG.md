@@ -1,4 +1,10 @@
 
+## [2.0.1]
+* add multiple link picker
+
+## [2.0.1]
+* fix bug
+
 ## [2.0.0]
 * null safely
 

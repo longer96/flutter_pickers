@@ -22,31 +22,3 @@ $ flutter packages get
 ```
 
 文档语言: [English](README-EN.md) | [中文简体](README.md)
-
-## 用法
-
-
-### 省市区初始化
-
-``` dart
-AddressPicker
-```
-
-![Example sources](./example/locations.gif)
-
-
-### `initialTown: null` 只选择省市
-
-``` dart
-AddressPicker
-```
-
-![Example sources](./example/locations-without-town.gif)
-
-
-
-
-| 参数        | 描述                  | 默认                |
-| ----------- | --------------------- | ------------------- |
-| url         | 网络请求地址          | required            |
-| scale       | ImageInfo 中的 scale  | 1.0                 |

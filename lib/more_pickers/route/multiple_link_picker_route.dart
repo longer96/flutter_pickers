@@ -97,6 +97,9 @@ class _PickerContentView extends StatefulWidget {
 class _PickerState extends State<_PickerContentView> {
   final PickerStyle _pickerStyle;
 
+  // 没有数据时占位字符
+  static const placeData = '';
+
   /// 选中数据
   late List _selectData;
 
@@ -177,11 +180,9 @@ class _PickerState extends State<_PickerContentView> {
         }
         _columnData.add(_data.keys.toList());
       } else {
-        /// 其他列 fixme
-        // 先得到下一列数据
-        // dynamic date = _data[_selectData[i - 1]];
+        /// 其他列
         dynamic date = findNextData(i);
-        print('longer   >>> $date');
+        // print('longer  第$i列 >>> $date');
 
         if (date is Map) {
           pindex = date.keys.toList().indexOf(_selectData[i]);
@@ -210,28 +211,42 @@ class _PickerState extends State<_PickerContentView> {
     }
   }
 
-  void _setPicker(int position, int selectIndex) {
+  /// [position] 变动的列
+  /// [selectIndex] 对应列选中的index
+  /// [jump] 是否需要jumpToItem
+  void _setPicker(int position, int selectIndex, bool jump) {
     // 得到新的选中的数据
     var selectValue = _columnData[position][selectIndex];
     // 更新选中数据
     _selectData[position] = selectValue;
-    // scrollCtrl[position].jumpToItem(0);
+    if (jump) {
+      scrollCtrl[position].jumpToItem(selectIndex);
+    }
 
     /// 如果不是最后一列
     /// 数据的变动都会造成剩下列的更新
-    if (position < _columeNum) {
+    if (position < _columeNum - 1) {
       // 先更新下一列所有数据
-      _columnData[position + 1] = findColumeData(position + 1);
-      // 在递归
-      _setPicker(position + 1, 0);
+      // 如果这一列的所有数据都为空，下列直接也设为空数据(优化)
+      if (_columnData[position].length == 1 &&
+          _columnData[position].first == placeData) {
+        _columnData[position + 1] = [placeData];
+      } else {
+        _columnData[position + 1] = findColumeData(position + 1);
+      }
+
+      // 再次递归
+      _setPicker(position + 1, 0, true);
     } else {
       _notifyLocationChanged();
     }
   }
 
   /// 找到对应位置的 下一列数据
+  /// return map list other
   dynamic findNextData(int position) {
     dynamic nextData;
+
     for (int i = 0; i < position; i++) {
       if (i == 0) {
         // 肯定是map
@@ -241,7 +256,7 @@ class _PickerState extends State<_PickerContentView> {
         dynamic data = nextData[_selectData[i]];
 
         if (data is Map) {
-          nextData = data.keys.toList();
+          nextData = data;
         } else if (data is List) {
           nextData = data;
         } else {
@@ -249,10 +264,11 @@ class _PickerState extends State<_PickerContentView> {
           nextData = [data];
         }
       }
+      // print('longer  i:$i >>> $nextData');
 
       /// 如果数据 还没有到最后 就 已经不是Map
-      if (!(nextData is Map) && i <= position) {
-        return [''];
+      if (!(nextData is Map) && (i < position - 1)) {
+        return [placeData];
       }
     }
 
@@ -262,22 +278,21 @@ class _PickerState extends State<_PickerContentView> {
   /// 找到对应位置的数据
   /// 比如 position = 2;
   /// 就是找到第2列数据
+  /// return list
   List findColumeData(int position) {
-    if (position == 1) return (_data[_selectData[0]] as Map).keys.toList();
-
     dynamic nextData;
     for (int i = 0; i < position; i++) {
       if (i == 0) {
         // 肯定是map
         nextData = _data[_selectData[0]];
       } else {
-        print(
-            'longer   选中 >>> ${_selectData.join('-')}   当前选中： ${_selectData[i]}');
+        // print(
+        //     'longer   选中 >>> ${_selectData.join('-')}   当前选中： ${_selectData[i]}');
         // 肯定是map
         dynamic data = nextData[_selectData[i]];
 
         if (data is Map) {
-          nextData = data.keys.toList();
+          nextData = data;
         } else if (data is List) {
           nextData = data;
         } else {
@@ -285,16 +300,21 @@ class _PickerState extends State<_PickerContentView> {
           nextData = [data];
         }
       }
-      print('longer  i:$i >>> $nextData');
+      // print('longer  i:$i >>> $nextData');
+
+      /// 如果是map 并且是最后一列 返回他的key
+      if ((nextData is Map) && (i == position - 1)) {
+        return nextData.keys.toList();
+      }
 
       /// 如果数据 还没有到最后 就 已经不是Map
-      if (!(nextData is Map) && i < (position - 1)) {
-        print('longer2  第:$position列返回数据  >>> $nextData');
-        return ["***"];
+      if (!(nextData is Map) && (i < position - 1)) {
+        // print('longer2  第:$position列之前返回数据  >>> $nextData');
+        return [placeData];
       }
     }
 
-    print('longer  第:$position列返回数据    >>> $nextData');
+    // print('longer  第:$position列返回数据    >>> $nextData');
     return nextData;
   }
 
@@ -343,8 +363,7 @@ class _PickerState extends State<_PickerContentView> {
           scrollController: scrollCtrl[position],
           itemExtent: _pickerStyle.pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) {
-            print('longer   >>> changge');
-            _setPicker(position, selectIndex);
+            _setPicker(position, selectIndex, false);
           },
           childCount: _columnData[position].length,
           itemBuilder: (_, index) {

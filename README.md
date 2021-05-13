@@ -22,7 +22,7 @@ flutter.eeaarr.cn (上面进不去 试试这个)
 1.Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^1.0.1
+    flutter_pickers: ^2.1.0
 ```
 
 2.Get
@@ -46,7 +46,8 @@ import 'package:flutter_pickers/pickers.dart';
   - [单项选择器](#单项选择器)
     - [简单使用](#简单使用.)
     - [内置数据](#内置数据)
-  - [多项选择器](#多项选择器)
+  - [多项选择器（无联动）](#多项选择器（无联动）)
+  - [多项选择器（联动）](#多项选择器（联动）)
   - [时间选择器](#时间选择器)
     - [简单使用](#简单使用..)
     - [更多方法](#更多方法.)
@@ -198,7 +199,7 @@ Widget _demo() {
 - ethnicity     // 民族
 
 
-## 多项选择器
+## 多项选择器（无联动）
 > Pickers.showMultiPicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_picker_page.dart)
 
 
@@ -235,6 +236,63 @@ Widget _demo() {
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (List data)  | null|
 | onConfirm     | 选择器提交 return (List data)| null|
+
+<br>
+
+## 多项选择器（联动）
+> Pickers.showMultiLinkPicker() [请戳我查看demo代码](https://github.com/longer96/flutter_pickers/blob/master/example/lib/multiple_link_picker_page.dart)
+
+
+
+### 示例代码
+``` dart
+  void _showPicker() {
+    var multiData = {
+      'a': {
+        'aa': [1, 'ww'],
+        'aaa': 10086
+      },
+      'b': ['bbb', 'bbbbb'],
+      'c': {
+        'cc': {
+          'ccc333': [111, 1111],
+          'cccc33': {
+            'ccccc4': '帮忙star',
+            'ccc4-2': [4442, 44442, 442]
+          },
+        },
+        'cc2': ['ccc', 123],
+        'cc3': 'star 鼓励'
+      }
+    };
+
+    Pickers.showMultiLinkPicker(
+      context,
+      data: multiData,
+      // 注意数据类型要对应 比如 44442 写成字符串类型'44442'，则找不到
+      // selectData: ['c', 'cc', 'cccc33', 'ccc4-2', 44442],
+      selectData: ['c', 'cc3'],
+      columeNum: 5,
+      suffix: ['', '', '', '', ''],
+      onConfirm: (List p) {
+        print('longer >>> 返回数据：${p.join('、')}');
+        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
+      },
+    );
+  }
+```
+
+| 参数           | 描述                  | 默认                 |
+| -----------   | --------------------- | ------------------- |
+| columeNum     | 选择器列数（必填）       | null|
+| data          | 数据源                 | null|
+
+<br/>
+
+* 和上面的多项选择器（无联动）差不多，就不多介绍，改动了2个字段
+* 最外层必须是map（既然是多项，你至少得2列吧）
+* map类型 说明还有下一列，如果是list或者string、num 表示已经达到最后一级
+
 
 
 
