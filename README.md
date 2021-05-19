@@ -9,6 +9,7 @@ flutter 选择器库，包括日期及时间选择器（可设置范围）、单
 
 ## Example
 [Web版在线Demo](https://longer96.github.io/flutter_pickers/)
+<br>
 flutter.eeaarr.cn (上面进不去 试试这个)
 
 
@@ -22,7 +23,7 @@ flutter.eeaarr.cn (上面进不去 试试这个)
 1.Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^2.1.0
+    flutter_pickers: ^2.1.1
 ```
 
 2.Get
@@ -170,7 +171,7 @@ Widget _demo() {
       Pickers.showSinglePicker(context,
           data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
           selectData: initData,
-          onConfirm: (p) {
+          onConfirm: (p, position) {
             setState(() {
               initData = p;
             });
@@ -185,8 +186,8 @@ Widget _demo() {
 | data        | 数据源                 | null|
 | selectData  | 选中的数据              | ''|
 | pickerStyle   | 详见[样式](#样式)     | DefaultPickerStyle()|
-| onChanged     | 选择器发生变动 return (String data)  | null|
-| onConfirm     | 选择器提交 return (String data)      | null|
+| onChanged     | 选择器发生变动 return (String data，int position)  | null|
+| onConfirm     | 选择器提交 return (String data，int position)      | null|
 
 
 ### 内置数据
@@ -234,8 +235,8 @@ Widget _demo() {
 | selectData    | 选中的数据              | ''|
 | suffix        | item后缀               | null|
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
-| onChanged     | 选择器发生变动 return (List data)  | null|
-| onConfirm     | 选择器提交 return (List data)| null|
+| onChanged     | 选择器发生变动 return (List data, List<int> position)  | null|
+| onConfirm     | 选择器提交 return (List data, List<int> position)| null|
 
 <br>
 

@@ -63,16 +63,22 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.white)),
         onPressed: () {
-          Pickers.showSinglePicker(context,
-              data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
-              selectData: initData,
-              pickerStyle: DefaultPickerStyle(),
-              onConfirm: (p) {
-                setState(() {
-                  initData = p;
-                });
-              },
-              onChanged: (p) => print('数据发生改变：$p'));
+          Pickers.showSinglePicker(
+            context,
+            data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
+            selectData: initData,
+            pickerStyle: DefaultPickerStyle(),
+            onConfirm: (p, position) {
+              print('longer >>> 返回数据下标：$position');
+              setState(() {
+                initData = p;
+              });
+            },
+            onChanged: (p, position) {
+              print('longer >>> 返回数据下标：$position');
+              print('数据发生改变：$p');
+            },
+          );
         },
         child: Text('Demo : $initData'));
   }
@@ -104,7 +110,8 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       selectData: selectData,
       pickerStyle: DefaultPickerStyle(),
       suffix: label,
-      onConfirm: (p) {
+      onConfirm: (p, position) {
+        print('longer >>> 返回数据下标：$position');
         print('longer >>> 返回数据：$p');
         print('longer >>> 返回数据类型：${p.runtimeType}');
         setState(() {
@@ -194,12 +201,14 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         data: List.generate(200, (index) => (50 + index).toString()),
         selectData: selectHeight,
         suffix: 'cm',
-        pickerStyle: pickerStyle, onConfirm: (p) {
+        pickerStyle: pickerStyle, onConfirm: (p, position) {
+      print('longer >>> 返回数据下标：$position');
       setState(() {
         selectHeight = p;
       });
-    }, onChanged: (p) {
-      // print('数据发生改变：$p');
+    }, onChanged: (p, position) {
+      print('数据发生改变：$p');
+      print('longer >>> 返回数据下标：$position');
     });
   }
 }

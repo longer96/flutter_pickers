@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
-typedef MultipleCallback(List res);
+typedef MultipleCallback(List res, List<int> position);
 
 /// 多项选择器
 /// 无关联
@@ -92,6 +92,7 @@ class _PickerContentView extends StatefulWidget {
 class _PickerState extends State<_PickerContentView> {
   final PickerStyle _pickerStyle;
   late List _selectData;
+  late List<int> _selectDataPosition;
   List<List> _data;
 
   AnimationController? controller;
@@ -102,12 +103,14 @@ class _PickerState extends State<_PickerContentView> {
   _PickerState(this._data, List mSelectData, this._pickerStyle) {
     // 已选择器数据为准，因为初始化数据有可能和选择器对不上
     this._selectData = [];
+    this._selectDataPosition = [];
     this._data.asMap().keys.forEach((index) {
       if (index >= mSelectData.length) {
         this._selectData.add('');
       } else {
         this._selectData.add(mSelectData[index]);
       }
+      this._selectDataPosition.add(0);
     });
 
     _init();
@@ -157,6 +160,7 @@ class _PickerState extends State<_PickerContentView> {
         _selectData[index] = _data[index][0];
         pindex = 0;
       }
+      _selectDataPosition[index] = pindex;
 
       scrollCtrl.add(new FixedExtentScrollController(initialItem: pindex));
     });
@@ -169,13 +173,15 @@ class _PickerState extends State<_PickerContentView> {
       setState(() {
         _selectData[index] = selectedName;
       });
+      _selectDataPosition[index] = selectIndex;
+
       _notifyLocationChanged();
     }
   }
 
   void _notifyLocationChanged() {
     if (widget.route.onChanged != null) {
-      widget.route.onChanged!(_selectData);
+      widget.route.onChanged!(_selectData, _selectDataPosition);
     }
   }
 
@@ -261,7 +267,7 @@ class _PickerState extends State<_PickerContentView> {
           InkWell(
               onTap: () {
                 if (widget.route.onConfirm != null) {
-                  widget.route.onConfirm!(_selectData);
+                  widget.route.onConfirm!(_selectData, _selectDataPosition);
                 }
                 Navigator.pop(context);
               },

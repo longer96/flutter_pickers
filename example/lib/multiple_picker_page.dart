@@ -17,8 +17,9 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   // 时间多列  选中的数据
   var listTime = [];
 
+  // 注意一个是 int  一列是string
   final timeData = [
-    List.generate(24, (index) => (index).toString()).toList(),
+    List.generate(24, (index) => (index)).toList(),
     List.generate(60, (index) => index.toString()).toList()
   ];
   final timeData2 = [
@@ -62,7 +63,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       data: timeData2,
       selectData: timeData2Select,
       suffix: ['', '时', '分', '秒'],
-      onConfirm: (p) {
+      onConfirm: (p, position) {
+        print('longer >>> 返回数据下标：${position.join(',')}');
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
       },
     );
@@ -160,7 +162,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       pickerStyle: PickerStyle(menu: _headMenuView, menuHeight: menuHeight),
       data: timeData,
       selectData: [hourse, minute],
-      onConfirm: (p) {
+      onConfirm: (p, position) {
+        print('longer >>> 返回数据下标：${position.join(',')}');
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {
           hourse = p[0];
@@ -187,7 +190,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       pickerStyle: PickerStyle(menu: _headMenuView, menuHeight: menuHeight),
       data: timeData2,
       selectData: ['', 4, 5, 12],
-      onConfirm: (p) {
+      onConfirm: (p, position) {
+        print('longer >>> 返回数据下标：${position.join(',')}');
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {
           listTime.clear();
@@ -202,7 +206,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       context,
       pickerStyle: NoTitleStyle(),
       data: timeData3,
-      onChanged: (p) {
+      onChanged: (p, position) {
+        print('longer >>> 返回数据下标：${position.join(',')}');
         print('longer >>> $p');
       },
     );
@@ -264,7 +269,8 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       selectData: timeData2Select,
       suffix: ['', '时', '分', '秒'],
       pickerStyle: pickerStyle,
-      onConfirm: (p) {
+      onConfirm: (p, position) {
+        print('longer >>> 返回数据下标：${position.join(',')}');
         print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
         setState(() {
           timeData2Select.clear();

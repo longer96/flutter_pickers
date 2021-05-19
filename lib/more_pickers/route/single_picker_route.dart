@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
-typedef SingleCallback(var data);
+typedef SingleCallback(var data, int position);
 
 class SinglePickerRoute<T> extends PopupRoute<T> {
   SinglePickerRoute({
@@ -43,12 +43,14 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
 
   @override
   AnimationController createAnimationController() {
-    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
+    _animationController =
+        BottomSheet.createAnimationController(navigator!.overlay!);
     return _animationController;
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     List mData = [];
     // 初始化数据
     if (data is PickerDataType) {
@@ -88,12 +90,17 @@ class _PickerContentView extends StatefulWidget {
   final PickerStyle pickerStyle;
 
   @override
-  State<StatefulWidget> createState() => _PickerState(this.data, this.selectData, this.pickerStyle);
+  State<StatefulWidget> createState() =>
+      _PickerState(this.data, this.selectData, this.pickerStyle);
 }
 
 class _PickerState extends State<_PickerContentView> {
   final PickerStyle _pickerStyle;
+  // 选中数据
   var _selectData;
+  // 选中数据下标
+  int _selectPosition = 0;
+
   List _data = [];
 
   late FixedExtentScrollController scrollCtrl;
@@ -120,7 +127,8 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget? child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation!.value, pickerStyle: _pickerStyle),
+              delegate: _BottomPickerLayout(widget.route.animation!.value,
+                  pickerStyle: _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -136,12 +144,14 @@ class _PickerState extends State<_PickerContentView> {
 
   _init() {
     int pindex = 0;
-    pindex = _data.indexWhere((element) => element.toString() == _selectData.toString());
+    pindex = _data
+        .indexWhere((element) => element.toString() == _selectData.toString());
     // 如果没有匹配到选择器对应数据，我们得修改选择器选中数据 ，不然confirm 返回的事设置的数据
     if (pindex < 0) {
       _selectData = _data[0];
       pindex = 0;
     }
+    _selectPosition = pindex;
 
     scrollCtrl = new FixedExtentScrollController(initialItem: pindex);
     _laberLeft = _pickerLaberPadding(_data[pindex].toString());
@@ -154,6 +164,7 @@ class _PickerState extends State<_PickerContentView> {
       setState(() {
         _selectData = selectedProvince;
       });
+      _selectPosition = index;
 
       _notifyLocationChanged();
     }
@@ -161,7 +172,7 @@ class _PickerState extends State<_PickerContentView> {
 
   void _notifyLocationChanged() {
     if (widget.route.onChanged != null) {
-      widget.route.onChanged!(_selectData);
+      widget.route.onChanged!(_selectData, _selectPosition);
     }
   }
 
@@ -227,7 +238,9 @@ class _PickerState extends State<_PickerContentView> {
         return Align(
             alignment: Alignment.center,
             child: Text(text,
-                style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
+                style: TextStyle(
+                    color: _pickerStyle.textColor,
+                    fontSize: _pickerFontSize(text)),
                 textAlign: TextAlign.start));
       },
     );
@@ -240,7 +253,10 @@ class _PickerState extends State<_PickerContentView> {
         duration: Duration(milliseconds: 100),
         padding: EdgeInsets.only(left: _laberLeft),
         child: Text(widget.route.suffix!,
-            style: TextStyle(color: _pickerStyle.textColor, fontSize: 20, fontWeight: FontWeight.w500)),
+            style: TextStyle(
+                color: _pickerStyle.textColor,
+                fontSize: 20,
+                fontWeight: FontWeight.w500)),
       ));
 
       view = Stack(children: [cPicker, laberView]);
@@ -266,7 +282,9 @@ class _PickerState extends State<_PickerContentView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
-          InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
+          InkWell(
+              onTap: () => Navigator.pop(context),
+              child: _pickerStyle.cancelButton),
 
           /// 标题
           Expanded(child: _pickerStyle.title),
@@ -275,7 +293,7 @@ class _PickerState extends State<_PickerContentView> {
           InkWell(
               onTap: () {
                 if (widget.route.onConfirm != null) {
-                  widget.route.onConfirm!(_selectData);
+                  widget.route.onConfirm!(_selectData, _selectPosition);
                 }
                 Navigator.pop(context);
               },
@@ -303,7 +321,10 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
     }
 
     return BoxConstraints(
-        minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth, minHeight: 0.0, maxHeight: maxHeight);
+        minWidth: constraints.maxWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: 0.0,
+        maxHeight: maxHeight);
   }
 
   @override

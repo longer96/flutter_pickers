@@ -1,4 +1,7 @@
 
+## [2.1.1]
+* add selected index
+
 ## [2.1.0]
 * add multiple link picker
 

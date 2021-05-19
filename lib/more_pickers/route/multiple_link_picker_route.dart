@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
-typedef MultipleLinkCallback(List res);
+typedef MultipleLinkCallback(List res, List<int> position);
 
 /// 多项选择器
 /// 有关联
@@ -103,6 +103,9 @@ class _PickerState extends State<_PickerContentView> {
   /// 选中数据
   late List _selectData;
 
+  /// 选中数据下标
+  late List<int> _selectDataPosition;
+
   /// 原始数据
   Map _data;
 
@@ -121,12 +124,14 @@ class _PickerState extends State<_PickerContentView> {
       this._data, List mSelectData, this._pickerStyle, this._columeNum) {
     // 已选择器数据为准，因为初始化数据有可能和选择器对不上
     this._selectData = [];
+    this._selectDataPosition = [];
     for (int i = 0; i < _columeNum; ++i) {
       if (i >= mSelectData.length) {
         this._selectData.add('');
       } else {
         this._selectData.add(mSelectData[i]);
       }
+      this._selectDataPosition.add(0);
     }
 
     _init(mSelectData);
@@ -178,6 +183,8 @@ class _PickerState extends State<_PickerContentView> {
           _selectData[i] = _data.keys.first;
           pindex = 0;
         }
+        _selectDataPosition[i] = pindex;
+
         _columnData.add(_data.keys.toList());
       } else {
         /// 其他列
@@ -205,6 +212,8 @@ class _PickerState extends State<_PickerContentView> {
 
           _columnData.add([date]);
         }
+
+        _selectDataPosition[i] = pindex;
       }
 
       scrollCtrl.add(FixedExtentScrollController(initialItem: pindex));
@@ -219,6 +228,7 @@ class _PickerState extends State<_PickerContentView> {
     var selectValue = _columnData[position][selectIndex];
     // 更新选中数据
     _selectData[position] = selectValue;
+    _selectDataPosition[position] = selectIndex;
     if (jump) {
       scrollCtrl[position].jumpToItem(selectIndex);
     }
@@ -321,7 +331,7 @@ class _PickerState extends State<_PickerContentView> {
   void _notifyLocationChanged() {
     setState(() {});
     if (widget.route.onChanged != null) {
-      widget.route.onChanged!(_selectData);
+      widget.route.onChanged!(_selectData, _selectDataPosition);
     }
   }
 
@@ -408,7 +418,7 @@ class _PickerState extends State<_PickerContentView> {
           InkWell(
               onTap: () {
                 if (widget.route.onConfirm != null) {
-                  widget.route.onConfirm!(_selectData);
+                  widget.route.onConfirm!(_selectData, _selectDataPosition);
                 }
                 Navigator.pop(context);
               },
