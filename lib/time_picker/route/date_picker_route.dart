@@ -521,7 +521,7 @@ class _PickerState extends State<_PickerContentView> {
 
       int jumpToIndexMinute = 0;
 
-      if (!listEquals(_dateTimeData.month, resultMinute)) {
+      if (!listEquals(_dateTimeData.minute, resultMinute)) {
         //可能 选中的时间 由于设置了新数据后没有了
         // 小于不用考虑 会进else
         if (_selectData.minute! > resultMinute.last) {
