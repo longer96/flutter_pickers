@@ -1,4 +1,9 @@
 
+
+## [2.1.3]
+* fix date_picker bug
+* add overlapTabBar parameter
+
 ## [2.1.1]
 * add selected index
 

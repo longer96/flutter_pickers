@@ -57,6 +57,8 @@ import 'package:flutter_pickers/pickers.dart';
   - [样式](#样式)
     - [内置样式](#内置样式)
     - [自定义样式](#自定义样式)
+  - [其他参数](#其他参数)
+    - overlapTabBar
     
     
 ## 地址选择器
@@ -478,6 +480,11 @@ Widget demo() {
 class PickerStyle {}
 ```
 
+
+## 其他参数
+
+### [overlapTabBar](https://github.com/longer96/flutter_pickers/pull/16)
+<img width="200px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/pic15.jpg"/>
 
 
 ## License
