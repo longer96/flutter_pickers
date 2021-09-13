@@ -19,15 +19,14 @@ import 'time_picker/model/date_item_model.dart';
 /// [suffix] 后缀
 class Pickers {
   /// 单列 通用选择器
-  static void showSinglePicker(
-    BuildContext context, {
-    required dynamic data,
-    dynamic selectData,
-    String? suffix,
-    PickerStyle? pickerStyle,
-    SingleCallback? onChanged,
-    SingleCallback? onConfirm,
-  }) {
+  static void showSinglePicker(BuildContext context,
+      {required dynamic data,
+      dynamic selectData,
+      String? suffix,
+      PickerStyle? pickerStyle,
+      SingleCallback? onChanged,
+      SingleCallback? onConfirm,
+      bool overlapTabBar = false}) {
     assert((data is List) || (data is PickerDataType),
         'params : data must List or PickerDataType');
 
@@ -38,33 +37,29 @@ class Pickers {
       pickerStyle.context = context;
     }
 
-    Navigator.push(
-        context,
-        SinglePickerRoute(
-          data: data,
-          suffix: suffix,
-          selectData: selectData,
-          pickerStyle: pickerStyle,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          // theme: Theme.of(context, shadowThemeOnly: true),
-          theme: Theme.of(context),
-          barrierLabel:
-              MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(SinglePickerRoute(
+      data: data,
+      suffix: suffix,
+      selectData: selectData,
+      pickerStyle: pickerStyle,
+      onChanged: onChanged,
+      onConfirm: onConfirm,
+      // theme: Theme.of(context, shadowThemeOnly: true),
+      theme: Theme.of(context),
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    ));
   }
 
   /// 通用 多列选择器
   /// 无关联
-  static void showMultiPicker(
-    BuildContext context, {
-    required List<List> data,
-    List? selectData,
-    List? suffix,
-    PickerStyle? pickerStyle,
-    MultipleCallback? onChanged,
-    MultipleCallback? onConfirm,
-  }) {
+  static void showMultiPicker(BuildContext context,
+      {required List<List> data,
+      List? selectData,
+      List? suffix,
+      PickerStyle? pickerStyle,
+      MultipleCallback? onChanged,
+      MultipleCallback? onConfirm,
+      bool overlapTabBar = false}) {
     if (selectData == null) {
       selectData = [];
     }
@@ -76,35 +71,32 @@ class Pickers {
       pickerStyle.context = context;
     }
 
-    Navigator.push(
-        context,
-        MultiplePickerRoute(
-          data: data,
-          selectData: selectData,
-          suffix: suffix,
-          pickerStyle: pickerStyle,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          // theme: Theme.of(context, shadowThemeOnly: true),
-          theme: Theme.of(context),
-          barrierLabel:
-              MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
+    Navigator.of(context, rootNavigator: overlapTabBar)
+        .push(MultiplePickerRoute(
+      data: data,
+      selectData: selectData,
+      suffix: suffix,
+      pickerStyle: pickerStyle,
+      onChanged: onChanged,
+      onConfirm: onConfirm,
+      // theme: Theme.of(context, shadowThemeOnly: true),
+      theme: Theme.of(context),
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    ));
   }
 
   /// 通用 多列选择器
   /// 有关联
   /// [columeNum] 最大的列数
-  static void showMultiLinkPicker(
-    BuildContext context, {
-    required dynamic data,
-    required int columeNum,
-    List? selectData,
-    List? suffix,
-    PickerStyle? pickerStyle,
-    MultipleLinkCallback? onChanged,
-    MultipleLinkCallback? onConfirm,
-  }) {
+  static void showMultiLinkPicker(BuildContext context,
+      {required dynamic data,
+      required int columeNum,
+      List? selectData,
+      List? suffix,
+      PickerStyle? pickerStyle,
+      MultipleLinkCallback? onChanged,
+      MultipleLinkCallback? onConfirm,
+      bool overlapTabBar = false}) {
     assert(data is Map, 'params : data must Map');
 
     if (selectData == null) {
@@ -118,21 +110,19 @@ class Pickers {
       pickerStyle.context = context;
     }
 
-    Navigator.push(
-        context,
-        MultipleLinkPickerRoute(
-          data: data,
-          selectData: selectData,
-          columeNum: columeNum,
-          suffix: suffix,
-          pickerStyle: pickerStyle,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          // theme: Theme.of(context, shadowThemeOnly: true),
-          theme: Theme.of(context),
-          barrierLabel:
-              MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
+    Navigator.of(context, rootNavigator: overlapTabBar)
+        .push(MultipleLinkPickerRoute(
+      data: data,
+      selectData: selectData,
+      columeNum: columeNum,
+      suffix: suffix,
+      pickerStyle: pickerStyle,
+      onChanged: onChanged,
+      onConfirm: onConfirm,
+      // theme: Theme.of(context, shadowThemeOnly: true),
+      theme: Theme.of(context),
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    ));
   }
 
   /// 自定义 地区选择器
@@ -142,16 +132,15 @@ class Pickers {
   /// [onChanged]   选择器发生变动
   /// [onConfirm]   选择器提交
   /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
-  static void showAddressPicker(
-    BuildContext context, {
-    PickerStyle? pickerStyle,
-    String initProvince: '',
-    String initCity: '',
-    String? initTown,
-    bool addAllItem: true,
-    AddressCallback? onChanged,
-    AddressCallback? onConfirm,
-  }) {
+  static void showAddressPicker(BuildContext context,
+      {PickerStyle? pickerStyle,
+      String initProvince: '',
+      String initCity: '',
+      String? initTown,
+      bool addAllItem: true,
+      AddressCallback? onChanged,
+      AddressCallback? onConfirm,
+      bool overlapTabBar = false}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
     }
@@ -159,20 +148,17 @@ class Pickers {
       pickerStyle.context = context;
     }
 
-    Navigator.push(
-        context,
-        AddressPickerRoute(
-          pickerStyle: pickerStyle,
-          initProvince: initProvince,
-          initCity: initCity,
-          initTown: initTown,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          addAllItem: addAllItem,
-          theme: Theme.of(context),
-          barrierLabel:
-              MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(AddressPickerRoute(
+      pickerStyle: pickerStyle,
+      initProvince: initProvince,
+      initCity: initCity,
+      initTown: initTown,
+      onChanged: onChanged,
+      onConfirm: onConfirm,
+      addAllItem: addAllItem,
+      theme: Theme.of(context),
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    ));
   }
 
   /// 时间选择器
@@ -193,7 +179,8 @@ class Pickers {
       Suffix? suffix,
       PickerStyle? pickerStyle,
       DateCallback? onChanged,
-      DateCallback? onConfirm}) {
+      DateCallback? onConfirm,
+      bool overlapTabBar = false}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
     }
@@ -227,21 +214,18 @@ class Pickers {
       }
     }
 
-    Navigator.push(
-        context,
-        DatePickerRoute(
-          mode: mode,
-          initDate: selectDate,
-          maxDate: maxDate,
-          minDate: minDate,
-          suffix: suffix,
-          pickerStyle: pickerStyle,
-          onChanged: onChanged,
-          onConfirm: onConfirm,
-          // theme: Theme.of(context, shadowThemeOnly: true),
-          theme: Theme.of(context),
-          barrierLabel:
-              MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(DatePickerRoute(
+      mode: mode,
+      initDate: selectDate,
+      maxDate: maxDate,
+      minDate: minDate,
+      suffix: suffix,
+      pickerStyle: pickerStyle,
+      onChanged: onChanged,
+      onConfirm: onConfirm,
+      // theme: Theme.of(context, shadowThemeOnly: true),
+      theme: Theme.of(context),
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    ));
   }
 }
