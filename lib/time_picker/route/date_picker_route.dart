@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -444,13 +442,15 @@ class _PickerState extends State<_PickerContentView> {
         setState(() {
           if (updateMonth) {
             _dateTimeData.month = resultMonth;
-            scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndexMonth);
+            // scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndexMonth);
+            Future.delayed(Duration(milliseconds: 5), () => scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndexMonth));
           }
           if (updateDay) {
             _dateTimeData.day = resultDay;
-            scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+            // scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+            Future.delayed(Duration(milliseconds: 5), () => scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay));
           }
-          pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          // pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
         });
       }
     }
@@ -492,8 +492,9 @@ class _PickerState extends State<_PickerContentView> {
     if (updateDay) {
       setState(() {
         _dateTimeData.day = resultDay;
-        scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
-        pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        // scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+        // pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        Future.delayed(Duration(milliseconds: 5), () => scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay));
       });
     }
   }
@@ -520,7 +521,7 @@ class _PickerState extends State<_PickerContentView> {
 
       int jumpToIndexMinute = 0;
 
-      if (!listEquals(_dateTimeData.month, resultMinute)) {
+      if (!listEquals(_dateTimeData.minute, resultMinute)) {
         //可能 选中的时间 由于设置了新数据后没有了
         // 小于不用考虑 会进else
         if (_selectData.minute! > resultMinute.last) {
@@ -569,13 +570,15 @@ class _PickerState extends State<_PickerContentView> {
         setState(() {
           if (updateMinute) {
             _dateTimeData.minute = resultMinute;
-            scrollCtrl[DateType.Minute]?.jumpToItem(jumpToIndexMinute);
+            // scrollCtrl[DateType.Minute]?.jumpToItem(jumpToIndexMinute);
+            Future.delayed(Duration(milliseconds: 5), () => scrollCtrl[DateType.Minute]?.jumpToItem(jumpToIndexMinute));
           }
           if (updateSecond) {
             _dateTimeData.second = resultSecond;
-            scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+            // scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+            Future.delayed(Duration(milliseconds: 5), () => scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond));
           }
-          pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          // pickerItemHeight = _pickerStyle.pickerItemHeight - 0.01;
         });
       }
     }
@@ -628,8 +631,9 @@ class _PickerState extends State<_PickerContentView> {
     if (updateSecond) {
       setState(() {
         _dateTimeData.second = resultSecond;
-        scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
-        pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        // scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+        // pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        Future.delayed(Duration(milliseconds: 5), () => scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond));
       });
     }
   }
