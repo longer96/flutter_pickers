@@ -23,7 +23,7 @@ flutter.eeaarr.cn (上面进不去 试试这个)
 1.Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^2.1.1
+    flutter_pickers: ^2.1.3
 ```
 
 2.Get
