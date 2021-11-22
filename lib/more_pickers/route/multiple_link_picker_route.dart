@@ -382,6 +382,7 @@ class _PickerState extends State<_PickerContentView> {
         child: CupertinoPicker.builder(
           scrollController: scrollCtrl[position],
           itemExtent: pickerItemHeight,
+          selectionOverlay: _pickerStyle.itemOverlay,
           onSelectedItemChanged: (int selectIndex) {
             _setPicker(position, selectIndex, false);
           },

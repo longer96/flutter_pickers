@@ -92,6 +92,14 @@ class _StylePickerPageState extends State<StylePickerPage> {
     Widget title =
         Center(child: MyText('身高选择器', color: Colors.cyanAccent, size: 14));
 
+    /// item 覆盖样式
+    Widget itemOverlay = Container(
+      decoration: BoxDecoration(
+        border: Border.symmetric(
+            horizontal: BorderSide(color: Colors.deepOrangeAccent, width: 0.7)),
+      ),
+    );
+
     return PickerStyle(
       menu: _headMenuView,
       menuHeight: menuHeight,
@@ -104,6 +112,7 @@ class _StylePickerPageState extends State<StylePickerPage> {
       title: title,
       textColor: Colors.amberAccent,
       backgroundColor: Colors.deepPurple,
+      itemOverlay: itemOverlay,
     );
   }
 }

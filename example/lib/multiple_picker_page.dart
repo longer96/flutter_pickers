@@ -252,6 +252,15 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
     Widget title =
         Center(child: MyText('自定义选择器', color: Colors.white, size: 14));
 
+    /// item 覆盖样式
+    Widget itemOverlay = Container(
+      decoration: BoxDecoration(
+        border: Border.symmetric(
+            horizontal:
+                BorderSide(color: Colors.cyan.withOpacity(0.3), width: 0.7)),
+      ),
+    );
+
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
       menuHeight: menuHeight,
@@ -261,6 +270,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
       title: title,
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
+      itemOverlay: itemOverlay,
     );
 
     Pickers.showMultiPicker(

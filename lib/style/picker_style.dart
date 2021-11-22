@@ -30,21 +30,24 @@ class PickerStyle {
   Decoration? _headDecoration;
   Color? _backgroundColor;
   Color? _textColor;
+  Widget? _itemOverlay;
 
-  PickerStyle(
-      {BuildContext? context,
-      bool? showTitleBar,
-      Widget? menu,
-      double? pickerHeight,
-      double? pickerTitleHeight,
-      double? pickerItemHeight,
-      double? menuHeight,
-      Widget? cancelButton,
-      Widget? commitButton,
-      Widget? title,
-      Decoration? headDecoration,
-      Color? backgroundColor,
-      Color? textColor}) {
+  PickerStyle({
+    BuildContext? context,
+    bool? showTitleBar,
+    Widget? menu,
+    double? pickerHeight,
+    double? pickerTitleHeight,
+    double? pickerItemHeight,
+    double? menuHeight,
+    Widget? cancelButton,
+    Widget? commitButton,
+    Widget? title,
+    Decoration? headDecoration,
+    Color? backgroundColor,
+    Color? textColor,
+    Widget? itemOverlay,
+  }) {
     this._context = context;
     this._showTitleBar = showTitleBar;
     this._menu = menu;
@@ -60,6 +63,7 @@ class PickerStyle {
     this._headDecoration = headDecoration;
     this._backgroundColor = backgroundColor;
     this._textColor = textColor;
+    this._itemOverlay = itemOverlay;
   }
 
   set context(BuildContext? value) {
@@ -92,6 +96,10 @@ class PickerStyle {
 
   set commitButton(Widget value) {
     _commitButton = value;
+  }
+
+  set itemOverlay(Widget? value) {
+    _itemOverlay = value;
   }
 
   set title(Widget value) {
@@ -141,6 +149,8 @@ class PickerStyle {
   Widget get commitButton => getCommitButton();
 
   Widget get cancelButton => getCancelButton();
+
+  Widget? get itemOverlay => this._itemOverlay;
 
   Widget getCommitButton() {
     return this._commitButton ??

@@ -1,8 +1,9 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/more_pickers/init_data.dart';
+import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
@@ -186,6 +187,10 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     Widget title =
         Center(child: MyText('身高选择器', color: Colors.white, size: 14));
 
+    /// item 覆盖样式
+    Widget itemOverlay = CupertinoPickerDefaultSelectionOverlay(
+        background: Colors.indigoAccent.withOpacity(0.2));
+
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
       menuHeight: menuHeight,
@@ -195,6 +200,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       title: title,
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
+      itemOverlay: itemOverlay,
     );
 
     Pickers.showSinglePicker(context,

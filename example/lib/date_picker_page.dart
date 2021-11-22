@@ -85,8 +85,12 @@ class _DatePickerPageState extends State<DatePickerPage> {
               }
             },
             trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              MyText(PicketUtil.strEmpty(selectData[model]) ? '暂无' : selectData[model],
-                  color: Colors.grey, rightpadding: 18),
+              MyText(
+                  PicketUtil.strEmpty(selectData[model])
+                      ? '暂无'
+                      : selectData[model],
+                  color: Colors.grey,
+                  rightpadding: 18),
               rightIcon
             ]),
           ),
@@ -114,10 +118,12 @@ class _DatePickerPageState extends State<DatePickerPage> {
         setState(() {
           switch (model) {
             case DateMode.YMDHMS:
-              selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
+              selectData[model] =
+                  '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
               break;
             case DateMode.YMDHM:
-              selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}';
+              selectData[model] =
+                  '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}';
               break;
             case DateMode.YMDH:
               selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}';
@@ -132,7 +138,8 @@ class _DatePickerPageState extends State<DatePickerPage> {
               selectData[model] = '${p.year}-${p.month}';
               break;
             case DateMode.MDHMS:
-              selectData[model] = '${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
+              selectData[model] =
+                  '${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
               break;
             case DateMode.HMS:
               selectData[model] = '${p.hour}:${p.minute}:${p.second}';
@@ -154,32 +161,47 @@ class _DatePickerPageState extends State<DatePickerPage> {
     Widget _cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(left: 22),
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
     Widget _commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(right: 22),
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
     );
 
     // 头部样式
     Decoration headDecoration = BoxDecoration(
         color: Colors.grey[800],
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8)));
 
     Widget title = Center(child: MyText('倒计时', color: Colors.white, size: 14));
 
+    /// item 覆盖样式
+    Widget itemOverlay = Container(
+      decoration: BoxDecoration(
+        border: Border.symmetric(
+            horizontal:
+                BorderSide(color: Colors.cyan.withOpacity(0.3), width: 0.7)),
+      ),
+    );
+
     var pickerStyle = PickerStyle(
-        cancelButton: _cancelButton,
-        commitButton: _commitButton,
-        headDecoration: headDecoration,
-        title: title,
-        textColor: Colors.white,
-        backgroundColor: Colors.grey[800]);
+      cancelButton: _cancelButton,
+      commitButton: _commitButton,
+      headDecoration: headDecoration,
+      title: title,
+      textColor: Colors.white,
+      backgroundColor: Colors.grey[800],
+      itemOverlay: itemOverlay,
+    );
 
     Pickers.showDatePicker(
       context,

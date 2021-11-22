@@ -57,12 +57,14 @@ class DatePickerRoute<T> extends PopupRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
+    _animationController =
+        BottomSheet.createAnimationController(navigator!.overlay!);
     return _animationController!;
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -104,8 +106,8 @@ class _PickerContentView extends StatefulWidget {
   late final PDuration minDate;
 
   @override
-  State<StatefulWidget> createState() =>
-      _PickerState(this.mode, this.initData, this.maxDate, this.minDate, this.pickerStyle);
+  State<StatefulWidget> createState() => _PickerState(
+      this.mode, this.initData, this.maxDate, this.minDate, this.pickerStyle);
 }
 
 class _PickerState extends State<_PickerContentView> {
@@ -133,7 +135,8 @@ class _PickerState extends State<_PickerContentView> {
   // 选择器 高度  单独提出来，用来解决修改数据 不及时更新的BUG
   late double pickerItemHeight;
 
-  _PickerState(DateMode? mode, this._initSelectData, this.maxDate, this.minDate, this._pickerStyle) {
+  _PickerState(DateMode? mode, this._initSelectData, this.maxDate, this.minDate,
+      this._pickerStyle) {
     this._dateItemModel = DateItemModel.parse(mode!);
     this.pickerItemHeight = _pickerStyle.pickerItemHeight;
     _init();
@@ -150,14 +153,16 @@ class _PickerState extends State<_PickerContentView> {
     /// -------年
     if (_dateItemModel.year) {
       index = 0;
-      _dateTimeData.year = TimeUtils.calcYears(begin: minDate.year!, end: maxDate.year!);
+      _dateTimeData.year =
+          TimeUtils.calcYears(begin: minDate.year!, end: maxDate.year!);
 
       if (_initSelectData.year != null) {
         index = _dateTimeData.year.indexOf(_initSelectData.year);
         index = index < 0 ? 0 : index;
       }
       _selectData.year = _dateTimeData.year[index];
-      scrollCtrl[DateType.Year] = FixedExtentScrollController(initialItem: index);
+      scrollCtrl[DateType.Year] =
+          FixedExtentScrollController(initialItem: index);
     }
 
     /// ------月
@@ -183,7 +188,8 @@ class _PickerState extends State<_PickerContentView> {
       }
       selectMonth = _dateTimeData.month[index];
       _selectData.month = selectMonth;
-      scrollCtrl[DateType.Month] = FixedExtentScrollController(initialItem: index);
+      scrollCtrl[DateType.Month] =
+          FixedExtentScrollController(initialItem: index);
     }
 
     /// -------日   （有日肯定有 年月数据）
@@ -193,22 +199,26 @@ class _PickerState extends State<_PickerContentView> {
       int end = 31;
       // 限制区域
       if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
-        if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
+        if (_selectData.year == minDate.year &&
+            _selectData.month == minDate.month) {
           begin = minDate.day!;
         }
-        if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
+        if (_selectData.year == maxDate.year &&
+            _selectData.month == maxDate.month) {
           end = maxDate.day!;
         }
       }
 
-      _dateTimeData.day = TimeUtils.calcDay(_initSelectData.year!, selectMonth, begin: begin, end: end);
+      _dateTimeData.day = TimeUtils.calcDay(_initSelectData.year!, selectMonth,
+          begin: begin, end: end);
 
       if (_initSelectData.day != null) {
         index = _dateTimeData.day.indexOf(_initSelectData.day);
         index = index < 0 ? 0 : index;
       }
       _selectData.day = _dateTimeData.day[index];
-      scrollCtrl[DateType.Day] = FixedExtentScrollController(initialItem: index);
+      scrollCtrl[DateType.Day] =
+          FixedExtentScrollController(initialItem: index);
     }
 
     /// ---------时
@@ -231,7 +241,8 @@ class _PickerState extends State<_PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.hour = _dateTimeData.hour[index];
-      scrollCtrl[DateType.Hour] = FixedExtentScrollController(initialItem: index);
+      scrollCtrl[DateType.Hour] =
+          FixedExtentScrollController(initialItem: index);
     }
 
     /// ---------分
@@ -267,7 +278,8 @@ class _PickerState extends State<_PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.minute = _dateTimeData.minute[index];
-      scrollCtrl[DateType.Minute] = FixedExtentScrollController(initialItem: index);
+      scrollCtrl[DateType.Minute] =
+          FixedExtentScrollController(initialItem: index);
     }
 
     /// --------秒
@@ -279,10 +291,12 @@ class _PickerState extends State<_PickerContentView> {
       if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
         if (_dateItemModel.hour && _dateItemModel.minute) {
           // 如果有上级 还有时 分，要根据时分再判断
-          if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
+          if (_selectData.hour == minDate.hour &&
+              _selectData.minute == minDate.minute) {
             begin = minDate.second!;
           }
-          if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
+          if (_selectData.hour == maxDate.hour &&
+              _selectData.minute == maxDate.minute) {
             end = maxDate.second!;
           }
         } else if (_dateItemModel.minute) {
@@ -311,7 +325,8 @@ class _PickerState extends State<_PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.second = _dateTimeData.second[index];
-      scrollCtrl[DateType.Second] = FixedExtentScrollController(initialItem: index);
+      scrollCtrl[DateType.Second] =
+          FixedExtentScrollController(initialItem: index);
     }
   }
 
@@ -331,7 +346,8 @@ class _PickerState extends State<_PickerContentView> {
         builder: (BuildContext context, Widget? child) {
           return ClipRect(
             child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(widget.route.animation!.value, _pickerStyle),
+              delegate: _BottomPickerLayout(
+                  widget.route.animation!.value, _pickerStyle),
               child: GestureDetector(
                 child: Material(
                   color: Colors.transparent,
@@ -417,14 +433,17 @@ class _PickerState extends State<_PickerContentView> {
         int endDay = 31;
         // 限制区域
         if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
-          if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
+          if (_selectData.year == minDate.year &&
+              _selectData.month == minDate.month) {
             beginDay = minDate.day!;
           }
-          if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
+          if (_selectData.year == maxDate.year &&
+              _selectData.month == maxDate.month) {
             endDay = maxDate.day!;
           }
         }
-        resultDay = TimeUtils.calcDay(_selectData.year!, _selectData.month!, begin: beginDay, end: endDay);
+        resultDay = TimeUtils.calcDay(_selectData.year!, _selectData.month!,
+            begin: beginDay, end: endDay);
 
         if (!listEquals(_dateTimeData.day, resultDay)) {
           //可能 选中的年 月份 由于设置了新数据后没有了
@@ -450,8 +469,10 @@ class _PickerState extends State<_PickerContentView> {
             _dateTimeData.day = resultDay;
             scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
           }
+
           /// FIX:https://github.com/flutter/flutter/issues/22999
-          pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          pickerItemHeight =
+              _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
         });
       }
     }
@@ -468,14 +489,17 @@ class _PickerState extends State<_PickerContentView> {
       int endDay = 31;
       // 限制区域
       if (intNotEmpty(minDate.day) || intNotEmpty(maxDate.day)) {
-        if (_selectData.year == minDate.year && _selectData.month == minDate.month) {
+        if (_selectData.year == minDate.year &&
+            _selectData.month == minDate.month) {
           beginDay = minDate.day!;
         }
-        if (_selectData.year == maxDate.year && _selectData.month == maxDate.month) {
+        if (_selectData.year == maxDate.year &&
+            _selectData.month == maxDate.month) {
           endDay = maxDate.day!;
         }
       }
-      resultDay = TimeUtils.calcDay(_selectData.year!, _selectData.month!, begin: beginDay, end: endDay);
+      resultDay = TimeUtils.calcDay(_selectData.year!, _selectData.month!,
+          begin: beginDay, end: endDay);
 
       if (!listEquals(_dateTimeData.day, resultDay)) {
         //可能 选中的年 月份 由于设置了新数据后没有了
@@ -494,8 +518,10 @@ class _PickerState extends State<_PickerContentView> {
       setState(() {
         _dateTimeData.day = resultDay;
         scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+
         /// FIX:https://github.com/flutter/flutter/issues/22999
-        pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        pickerItemHeight =
+            _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
       });
     }
   }
@@ -518,7 +544,8 @@ class _PickerState extends State<_PickerContentView> {
         endMinute = maxDate.minute!;
       }
 
-      var resultMinute = TimeUtils.calcMinAndSecond(begin: beginMinute, end: endMinute);
+      var resultMinute =
+          TimeUtils.calcMinAndSecond(begin: beginMinute, end: endMinute);
 
       int jumpToIndexMinute = 0;
 
@@ -544,14 +571,17 @@ class _PickerState extends State<_PickerContentView> {
         int endSecond = 59;
         // 限制区域
         if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
-          if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
+          if (_selectData.hour == minDate.hour &&
+              _selectData.minute == minDate.minute) {
             beginSecond = minDate.second!;
           }
-          if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
+          if (_selectData.hour == maxDate.hour &&
+              _selectData.minute == maxDate.minute) {
             endSecond = maxDate.second!;
           }
         }
-        resultSecond = TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
+        resultSecond =
+            TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
 
         if (!listEquals(_dateTimeData.second, resultSecond)) {
           //可能 选中的时 分 由于设置了新数据后没有了
@@ -577,8 +607,10 @@ class _PickerState extends State<_PickerContentView> {
             _dateTimeData.second = resultSecond;
             scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
           }
+
           /// FIX:https://github.com/flutter/flutter/issues/22999
-          pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+          pickerItemHeight =
+              _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
         });
       }
     }
@@ -597,10 +629,12 @@ class _PickerState extends State<_PickerContentView> {
       if (intNotEmpty(minDate.second) || intNotEmpty(maxDate.second)) {
         if (_dateItemModel.hour) {
           // 如果上面还有 时
-          if (_selectData.hour == minDate.hour && _selectData.minute == minDate.minute) {
+          if (_selectData.hour == minDate.hour &&
+              _selectData.minute == minDate.minute) {
             beginSecond = minDate.second!;
           }
-          if (_selectData.hour == maxDate.hour && _selectData.minute == maxDate.minute) {
+          if (_selectData.hour == maxDate.hour &&
+              _selectData.minute == maxDate.minute) {
             endSecond = maxDate.second!;
           }
         } else {
@@ -613,7 +647,8 @@ class _PickerState extends State<_PickerContentView> {
           }
         }
       }
-      resultSecond = TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
+      resultSecond =
+          TimeUtils.calcMinAndSecond(begin: beginSecond, end: endSecond);
 
       if (!listEquals(_dateTimeData.second, resultSecond)) {
         //可能 选中的分 由于设置了新数据后没有了
@@ -632,8 +667,10 @@ class _PickerState extends State<_PickerContentView> {
       setState(() {
         _dateTimeData.second = resultSecond;
         scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+
         /// FIX:https://github.com/flutter/flutter/issues/22999
-        pickerItemHeight = _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+        pickerItemHeight =
+            _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
       });
     }
   }
@@ -714,14 +751,19 @@ class _PickerState extends State<_PickerContentView> {
           /// 临时方法 通过修改height
           scrollController: scrollCtrl[dateType],
           itemExtent: pickerItemHeight,
-          onSelectedItemChanged: (int selectIndex) => _setPicker(dateType, selectIndex),
+          selectionOverlay: _pickerStyle.itemOverlay,
+          onSelectedItemChanged: (int selectIndex) =>
+              _setPicker(dateType, selectIndex),
           childCount: _dateTimeData.getListByName(dateType).length,
           itemBuilder: (_, index) {
-            String text = '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix?.getSingle(dateType)}';
+            String text =
+                '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix?.getSingle(dateType)}';
             return Align(
                 alignment: Alignment.center,
                 child: Text(text,
-                    style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerFontSize(text)),
+                    style: TextStyle(
+                        color: _pickerStyle.textColor,
+                        fontSize: _pickerFontSize(text)),
                     textAlign: TextAlign.start));
           },
         ),
@@ -739,7 +781,9 @@ class _PickerState extends State<_PickerContentView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           /// 取消按钮
-          InkWell(onTap: () => Navigator.pop(context), child: _pickerStyle.cancelButton),
+          InkWell(
+              onTap: () => Navigator.pop(context),
+              child: _pickerStyle.cancelButton),
 
           /// 标题
           Expanded(child: _pickerStyle.title),
@@ -776,7 +820,10 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
     }
 
     return BoxConstraints(
-        minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth, minHeight: 0.0, maxHeight: maxHeight);
+        minWidth: constraints.maxWidth,
+        maxWidth: constraints.maxWidth,
+        minHeight: 0.0,
+        maxHeight: maxHeight);
   }
 
   @override

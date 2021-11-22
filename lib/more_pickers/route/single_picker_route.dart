@@ -220,6 +220,7 @@ class _PickerState extends State<_PickerContentView> {
     Widget cPicker = CupertinoPicker.builder(
       scrollController: scrollCtrl,
       itemExtent: _pickerStyle.pickerItemHeight,
+      selectionOverlay: _pickerStyle.itemOverlay,
       onSelectedItemChanged: (int index) {
         _setPicker(index);
         if (widget.route.suffix != null && widget.route.suffix != '') {

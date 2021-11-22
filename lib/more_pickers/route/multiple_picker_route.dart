@@ -221,6 +221,7 @@ class _PickerState extends State<_PickerContentView> {
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: CupertinoPicker.builder(
           scrollController: scrollCtrl[position],
+          selectionOverlay: _pickerStyle.itemOverlay,
           itemExtent: _pickerStyle.pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) =>
               _setPicker(position, selectIndex),

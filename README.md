@@ -461,7 +461,7 @@ Widget demo() {
 > picker_style.dart [样式基类](https://github.com/longer96/flutter_pickers/blob/master/lib/style/picker_style.dart)
 
 <br>
-<img width="600px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/style_mark.png"/>
+<img width="600px" style="max-width:100%;" src="https://github.com/longer96/flutter_pickers/blob/master/img/style_mark.jpg"/>
 
 ```dart
 /// [showTitleBar] 是否显示头部（选择器以上的控件） 默认：true
@@ -476,6 +476,7 @@ Widget demo() {
 /// [textColor]  选择器的文字颜色 默认黑色
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
+/// [itemOverlay] item的覆盖组件，可以自定义选中样式  [双横线样式可参考](https://github.com/longer96/flutter_pickers/issues/12)
 
 class PickerStyle {}
 ```

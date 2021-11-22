@@ -1,5 +1,9 @@
 
 
+## [2.1.4]
+* fix MultipleLinkPicker data refresh bug
+* add itemOverlay style
+
 ## [2.1.3]
 * fix date_picker bug
 * add overlapTabBar parameter

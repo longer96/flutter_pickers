@@ -128,6 +128,14 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
     Widget title =
         Center(child: MyText('请选择地址', color: Colors.white, size: 14));
 
+    /// item 覆盖样式
+    Widget itemOverlay = Container(
+      decoration: BoxDecoration(
+        border: Border.symmetric(
+            horizontal: BorderSide(color: Colors.grey, width: 0.7)),
+      ),
+    );
+
     var pickerStyle = PickerStyle(
       menu: _headMenuView,
       menuHeight: menuHeight,
@@ -137,6 +145,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
       title: title,
       textColor: Colors.white,
       backgroundColor: Colors.grey[800],
+      itemOverlay: itemOverlay,
     );
 
     return InkWell(
