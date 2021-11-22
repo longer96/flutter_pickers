@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
@@ -120,8 +122,12 @@ class _PickerState extends State<_PickerContentView> {
 
   List<FixedExtentScrollController> scrollCtrl = [];
 
+  // 选择器 高度  单独提出来，用来解决修改数据 不及时更新的BUG
+  late double pickerItemHeight;
+
   _PickerState(
       this._data, List mSelectData, this._pickerStyle, this._columeNum) {
+    this.pickerItemHeight = _pickerStyle.pickerItemHeight;
     // 已选择器数据为准，因为初始化数据有可能和选择器对不上
     this._selectData = [];
     this._selectDataPosition = [];
@@ -329,7 +335,11 @@ class _PickerState extends State<_PickerContentView> {
   }
 
   void _notifyLocationChanged() {
-    setState(() {});
+    setState(() {
+      /// FIX:https://github.com/flutter/flutter/issues/22999
+      pickerItemHeight =
+          _pickerStyle.pickerItemHeight - Random().nextDouble() / 100000000;
+    });
     if (widget.route.onChanged != null) {
       widget.route.onChanged!(_selectData, _selectDataPosition);
     }
@@ -371,7 +381,7 @@ class _PickerState extends State<_PickerContentView> {
         padding: const EdgeInsets.symmetric(horizontal: 2),
         child: CupertinoPicker.builder(
           scrollController: scrollCtrl[position],
-          itemExtent: _pickerStyle.pickerItemHeight,
+          itemExtent: pickerItemHeight,
           onSelectedItemChanged: (int selectIndex) {
             _setPicker(position, selectIndex, false);
           },
