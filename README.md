@@ -144,7 +144,7 @@ AddressPicker.showPicker(
 ### 更多方法
 ``` dart
 /// 根据城市名 查询城市code(有先后顺序)
-List<String> cityCode =  Address.getCityCodeByName(townName: '四川省', cityName: '成都市', provinceName: '武侯区');
+List<String> cityCode =  Address.getCityCodeByName(provinceName:'四川省', cityName: '成都市', townName: '武侯区');
 return [510000,510100,510104]  or  [510000,510000]  or [510000]  or  []
 
 
