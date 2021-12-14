@@ -8,8 +8,8 @@ import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
-import 'package:flutter_pickers/time_picker/route/date_picker_route.dart';
 import 'package:flutter_pickers/time_picker/model/suffix.dart';
+import 'package:flutter_pickers/time_picker/route/date_picker_route.dart';
 
 import 'time_picker/model/date_item_model.dart';
 
@@ -26,6 +26,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       SingleCallback? onChanged,
       SingleCallback? onConfirm,
+      SingleCallback? onCancel,
       bool overlapTabBar = false}) {
     assert((data is List) || (data is PickerDataType),
         'params : data must List or PickerDataType');
@@ -44,6 +45,7 @@ class Pickers {
       pickerStyle: pickerStyle,
       onChanged: onChanged,
       onConfirm: onConfirm,
+      onCancel: onCancel,
       // theme: Theme.of(context, shadowThemeOnly: true),
       theme: Theme.of(context),
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -59,6 +61,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       MultipleCallback? onChanged,
       MultipleCallback? onConfirm,
+      MultipleCallback? onCancel,
       bool overlapTabBar = false}) {
     if (selectData == null) {
       selectData = [];
@@ -79,6 +82,7 @@ class Pickers {
       pickerStyle: pickerStyle,
       onChanged: onChanged,
       onConfirm: onConfirm,
+      onCancel: onCancel,
       // theme: Theme.of(context, shadowThemeOnly: true),
       theme: Theme.of(context),
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -96,6 +100,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       MultipleLinkCallback? onChanged,
       MultipleLinkCallback? onConfirm,
+      MultipleLinkCallback? onCancel,
       bool overlapTabBar = false}) {
     assert(data is Map, 'params : data must Map');
 
@@ -119,6 +124,7 @@ class Pickers {
       pickerStyle: pickerStyle,
       onChanged: onChanged,
       onConfirm: onConfirm,
+      onCancel: onCancel,
       // theme: Theme.of(context, shadowThemeOnly: true),
       theme: Theme.of(context),
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -140,6 +146,7 @@ class Pickers {
       bool addAllItem: true,
       AddressCallback? onChanged,
       AddressCallback? onConfirm,
+      AddressCallback? onCancel,
       bool overlapTabBar = false}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
@@ -155,6 +162,7 @@ class Pickers {
       initTown: initTown,
       onChanged: onChanged,
       onConfirm: onConfirm,
+      onCancel: onCancel,
       addAllItem: addAllItem,
       theme: Theme.of(context),
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -180,6 +188,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       DateCallback? onChanged,
       DateCallback? onConfirm,
+      DateCallback? onCancel,
       bool overlapTabBar = false}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
@@ -223,6 +232,7 @@ class Pickers {
       pickerStyle: pickerStyle,
       onChanged: onChanged,
       onConfirm: onConfirm,
+      onCancel: onCancel,
       // theme: Theme.of(context, shadowThemeOnly: true),
       theme: Theme.of(context),
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
