@@ -1,4 +1,6 @@
 
+## [2.1.5]
+* add cancel callback
 
 ## [2.1.4]
 * fix MultipleLinkPicker data refresh bug
