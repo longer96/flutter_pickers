@@ -22,6 +22,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
     this.initTown,
     this.onChanged,
     this.onConfirm,
+    this.onCancel,
     this.theme,
     this.barrierLabel,
     RouteSettings? settings,
@@ -31,6 +32,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
   final String? initTown;
   final AddressCallback? onChanged;
   final AddressCallback? onConfirm;
+  final AddressCallback? onCancel;
   final ThemeData? theme;
   final bool addAllItem;
 
@@ -383,7 +385,13 @@ class _PickerState extends State<_PickerContentView> {
         children: <Widget>[
           /// 取消按钮
           InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                if (widget.route.onCancel != null) {
+                  widget.route.onCancel!(
+                      _currentProvince, _currentCity, _currentTown);
+                }
+                Navigator.pop(context);
+              },
               child: _pickerStyle.cancelButton),
 
           /// 标题

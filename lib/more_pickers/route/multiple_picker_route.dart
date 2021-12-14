@@ -14,6 +14,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
     this.suffix,
     this.onChanged,
     this.onConfirm,
+    this.onCancel,
     this.theme,
     this.barrierLabel,
     RouteSettings? settings,
@@ -24,6 +25,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   final List? suffix;
   final MultipleCallback? onChanged;
   final MultipleCallback? onConfirm;
+  final MultipleCallback? onCancel;
   final ThemeData? theme;
 
   final PickerStyle pickerStyle;
@@ -258,7 +260,12 @@ class _PickerState extends State<_PickerContentView> {
         children: <Widget>[
           /// 取消按钮
           InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                if (widget.route.onCancel != null) {
+                  widget.route.onCancel!(_selectData, _selectDataPosition);
+                }
+                Navigator.pop(context);
+              },
               child: _pickerStyle.cancelButton),
 
           /// 标题

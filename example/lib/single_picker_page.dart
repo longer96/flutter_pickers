@@ -203,18 +203,25 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       itemOverlay: itemOverlay,
     );
 
-    Pickers.showSinglePicker(context,
-        data: List.generate(200, (index) => (50 + index).toString()),
-        selectData: selectHeight,
-        suffix: 'cm',
-        pickerStyle: pickerStyle, onConfirm: (p, position) {
-      print('longer >>> 返回数据下标：$position');
-      setState(() {
-        selectHeight = p;
-      });
-    }, onChanged: (p, position) {
-      print('数据发生改变：$p');
-      print('longer >>> 返回数据下标：$position');
-    });
+    Pickers.showSinglePicker(
+      context,
+      data: List.generate(200, (index) => (50 + index).toString()),
+      selectData: selectHeight,
+      suffix: 'cm',
+      pickerStyle: pickerStyle,
+      onConfirm: (p, position) {
+        print('longer >>> 返回数据下标：$position');
+        setState(() {
+          selectHeight = p;
+        });
+      },
+      onChanged: (p, position) {
+        print('数据发生改变：$p');
+        print('longer >>> 返回数据下标：$position');
+      },
+      onCancel: (data, position) {
+        print('longer >>> 点击了取消');
+      },
+    );
   }
 }

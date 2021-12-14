@@ -12,6 +12,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
     this.suffix,
     this.onChanged,
     this.onConfirm,
+    this.onCancel,
     required this.theme,
     this.barrierLabel,
     required this.pickerStyle,
@@ -22,6 +23,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final dynamic data;
   final SingleCallback? onChanged;
   final SingleCallback? onConfirm;
+  final SingleCallback? onCancel;
   final ThemeData theme;
 
   final String? suffix;
@@ -284,7 +286,12 @@ class _PickerState extends State<_PickerContentView> {
         children: <Widget>[
           /// 取消按钮
           InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                if (widget.route.onCancel != null) {
+                  widget.route.onCancel!(_selectData, _selectPosition);
+                }
+                Navigator.pop(context);
+              },
               child: _pickerStyle.cancelButton),
 
           /// 标题
