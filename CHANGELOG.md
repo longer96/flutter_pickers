@@ -1,4 +1,7 @@
 
+## [2.1.6]
+* click outside callback
+
 ## [2.1.5]
 * add cancel callback
 

@@ -39,7 +39,7 @@ class DatePickerRoute<T> extends PopupRoute<T> {
   final ThemeData? theme;
   final DateCallback? onChanged;
   final DateCallback? onConfirm;
-  final DateCallback? onCancel;
+  final Function? onCancel;
   final PickerStyle? pickerStyle;
 
   @override
@@ -47,6 +47,14 @@ class DatePickerRoute<T> extends PopupRoute<T> {
 
   @override
   bool get barrierDismissible => true;
+
+  @override
+  bool didPop(T? result) {
+    if (result == null && onCancel != null) {
+      onCancel!();
+    }
+    return super.didPop(result);
+  }
 
   @override
   final String? barrierLabel;
@@ -784,12 +792,7 @@ class _PickerState extends State<_PickerContentView> {
         children: <Widget>[
           /// 取消按钮
           InkWell(
-              onTap: () {
-                if (widget.route.onCancel != null) {
-                  widget.route.onCancel!(_selectData);
-                }
-                Navigator.pop(context);
-              },
+              onTap: () => Navigator.pop(context),
               child: _pickerStyle.cancelButton),
 
           /// 标题
@@ -801,7 +804,7 @@ class _PickerState extends State<_PickerContentView> {
                 if (widget.route.onConfirm != null) {
                   widget.route.onConfirm!(_selectData);
                 }
-                Navigator.pop(context);
+                Navigator.pop(context, true);
               },
               child: _pickerStyle.commitButton)
         ],
