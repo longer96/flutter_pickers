@@ -219,7 +219,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
         print('数据发生改变：$p');
         print('longer >>> 返回数据下标：$position');
       },
-      onCancel: (data, position) {
+      onCancel: () {
         print('longer >>> 点击了取消');
       },
     );
