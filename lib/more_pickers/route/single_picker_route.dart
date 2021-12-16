@@ -170,14 +170,14 @@ class _PickerState extends State<_PickerContentView> {
   void _setPicker(int index) {
     var selectedProvince = _data[index];
 
-    if (_selectData.toString() != selectedProvince.toString()) {
-      setState(() {
-        _selectData = selectedProvince;
-      });
-      _selectPosition = index;
+    // if (_selectData.toString() != selectedProvince.toString()) {
+    // setState(() {
+    // });
+    _selectData = selectedProvince;
+    _selectPosition = index;
 
-      _notifyLocationChanged();
-    }
+    _notifyLocationChanged();
+    // }
   }
 
   void _notifyLocationChanged() {
@@ -304,6 +304,7 @@ class _PickerState extends State<_PickerContentView> {
           InkWell(
               onTap: () {
                 if (widget.route.onConfirm != null) {
+                  print('longer   _selectPosition >>> ${_selectPosition}');
                   widget.route.onConfirm!(_selectData, _selectPosition);
                 }
                 Navigator.pop(context, true);

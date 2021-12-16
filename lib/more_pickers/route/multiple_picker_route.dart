@@ -179,14 +179,14 @@ class _PickerState extends State<_PickerContentView> {
   void _setPicker(int index, int selectIndex) {
     var selectedName = _data[index][selectIndex];
 
-    if (_selectData[index].toString() != selectedName.toString()) {
-      setState(() {
-        _selectData[index] = selectedName;
-      });
-      _selectDataPosition[index] = selectIndex;
+    // if (_selectData[index].toString() != selectedName.toString()) {
+    //   setState(() {
+    //   });
+    // }
+    _selectData[index] = selectedName;
+    _selectDataPosition[index] = selectIndex;
 
-      _notifyLocationChanged();
-    }
+    _notifyLocationChanged();
   }
 
   void _notifyLocationChanged() {
