@@ -1,4 +1,7 @@
 
+## [2.1.7]
+* issues 21 position error
+
 ## [2.1.6]
 * click outside callback
 
