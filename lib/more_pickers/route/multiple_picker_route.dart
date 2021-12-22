@@ -25,7 +25,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   final List? suffix;
   final MultipleCallback? onChanged;
   final MultipleCallback? onConfirm;
-  final Function? onCancel;
+  final Function(bool isCancel)? onCancel;
   final ThemeData? theme;
 
   final PickerStyle pickerStyle;
@@ -38,8 +38,12 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
 
   @override
   bool didPop(T? result) {
-    if (result == null && onCancel != null) {
-      onCancel!();
+    if (onCancel != null) {
+      if (result == null) {
+        onCancel!(false);
+      } else if (!(result as bool)) {
+        onCancel!(true);
+      }
     }
     return super.didPop(result);
   }
@@ -268,7 +272,7 @@ class _PickerState extends State<_PickerContentView> {
         children: <Widget>[
           /// 取消按钮
           InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: () => Navigator.pop(context, false),
               child: _pickerStyle.cancelButton),
 
           /// 标题

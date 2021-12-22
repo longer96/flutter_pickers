@@ -26,7 +26,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       SingleCallback? onChanged,
       SingleCallback? onConfirm,
-      Function? onCancel,
+      Function(bool isCancel)? onCancel,
       bool overlapTabBar = false}) {
     assert((data is List) || (data is PickerDataType),
         'params : data must List or PickerDataType');
@@ -61,7 +61,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       MultipleCallback? onChanged,
       MultipleCallback? onConfirm,
-      Function? onCancel,
+      Function(bool isCancel)? onCancel,
       bool overlapTabBar = false}) {
     if (selectData == null) {
       selectData = [];
@@ -100,7 +100,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       MultipleLinkCallback? onChanged,
       MultipleLinkCallback? onConfirm,
-      Function? onCancel,
+      Function(bool isCancel)? onCancel,
       bool overlapTabBar = false}) {
     assert(data is Map, 'params : data must Map');
 
@@ -146,7 +146,7 @@ class Pickers {
       bool addAllItem: true,
       AddressCallback? onChanged,
       AddressCallback? onConfirm,
-      Function? onCancel,
+      Function(bool isCancel)? onCancel,
       bool overlapTabBar = false}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();
@@ -188,7 +188,7 @@ class Pickers {
       PickerStyle? pickerStyle,
       DateCallback? onChanged,
       DateCallback? onConfirm,
-      Function? onCancel,
+      Function(bool isCancel)? onCancel,
       bool overlapTabBar = false}) {
     if (pickerStyle == null) {
       pickerStyle = DefaultPickerStyle();

@@ -1,4 +1,8 @@
 
+
+## [2.1.8]
+* cancel callback
+
 ## [2.1.7]
 * issues 21 position error
 

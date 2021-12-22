@@ -23,7 +23,7 @@ flutter.eeaarr.cn (上面进不去 试试这个)
 1.Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^2.1.7
+    flutter_pickers: ^2.1.8
 ```
 
 2.Get
@@ -139,7 +139,7 @@ AddressPicker.showPicker(
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (String province, String city, String town)  | null|
 | onConfirm     | 选择器提交 return (String province, String city, String town)| null|
-| onCancel     | 选择器取消 | null|
+| onCancel     | 选择器取消 return (bool isCancel) 是否通过点击取消按钮关闭| null|
 |addAllItem|市、区是否添加 '全部' 选项|true|
 
 ### 更多方法
@@ -191,7 +191,7 @@ Widget _demo() {
 | pickerStyle   | 详见[样式](#样式)     | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (String data，int position)  | null|
 | onConfirm     | 选择器提交 return (String data，int position)      | null|
-| onCancel     | 选择器取消      | null|
+| onCancel     | 选择器取消 return (bool isCancel) 是否通过点击取消按钮关闭 | null|
 
 
 ### 内置数据
@@ -241,7 +241,7 @@ Widget _demo() {
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (List data, List<int> position)  | null|
 | onConfirm     | 选择器提交 return (List data, List<int> position)| null|
-| onCancel     | 选择器取消 | null|
+| onCancel      | 选择器取消 return (bool isCancel) 是否通过点击取消按钮关闭 | null|
 
 <br>
 
@@ -366,7 +366,7 @@ Widget demo() {
 | pickerStyle   | 详见[样式](#样式)       | DefaultPickerStyle()|
 | onChanged     | 选择器发生变动 return (PDuration data)  | null|
 | onConfirm     | 选择器提交 return (PDuration data)| null|
-| onCancel     | 选择器取消 | null|
+| onCancel      | 选择器取消 return (bool isCancel) 是否通过点击取消按钮关闭 | null|
 
 
 ### 参数说明
