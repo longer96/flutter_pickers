@@ -324,8 +324,10 @@ class _PickerState extends State<_PickerContentView> {
                       alignment: Alignment.center,
                       child: Text(text,
                           style: TextStyle(
-                              color: _pickerStyle.textColor,
-                              fontSize: _pickerFontSize(text)),
+                            color: _pickerStyle.textColor,
+                            fontSize:
+                                _pickerStyle.textSize ?? _pickerFontSize(text),
+                          ),
                           textAlign: TextAlign.start));
                 },
               ),
@@ -348,8 +350,10 @@ class _PickerState extends State<_PickerContentView> {
                       alignment: Alignment.center,
                       child: Text('$text',
                           style: TextStyle(
-                              color: _pickerStyle.textColor,
-                              fontSize: _pickerFontSize(text)),
+                            color: _pickerStyle.textColor,
+                            fontSize:
+                                _pickerStyle.textSize ?? _pickerFontSize(text),
+                          ),
                           textAlign: TextAlign.start),
                     );
                   },
@@ -373,8 +377,9 @@ class _PickerState extends State<_PickerContentView> {
                             alignment: Alignment.center,
                             child: Text(text,
                                 style: TextStyle(
-                                    color: _pickerStyle.textColor,
-                                    fontSize: _pickerFontSize(text)),
+                                  color: _pickerStyle.textColor,
+                                  fontSize:  _pickerStyle.textSize ?? _pickerFontSize(text),
+                                ),
                                 textAlign: TextAlign.start),
                           );
                         },

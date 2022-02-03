@@ -111,6 +111,7 @@ class _StylePickerPageState extends State<StylePickerPage> {
       headDecoration: headDecoration,
       title: title,
       textColor: Colors.amberAccent,
+      textSize: 30,
       backgroundColor: Colors.deepPurple,
       itemOverlay: itemOverlay,
     );

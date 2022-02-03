@@ -30,6 +30,7 @@ class PickerStyle {
   Decoration? _headDecoration;
   Color? _backgroundColor;
   Color? _textColor;
+  double? _textSize;
   Widget? _itemOverlay;
 
   PickerStyle({
@@ -46,6 +47,7 @@ class PickerStyle {
     Decoration? headDecoration,
     Color? backgroundColor,
     Color? textColor,
+    double? textSize,
     Widget? itemOverlay,
   }) {
     this._context = context;
@@ -63,6 +65,7 @@ class PickerStyle {
     this._headDecoration = headDecoration;
     this._backgroundColor = backgroundColor;
     this._textColor = textColor;
+    this._textSize = textSize;
     this._itemOverlay = itemOverlay;
   }
 
@@ -118,6 +121,10 @@ class PickerStyle {
     _textColor = value;
   }
 
+  set textSize(double? value) {
+    _textSize = value;
+  }
+
   set showTitleBar(bool value) {
     _showTitleBar = value;
   }
@@ -143,6 +150,8 @@ class PickerStyle {
   bool get showTitleBar => this._showTitleBar ?? true;
 
   Color get textColor => this._textColor ?? Colors.black87;
+
+  double? get textSize => this._textSize;
 
   Widget get title => this._title ?? SizedBox();
 

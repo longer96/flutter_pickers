@@ -110,8 +110,10 @@ class _PickerContentView extends StatefulWidget {
 
 class _PickerState extends State<_PickerContentView> {
   final PickerStyle _pickerStyle;
+
   // 选中数据
   var _selectData;
+
   // 选中数据下标
   int _selectPosition = 0;
 
@@ -199,6 +201,7 @@ class _PickerState extends State<_PickerContentView> {
     return left;
   }
 
+  /// 动态计算itemTextSize
   double _pickerFontSize(String text) {
     if (text.length <= 6) {
       return 18.0;
@@ -254,8 +257,9 @@ class _PickerState extends State<_PickerContentView> {
             alignment: Alignment.center,
             child: Text(text,
                 style: TextStyle(
-                    color: _pickerStyle.textColor,
-                    fontSize: _pickerFontSize(text)),
+                  color: _pickerStyle.textColor,
+                  fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                ),
                 textAlign: TextAlign.start));
       },
     );
