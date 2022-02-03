@@ -1,5 +1,8 @@
 
 
+## [2.1.9]
+* feat item fontSize
+
 ## [2.1.8]
 * cancel callback
 

@@ -23,7 +23,7 @@ flutter.eeaarr.cn (上面进不去 试试这个)
 1.Depend
 ``` pubspec.yaml
 dependencies: 
-    flutter_pickers: ^2.1.8
+    flutter_pickers: ^2.1.9
 ```
 
 2.Get
@@ -478,6 +478,7 @@ Widget demo() {
 /// [cancelButton]  头部的取消按钮
 /// [commitButton]  头部的确认按钮
 /// [textColor]  选择器的文字颜色 默认黑色
+/// [textSize]  选择器的文字大小
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
 /// [itemOverlay] item的覆盖组件，可以自定义选中样式  [双横线样式可参考](https://github.com/longer96/flutter_pickers/issues/12)

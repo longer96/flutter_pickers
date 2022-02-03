@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 /// [cancelButton]  头部的取消按钮
 /// [commitButton]  头部的确认按钮
 /// [textColor]  选择器的文字颜色 默认黑色
+/// [textSize]  选择器的文字大小
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
 ///
