@@ -172,6 +172,11 @@ Widget _demo() {
     return InkWell(
     onTap: () {
       Pickers.showSinglePicker(context,
+      //data: [
+        //    PickerItemData(label: "项目一", value: 1),
+          //  PickerItemData(label: "项目二", value: 2),
+            //PickerItemData(label: "项目三", value: 3),
+          //],
           data: ['PHP', 'JAVA', 'C++', 'Dart', 'Python', 'Go'],
           selectData: initData,
           onConfirm: (p, position) {
