@@ -239,3 +239,9 @@ class Pickers {
     ));
   }
 }
+
+class PickerItemData {
+  String label;
+  dynamic value;
+  PickerItemData({required this.label, required this.value});
+}

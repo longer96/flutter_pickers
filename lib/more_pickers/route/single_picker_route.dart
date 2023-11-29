@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/more_pickers/init_data.dart';
+import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef SingleCallback(var data, int position);
@@ -158,17 +159,30 @@ class _PickerState extends State<_PickerContentView> {
 
   _init() {
     int pindex = 0;
-    pindex = _data
-        .indexWhere((element) => element.toString() == _selectData.toString());
+    pindex = _data.indexWhere((element) {
+      if (element is PickerItemData) {
+        return element.value.toString() == _selectData.toString();
+      } else {
+        return element.toString() == _selectData.toString();
+      }
+    });
     // 如果没有匹配到选择器对应数据，我们得修改选择器选中数据 ，不然confirm 返回的事设置的数据
     if (pindex < 0) {
-      _selectData = _data[0];
+      if (_data[0] is PickerItemData) {
+        _selectData = _data[0].value;
+      } else {
+        _selectData = _data[0];
+      }
       pindex = 0;
     }
     _selectPosition = pindex;
 
     scrollCtrl = new FixedExtentScrollController(initialItem: pindex);
-    _laberLeft = _pickerLaberPadding(_data[pindex].toString());
+    if (_data[pindex] is PickerItemData) {
+      _laberLeft = _pickerLaberPadding((_data[pindex] as PickerItemData).label);
+    } else {
+      _laberLeft = _pickerLaberPadding(_data[pindex].toString());
+    }
   }
 
   void _setPicker(int index) {
@@ -177,7 +191,12 @@ class _PickerState extends State<_PickerContentView> {
     // if (_selectData.toString() != selectedProvince.toString()) {
     // setState(() {
     // });
-    _selectData = selectedProvince;
+    if (selectedProvince is PickerItemData) {
+      _selectData = selectedProvince.value;
+    } else {
+      _selectData = selectedProvince;
+    }
+
     _selectPosition = index;
 
     _notifyLocationChanged();
@@ -240,6 +259,10 @@ class _PickerState extends State<_PickerContentView> {
         if (widget.route.suffix != null && widget.route.suffix != '') {
           // 如果设置了才计算 单位的paddingLeft
           double resuleLeft = _pickerLaberPadding(_data[index].toString());
+          if (_data[index] is PickerItemData) {
+            resuleLeft =
+                _pickerLaberPadding((_data[index] as PickerItemData).label);
+          }
           if (resuleLeft != _laberLeft) {
             setState(() {
               _laberLeft = resuleLeft;
@@ -250,6 +273,9 @@ class _PickerState extends State<_PickerContentView> {
       childCount: _data.length,
       itemBuilder: (_, index) {
         String text = _data[index].toString();
+        if (_data[index] is PickerItemData) {
+          text = (_data[index] as PickerItemData).label;
+        }
         return Align(
             alignment: Alignment.center,
             child: Text(text,

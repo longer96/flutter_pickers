@@ -50,6 +50,15 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
             label: 'kg'),
         // _item('Laber', [123, 23,235,3,14545,15,123163,18548,9646,1313], 235, label: 'kg'),
         _item2('自定义样式'),
+        _item(
+          'pickerItemData',
+          [
+            PickerItemData(label: "项目一", value: 1),
+            PickerItemData(label: "项目二", value: 2),
+            PickerItemData(label: "项目三", value: 3),
+          ],
+          2,
+        ),
 
         _demo(),
         SizedBox(height: 80)
