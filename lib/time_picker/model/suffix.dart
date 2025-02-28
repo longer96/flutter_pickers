@@ -18,7 +18,7 @@ class Suffix {
     this.seconds = '秒';
   }
 
-  Suffix({this.years: '', this.month: '', this.days: '', this.hours: '', this.minutes: '', this.seconds: ''});
+  Suffix({this.years = '', this.month = '', this.days = '', this.hours = '', this.minutes = '', this.seconds = ''});
 
   String getSingle(DateType dateType) {
     switch (dateType) {

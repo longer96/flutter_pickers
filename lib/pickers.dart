@@ -140,10 +140,10 @@ class Pickers {
   /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
   static void showAddressPicker(BuildContext context,
       {PickerStyle? pickerStyle,
-      String initProvince: '',
-      String initCity: '',
+      String initProvince = '',
+      String initCity = '',
       String? initTown,
-      bool addAllItem: true,
+      bool addAllItem = true,
       AddressCallback? onChanged,
       AddressCallback? onConfirm,
       Function(bool isCancel)? onCancel,
@@ -180,7 +180,7 @@ class Pickers {
   /// [minDate] : 最小时间 用法同上
   /// [mode] : 时间选择器所显示样式  16 种时间样式 默认：DateMode.YMD
   static void showDatePicker(BuildContext context,
-      {DateMode mode: DateMode.YMD,
+      {DateMode mode = DateMode.YMD,
       PDuration? selectDate,
       PDuration? maxDate,
       PDuration? minDate,

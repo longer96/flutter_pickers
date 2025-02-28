@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:example/date_picker_page.dart';
 import 'package:example/multiple_link_picker_page.dart';
 import 'package:example/multiple_picker_page.dart';
 import 'package:example/style_picker_page.dart';
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
-import 'package:flutter/material.dart';
 
 import 'address_picker_page.dart';
 import 'single_picker_page.dart';
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ElevatedButton(
           onPressed: () {
             Navigator.push(
-                context, new MaterialPageRoute(builder: (context) => page));
+                context, MaterialPageRoute(builder: (context) => page));
           },
           child: MyText(title,
               color: Colors.white, toppadding: 12, bottompadding: 12),

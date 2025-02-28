@@ -22,7 +22,7 @@ class NoTitleStyle extends PickerStyle {
 
 /// 默认样式
 class DefaultPickerStyle extends PickerStyle {
-  DefaultPickerStyle({bool haveRadius: false, String? title}) {
+  DefaultPickerStyle({bool haveRadius = false, String? title}) {
     if (haveRadius) {
       this.headDecoration = BoxDecoration(
           color: Colors.white,
@@ -34,7 +34,7 @@ class DefaultPickerStyle extends PickerStyle {
   }
 
   /// 夜间
-  DefaultPickerStyle.dark({bool haveRadius: false, String? title}) {
+  DefaultPickerStyle.dark({bool haveRadius = false, String? title}) {
     this.commitButton = Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 12, right: 22),
@@ -64,7 +64,7 @@ class DefaultPickerStyle extends PickerStyle {
 /// 关闭按钮样式
 class ClosePickerStyle extends PickerStyle {
   /// 日间
-  ClosePickerStyle({bool haveRadius: false, String? title}) {
+  ClosePickerStyle({bool haveRadius = false, String? title}) {
     if (haveRadius) {
       this.headDecoration = BoxDecoration(
           color: Colors.white,
@@ -87,7 +87,7 @@ class ClosePickerStyle extends PickerStyle {
   }
 
   /// 夜间
-  ClosePickerStyle.dark({bool haveRadius: false, String? title}) {
+  ClosePickerStyle.dark({bool haveRadius = false, String? title}) {
     this.headDecoration = BoxDecoration(
         color: Colors.grey[800],
         borderRadius:
@@ -113,7 +113,7 @@ class ClosePickerStyle extends PickerStyle {
 
 /// 圆角按钮样式
 class RaisedPickerStyle extends PickerStyle {
-  RaisedPickerStyle({bool haveRadius: false, String? title, Color color: Colors.blue}) {
+  RaisedPickerStyle({bool haveRadius = false, String? title, Color color = Colors.blue}) {
     if (haveRadius) {
       this.headDecoration = BoxDecoration(
           color: Colors.white,
@@ -139,7 +139,7 @@ class RaisedPickerStyle extends PickerStyle {
   }
 
   /// 夜间
-  RaisedPickerStyle.dark({bool haveRadius: false, String? title, Color? color}) {
+  RaisedPickerStyle.dark({bool haveRadius = false, String? title, Color? color}) {
     this.headDecoration = BoxDecoration(
         color: Colors.grey[800],
         borderRadius:
