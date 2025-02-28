@@ -40,3 +40,6 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 /web/
+
+# FVM Version Cache
+.fvm/
