@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,12 +49,10 @@ class DatePickerRoute<T> extends PopupRoute<T> {
 
   @override
   bool didPop(T? result) {
-    if (onCancel != null) {
-      if (result == null) {
-        onCancel!(false);
-      } else if (!(result as bool)) {
-        onCancel!(true);
-      }
+    if (result == null) {
+      onCancel?.call(false);
+    } else if (!(result as bool)) {
+      onCancel?.call(true);
     }
     return super.didPop(result);
   }
@@ -728,9 +725,7 @@ class _PickerState extends State<PickerContentView> {
   // -------------------- set   end ------------
 
   void _notifyLocationChanged() {
-    if (widget.route.onChanged != null) {
-      widget.route.onChanged!(_selectData);
-    }
+    widget.route.onChanged?.call(_selectData);
   }
 
   double _pickerFontSize(String text) {
@@ -846,9 +841,7 @@ class _PickerState extends State<PickerContentView> {
           /// 确认按钮
           InkWell(
             onTap: () {
-              if (widget.route.onConfirm != null) {
-                widget.route.onConfirm!(_selectData);
-              }
+              widget.route.onConfirm?.call(_selectData);
               Navigator.pop(context, true);
             },
             child: _pickerStyle.commitButton,

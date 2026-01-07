@@ -40,12 +40,10 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
 
   @override
   bool didPop(T? result) {
-    if (onCancel != null) {
-      if (result == null) {
-        onCancel!(false);
-      } else if (!(result as bool)) {
-        onCancel!(true);
-      }
+    if (result == null) {
+      onCancel?.call(false);
+    } else if (!(result as bool)) {
+      onCancel?.call(true);
     }
     return super.didPop(result);
   }
@@ -198,9 +196,7 @@ class _PickerState extends State<PickerContentView> {
   }
 
   void _notifyLocationChanged() {
-    if (widget.route.onChanged != null) {
-      widget.route.onChanged!(_selectData, _selectPosition);
-    }
+    widget.route.onChanged?.call(_selectData, _selectPosition);
   }
 
   double _pickerLabelPadding(String? text) {
@@ -329,10 +325,8 @@ class _PickerState extends State<PickerContentView> {
           /// 确认按钮
           InkWell(
             onTap: () {
-              if (widget.route.onConfirm != null) {
-                debugPrint('longer   _selectPosition >>> $_selectPosition');
-                widget.route.onConfirm!(_selectData, _selectPosition);
-              }
+              debugPrint('longer   _selectPosition >>> $_selectPosition');
+              widget.route.onConfirm?.call(_selectData, _selectPosition);
               Navigator.pop(context, true);
             },
             child: _pickerStyle.commitButton,

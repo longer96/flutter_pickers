@@ -46,12 +46,10 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
 
   @override
   bool didPop(T? result) {
-    if (onCancel != null) {
-      if (result == null) {
-        onCancel!(false);
-      } else if (!(result as bool)) {
-        onCancel!(true);
-      }
+    if (result == null) {
+      onCancel?.call(false);
+    } else if (!(result as bool)) {
+      onCancel?.call(true);
     }
     return super.didPop(result);
   }
@@ -276,9 +274,7 @@ class _PickerState extends State<PickerContentView> {
   }
 
   void _notifyLocationChanged() {
-    if (widget.route.onChanged != null) {
-      widget.route.onChanged!(_currentProvince, _currentCity, _currentTown);
-    }
+    widget.route.onChanged?.call(_currentProvince, _currentCity, _currentTown);
   }
 
   double _pickerFontSize(String text) {
@@ -430,13 +426,11 @@ class _PickerState extends State<PickerContentView> {
           /// 确认按钮
           InkWell(
             onTap: () {
-              if (widget.route.onConfirm != null) {
-                widget.route.onConfirm!(
-                  _currentProvince,
-                  _currentCity,
-                  _currentTown,
-                );
-              }
+              widget.route.onConfirm?.call(
+                _currentProvince,
+                _currentCity,
+                _currentTown,
+              );
               Navigator.pop(context, true);
             },
             child: _pickerStyle.commitButton,
