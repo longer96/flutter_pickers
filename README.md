@@ -178,7 +178,7 @@ Widget _demo() {
             setState(() {
               initData = p;
             });
-          }, onChanged: (p) => print('数据发生改变：$p'));
+          }, onChanged: (p) => debugPrint('数据发生改变：$p'));
     },
     child: Text('$initData'));
 }
@@ -227,7 +227,7 @@ Widget _demo() {
       selectData: timeData2Select,
       suffix: ['', '时', '分', '秒'],
       onConfirm: (p) {
-        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
+        debugPrint('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
       },
     );
   }
@@ -281,8 +281,8 @@ Widget _demo() {
       columeNum: 5,
       suffix: ['', '', '', '', ''],
       onConfirm: (List p) {
-        print('longer >>> 返回数据：${p.join('、')}');
-        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
+        debugPrint('longer >>> 返回数据：${p.join('、')}');
+        debugPrint('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
       },
     );
   }

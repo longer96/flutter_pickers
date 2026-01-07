@@ -1,13 +1,12 @@
 import 'package:example/widget/my_app_bar.dart';
-import 'package:example/widget/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
-import 'package:flutter_pickers/style/default_style.dart';
-import 'package:flutter_pickers/style/picker_style.dart';
 
 class MultipleLinkPickerPage extends StatefulWidget {
+  const MultipleLinkPickerPage({super.key});
+
   @override
-  _MultipleLinkPickerPageState createState() => _MultipleLinkPickerPageState();
+  State<MultipleLinkPickerPage> createState() => _MultipleLinkPickerPageState();
 }
 
 class _MultipleLinkPickerPageState extends State<MultipleLinkPickerPage> {
@@ -52,9 +51,9 @@ class _MultipleLinkPickerPageState extends State<MultipleLinkPickerPage> {
       columeNum: 5,
       suffix: ['', '', '', '', ''],
       onConfirm: (List p, List<int> position) {
-        print('longer >>> 返回数据：${p.join('、')}');
-        print('longer >>> 返回数据下标：${position.join('、')}');
-        print('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
+        debugPrint('longer >>> 返回数据：${p.join('、')}');
+        debugPrint('longer >>> 返回数据下标：${position.join('、')}');
+        debugPrint('longer >>> 返回数据类型：${p.map((x) => x.runtimeType).toList()}');
       },
     );
   }

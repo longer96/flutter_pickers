@@ -29,17 +29,13 @@ class PicketUtil {
   static bool listNoEmpty(List? list) {
     if (list == null) return false;
 
-    if (list.length == 0) return false;
-
-    return true;
+    return list.isEmpty;
   }
 
   ///判断List是否为空
   static bool listEmpty(List? list) {
     if (list == null) return true;
 
-    if (list.length == 0) return true;
-
-    return false;
+    return list.isEmpty;
   }
 }

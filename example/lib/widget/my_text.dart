@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyText extends StatelessWidget {
   const MyText(
     this.data, {
-    Key? key,
+    super.key,
     this.letfpadding = 0,
     this.toppadding = 0,
     this.rightpadding = 0,
@@ -12,12 +12,7 @@ class MyText extends StatelessWidget {
     this.color = Colors.black87,
     this.fontWeight = FontWeight.w400,
     this.maxLines = 1000,
-  }) :
-//        assert(
-//          data != null,
-//          'text 不能为空哦~',
-//        ),
-        super(key: key);
+  });
 
   final String? data;
   final double letfpadding;
@@ -33,7 +28,11 @@ class MyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          letfpadding, toppadding, rightpadding, bottompadding),
+        letfpadding,
+        toppadding,
+        rightpadding,
+        bottompadding,
+      ),
       child: Text(
         data ?? "null",
         style: TextStyle(color: color, fontSize: size, fontWeight: fontWeight),

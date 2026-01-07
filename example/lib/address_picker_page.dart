@@ -5,13 +5,17 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 class AddressPickerPage extends StatefulWidget {
+  const AddressPickerPage({super.key});
+
   @override
-  _AddressPickerPageState createState() => _AddressPickerPageState();
+  State<AddressPickerPage> createState() => _AddressPickerPageState();
 }
 
 class _AddressPickerPageState extends State<AddressPickerPage> {
   // 所在区域  省 市 区
-  String initProvince = '四川省', initCity = '成都市', initTown = '双流区';
+  String initProvince = '四川省',
+      initCity = '成都市',
+      initTown = '双流区';
 
   // 选择器2
   List locations1 = ['', ''];
@@ -69,7 +73,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
 
   Widget _checkLocation2() {
     Widget textView =
-        Text(spliceCityName(pname: locations1[0], cname: locations1[1]));
+    Text(spliceCityName(pname: locations1[0], cname: locations1[1]));
 
     return InkWell(
       onTap: () {
@@ -114,7 +118,9 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
           borderRadius: BorderRadius.circular(4)),
       child: MyText('确认', color: Colors.white, size: 14),
     );
@@ -122,11 +128,10 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
     // 头部样式
     Decoration headDecoration = BoxDecoration(
         color: Colors.grey[800],
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)));
 
     Widget title =
-        Center(child: MyText('请选择地址', color: Colors.white, size: 14));
+    Center(child: MyText('请选择地址', color: Colors.white, size: 14));
 
     /// item 覆盖样式
     Widget itemOverlay = Container(
@@ -189,14 +194,14 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
           SizedBox(width: 8),
           (initProvince != '')
               ? InkWell(
-                  child: Icon(Icons.close, size: 20, color: Colors.grey[500]),
-                  onTap: () {
-                    setState(() {
-                      initProvince = '';
-                      initCity = '';
-                      initTown = '';
-                    });
-                  })
+              child: Icon(Icons.close, size: 20, color: Colors.grey[500]),
+              onTap: () {
+                setState(() {
+                  initProvince = '';
+                  initCity = '';
+                  initTown = '';
+                });
+              })
               : SizedBox(),
           SizedBox(width: 8),
           Icon(Icons.keyboard_arrow_down, size: 28, color: Colors.grey[500]),
@@ -223,6 +228,8 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
   bool strEmpty(String? value) {
     if (value == null) return true;
 
-    return value.trim().isEmpty;
+    return value
+        .trim()
+        .isEmpty;
   }
 }

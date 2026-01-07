@@ -48,22 +48,22 @@ class PickerStyle {
     Color? textColor,
     Widget? itemOverlay,
   }) {
-    this._context = context;
-    this._showTitleBar = showTitleBar;
-    this._menu = menu;
+    _context = context;
+    _showTitleBar = showTitleBar;
+    _menu = menu;
 
-    this._pickerHeight = pickerHeight;
-    this._pickerTitleHeight = pickerTitleHeight;
-    this._pickerItemHeight = pickerItemHeight;
-    this._menuHeight = menuHeight;
+    _pickerHeight = pickerHeight;
+    _pickerTitleHeight = pickerTitleHeight;
+    _pickerItemHeight = pickerItemHeight;
+    _menuHeight = menuHeight;
 
-    this._cancelButton = cancelButton;
-    this._commitButton = commitButton;
-    this._title = title;
-    this._headDecoration = headDecoration;
-    this._backgroundColor = backgroundColor;
-    this._textColor = textColor;
-    this._itemOverlay = itemOverlay;
+    _cancelButton = cancelButton;
+    _commitButton = commitButton;
+    _title = title;
+    _headDecoration = headDecoration;
+    _backgroundColor = backgroundColor;
+    _textColor = textColor;
+    _itemOverlay = itemOverlay;
   }
 
   set context(BuildContext? value) {
@@ -122,56 +122,63 @@ class PickerStyle {
     _showTitleBar = value;
   }
 
-  BuildContext? get context => this._context;
+  BuildContext? get context => _context;
 
   /// 选择器背景色 默认白色
-  Color get backgroundColor => this._backgroundColor ?? Colors.white;
+  Color get backgroundColor => _backgroundColor ?? Colors.white;
 
   Decoration get headDecoration =>
-      this._headDecoration ?? BoxDecoration(color: Colors.white);
+      _headDecoration ?? BoxDecoration(color: Colors.white);
 
-  Widget? get menu => this._menu;
+  Widget? get menu => _menu;
 
-  double get menuHeight => this._menuHeight ?? 36.0;
+  double get menuHeight => _menuHeight ?? 36.0;
 
-  double get pickerHeight => this._pickerHeight ?? 220.0;
+  double get pickerHeight => _pickerHeight ?? 220.0;
 
-  double get pickerItemHeight => this._pickerItemHeight ?? 40.0;
+  double get pickerItemHeight => _pickerItemHeight ?? 40.0;
 
-  double get pickerTitleHeight => this._pickerTitleHeight ?? 44.0;
+  double get pickerTitleHeight => _pickerTitleHeight ?? 44.0;
 
-  bool get showTitleBar => this._showTitleBar ?? true;
+  bool get showTitleBar => _showTitleBar ?? true;
 
-  Color get textColor => this._textColor ?? Colors.black87;
+  Color get textColor => _textColor ?? Colors.black87;
 
-  Widget get title => this._title ?? SizedBox();
+  Widget get title => _title ?? SizedBox();
 
   Widget get commitButton => getCommitButton();
 
   Widget get cancelButton => getCancelButton();
 
-  Widget? get itemOverlay => this._itemOverlay;
+  Widget? get itemOverlay => _itemOverlay;
 
   Widget getCommitButton() {
-    return this._commitButton ??
+    return _commitButton ??
         Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 12, right: 22),
-          child: Text('确定',
-              style: TextStyle(
-                  color: Theme.of(context!).primaryColor, fontSize: 16.0)),
+          child: Text(
+            '确定',
+            style: TextStyle(
+              color: Theme.of(context!).primaryColor,
+              fontSize: 16.0,
+            ),
+          ),
         );
   }
 
   Widget getCancelButton() {
-    return this._cancelButton ??
+    return _cancelButton ??
         Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.only(left: 22, right: 12),
-          child: Text('取消',
-              style: TextStyle(
-                  color: Theme.of(context!).unselectedWidgetColor,
-                  fontSize: 16.0)),
+          child: Text(
+            '取消',
+            style: TextStyle(
+              color: Theme.of(context!).unselectedWidgetColor,
+              fontSize: 16.0,
+            ),
+          ),
         );
   }
 }
