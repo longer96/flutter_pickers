@@ -1,6 +1,5 @@
 import 'package:example/widget/my_app_bar.dart';
 import 'package:example/widget/my_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
@@ -10,8 +9,10 @@ import 'package:flutter_pickers/time_picker/model/suffix.dart';
 import 'package:flutter_pickers/utils/check.dart';
 
 class DatePickerPage extends StatefulWidget {
+  const DatePickerPage({super.key});
+
   @override
-  _DatePickerPageState createState() => _DatePickerPageState();
+  State<DatePickerPage> createState() => _DatePickerPageState();
 }
 
 class _DatePickerPageState extends State<DatePickerPage> {
@@ -50,7 +51,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
           _item('月', DateMode.S),
           _item('仿计时器', DateMode.HMS),
           demo(),
-          SizedBox(height: 80)
+          SizedBox(height: 80),
         ],
       ),
     );
@@ -58,16 +59,17 @@ class _DatePickerPageState extends State<DatePickerPage> {
 
   Widget demo() {
     return TextButton(
-        onPressed: () {
-          Pickers.showDatePicker(
-            context,
-            onConfirm: (p) {
-              print('longer >>> 返回数据：$p');
-            },
-            // onChanged: (p) => print(p),
-          );
-        },
-        child: Text('Demo'));
+      onPressed: () {
+        Pickers.showDatePicker(
+          context,
+          onConfirm: (p) {
+            debugPrint('longer >>> 返回数据：$p');
+          },
+          // onChanged: (p) => print(p),
+        );
+      },
+      child: Text('Demo'),
+    );
   }
 
   Widget _item(title, model) {
@@ -84,15 +86,19 @@ class _DatePickerPageState extends State<DatePickerPage> {
                 _onClickItem(model);
               }
             },
-            trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              MyText(
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                MyText(
                   PicketUtil.strEmpty(selectData[model])
                       ? '暂无'
                       : selectData[model],
                   color: Colors.grey,
-                  rightpadding: 18),
-              rightIcon
-            ]),
+                  rightpadding: 18,
+                ),
+                rightIcon,
+              ],
+            ),
           ),
         ),
         divider,
@@ -114,7 +120,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
       // minDate: PDuration(hour: 12, minute: 38, second: 3),
       // maxDate: PDuration(hour: 12, minute: 40, second: 36),
       onConfirm: (p) {
-        print('longer >>> 返回数据：$p');
+        debugPrint('longer >>> 返回数据：$p');
         setState(() {
           switch (model) {
             case DateMode.YMDHMS:
@@ -162,8 +168,9 @@ class _DatePickerPageState extends State<DatePickerPage> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(left: 22),
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 1),
-          borderRadius: BorderRadius.circular(4)),
+        border: Border.all(color: Colors.white, width: 1),
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
@@ -171,16 +178,17 @@ class _DatePickerPageState extends State<DatePickerPage> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(4)),
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: MyText('确认', color: Colors.white, size: 14),
     );
 
     // 头部样式
     Decoration headDecoration = BoxDecoration(
-        color: Colors.grey[800],
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8), topRight: Radius.circular(8)));
+      color: Colors.grey[800],
+      borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+    );
 
     Widget title = Center(child: MyText('倒计时', color: Colors.white, size: 14));
 
@@ -188,8 +196,11 @@ class _DatePickerPageState extends State<DatePickerPage> {
     Widget itemOverlay = Container(
       decoration: BoxDecoration(
         border: Border.symmetric(
-            horizontal:
-                BorderSide(color: Colors.cyan.withOpacity(0.3), width: 0.7)),
+          horizontal: BorderSide(
+            color: Colors.cyan.withValues(alpha: 0.3),
+            width: 0.7,
+          ),
+        ),
       ),
     );
 
@@ -209,7 +220,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
       suffix: Suffix(hours: ' 小时', minutes: ' 分钟', seconds: ' 秒'),
       pickerStyle: pickerStyle,
       onConfirm: (p) {
-        print('longer >>> 返回数据：$p');
+        debugPrint('longer >>> 返回数据：$p');
       },
       // onChanged: (p) => print(p),
     );

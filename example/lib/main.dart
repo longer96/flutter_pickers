@@ -14,23 +14,26 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          primaryColor: Color(0xFF566FD5),
-          visualDensity: VisualDensity.adaptivePlatformDensity),
+        primaryColor: Color(0xFF566FD5),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -55,14 +58,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _itemView(title, Widget page) {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context, new MaterialPageRoute(builder: (context) => page));
-          },
-          child: MyText(title,
-              color: Colors.white, toppadding: 12, bottompadding: 12),
-        ));
+      padding: const EdgeInsets.only(bottom: 8),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => page),
+          );
+        },
+        child: MyText(title, toppadding: 12, bottompadding: 12),
+      ),
+    );
   }
 }

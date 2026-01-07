@@ -42,7 +42,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
 //            ),
 //          ),
 
-          Container(height: _height, child: picker())
+          SizedBox(height: _height, child: picker())
         ],
       ),
     );
@@ -135,7 +135,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
   }
 
   void _setPicker2(int selectIndex) {
-    print('触发了picker2的change()');
+    debugPrint('触发了picker2的change()');
     if (selectIndex % 2 == 0) {
       setState(() {
         date3.add('add');

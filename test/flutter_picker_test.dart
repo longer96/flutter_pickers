@@ -1,5 +1,4 @@
-import 'package:flutter_pickers/address_picker/locations_data.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
   // List fruits = ['apples', 'bananas', 1];
@@ -52,9 +51,9 @@ void main() {
   // {year: 2011, month: null, day: null, hour: null, minute: null, second: null}
 
   dynamic a = 111;
-  print('longer   >>> $a');
+  debugPrint('longer   >>> $a');
   a = 'aaaaa';
-  print('longer   >>> $a');
+  debugPrint('longer   >>> $a');
   a = [11, 22, 33];
-  print('longer   >>> $a');
+  debugPrint('longer   >>> $a');
 }
