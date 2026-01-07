@@ -125,7 +125,7 @@ class _PickerState extends State<PickerContentView> {
   late FixedExtentScrollController scrollCtrl;
 
   // 单位widget Padding left
-  late double _laberLeft;
+  late double _labelLeft;
 
   @override
   void initState() {
@@ -181,7 +181,7 @@ class _PickerState extends State<PickerContentView> {
     _selectPosition = pindex;
 
     scrollCtrl = FixedExtentScrollController(initialItem: pindex);
-    _laberLeft = _pickerLaberPadding(_data[pindex].toString());
+    _labelLeft = _pickerLabelPadding(_data[pindex].toString());
   }
 
   void _setPicker(int index) {
@@ -203,7 +203,7 @@ class _PickerState extends State<PickerContentView> {
     }
   }
 
-  double _pickerLaberPadding(String? text) {
+  double _pickerLabelPadding(String? text) {
     double left = 60;
 
     if (text != null) {
@@ -252,10 +252,10 @@ class _PickerState extends State<PickerContentView> {
         _setPicker(index);
         if (widget.route.suffix != null && widget.route.suffix != '') {
           // 如果设置了才计算 单位的paddingLeft
-          double resuleLeft = _pickerLaberPadding(_data[index].toString());
-          if (resuleLeft != _laberLeft) {
+          double resultLeft = _pickerLabelPadding(_data[index].toString());
+          if (resultLeft != _labelLeft) {
             setState(() {
-              _laberLeft = resuleLeft;
+              _labelLeft = resultLeft;
             });
           }
         }
@@ -280,10 +280,10 @@ class _PickerState extends State<PickerContentView> {
     Widget view;
     // 单位
     if (widget.route.suffix != null && widget.route.suffix != '') {
-      Widget laberView = Center(
+      Widget labelView = Center(
         child: AnimatedPadding(
           duration: Duration(milliseconds: 100),
-          padding: EdgeInsets.only(left: _laberLeft),
+          padding: EdgeInsets.only(left: _labelLeft),
           child: Text(
             widget.route.suffix!,
             style: TextStyle(
@@ -295,7 +295,7 @@ class _PickerState extends State<PickerContentView> {
         ),
       );
 
-      view = Stack(children: [cPicker, laberView]);
+      view = Stack(children: [cPicker, labelView]);
     } else {
       view = cPicker;
     }

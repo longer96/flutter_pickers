@@ -48,7 +48,7 @@ class _MultipleLinkPickerPageState extends State<MultipleLinkPickerPage> {
       // 注意数据类型要对应 比如 44442 写成字符串类型'44442'，则找不到
       // selectData: ['c', 'cc', 'cccc33', 'ccc4-2', 44442],
       selectData: ['c', 'cc3'],
-      columeNum: 5,
+      columnNum: 5,
       suffix: ['', '', '', '', ''],
       onConfirm: (List p, List<int> position) {
         debugPrint('longer >>> 返回数据：${p.join('、')}');

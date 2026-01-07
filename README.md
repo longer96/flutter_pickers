@@ -278,7 +278,7 @@ Widget _demo() {
       // 注意数据类型要对应 比如 44442 写成字符串类型'44442'，则找不到
       // selectData: ['c', 'cc', 'cccc33', 'ccc4-2', 44442],
       selectData: ['c', 'cc3'],
-      columeNum: 5,
+      columnNum: 5,
       suffix: ['', '', '', '', ''],
       onConfirm: (List p) {
         debugPrint('longer >>> 返回数据：${p.join('、')}');
@@ -288,10 +288,10 @@ Widget _demo() {
   }
 ```
 
-| 参数           | 描述                  | 默认                 |
-| -----------   | --------------------- | ------------------- |
-| columeNum     | 选择器列数（必填）       | null|
-| data          | 数据源                 | null|
+| 参数        | 描述                  | 默认                 |
+|-----------| --------------------- | ------------------- |
+| columnNum | 选择器列数（必填）       | null|
+| data      | 数据源                 | null|
 
 <br/>
 

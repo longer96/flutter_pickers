@@ -91,11 +91,11 @@ class Pickers {
 
   /// 通用 多列选择器
   /// 有关联
-  /// [columeNum] 最大的列数
+  /// [columnNum] 最大的列数
   static void showMultiLinkPicker(
     BuildContext context, {
     required dynamic data,
-    required int columeNum,
+    required int columnNum,
     List? selectData,
     List? suffix,
     PickerStyle? pickerStyle,
@@ -115,7 +115,7 @@ class Pickers {
       MultipleLinkPickerRoute(
         data: data,
         selectData: selectData,
-        columeNum: columeNum,
+        columnNum: columnNum,
         suffix: suffix,
         pickerStyle: pickerStyle,
         onChanged: onChanged,

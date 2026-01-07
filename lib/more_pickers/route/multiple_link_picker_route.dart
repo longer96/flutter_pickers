@@ -13,7 +13,7 @@ class MultipleLinkPickerRoute<T> extends PopupRoute<T> {
     required this.pickerStyle,
     required this.data,
     required this.selectData,
-    required this.columeNum,
+    required this.columnNum,
     this.suffix,
     this.onChanged,
     this.onConfirm,
@@ -24,7 +24,7 @@ class MultipleLinkPickerRoute<T> extends PopupRoute<T> {
   });
 
   final Map data;
-  final int columeNum;
+  final int columnNum;
   final List selectData;
   final List? suffix;
   final MultipleLinkCallback? onChanged;
@@ -79,7 +79,7 @@ class MultipleLinkPickerRoute<T> extends PopupRoute<T> {
       removeTop: true,
       child: PickerContentView(
         data: data,
-        columeNum: columeNum,
+        columnNum: columnNum,
         selectData: selectData,
         pickerStyle: pickerStyle,
         route: this,
@@ -97,14 +97,14 @@ class PickerContentView extends StatefulWidget {
   const PickerContentView({
     super.key,
     required this.data,
-    required this.columeNum,
+    required this.columnNum,
     required this.pickerStyle,
     required this.selectData,
     required this.route,
   });
 
   final Map data;
-  final int columeNum;
+  final int columnNum;
   final List selectData;
   final MultipleLinkPickerRoute route;
   final PickerStyle pickerStyle;
@@ -129,7 +129,7 @@ class _PickerState extends State<PickerContentView> {
   late final Map _data;
 
   /// 有多少列
-  late final int _columeNum;
+  late final int _columnNum;
 
   /// 所有item 对应的数据
   late final List<List> _columnData = [];
@@ -148,12 +148,12 @@ class _PickerState extends State<PickerContentView> {
     _data = widget.data;
     List mSelectData = widget.selectData;
     _pickerStyle = widget.pickerStyle;
-    _columeNum = widget.columeNum;
+    _columnNum = widget.columnNum;
     pickerItemHeight = _pickerStyle.pickerItemHeight;
     // 已选择器数据为准，因为初始化数据有可能和选择器对不上
     _selectData = [];
     _selectDataPosition = [];
-    for (int i = 0; i < _columeNum; ++i) {
+    for (int i = 0; i < _columnNum; ++i) {
       if (i >= mSelectData.length) {
         _selectData.add('');
       } else {
@@ -203,7 +203,7 @@ class _PickerState extends State<PickerContentView> {
     scrollCtrl.clear();
     _columnData.clear();
 
-    for (int i = 0; i < _columeNum; ++i) {
+    for (int i = 0; i < _columnNum; ++i) {
       pindex = 0;
 
       if (i == 0) {
@@ -265,14 +265,14 @@ class _PickerState extends State<PickerContentView> {
 
     /// 如果不是最后一列
     /// 数据的变动都会造成剩下列的更新
-    if (position < _columeNum - 1) {
+    if (position < _columnNum - 1) {
       // 先更新下一列所有数据
       // 如果这一列的所有数据都为空，下列直接也设为空数据(优化)
       if (_columnData[position].length == 1 &&
           _columnData[position].first == placeData) {
         _columnData[position + 1] = [placeData];
       } else {
-        _columnData[position + 1] = findColumeData(position + 1);
+        _columnData[position + 1] = findColumnData(position + 1);
       }
 
       // 再次递归
@@ -319,7 +319,7 @@ class _PickerState extends State<PickerContentView> {
   /// 比如 position = 2;
   /// 就是找到第2列数据
   /// return list
-  List findColumeData(int position) {
+  List findColumnData(int position) {
     dynamic nextData;
     for (int i = 0; i < position; i++) {
       if (i == 0) {
@@ -390,7 +390,7 @@ class _PickerState extends State<PickerContentView> {
   Widget _renderItemView() {
     // 选择器
     List<Widget> pickerList =
-        List.generate(_columeNum, (index) => pickerView(index)).toList();
+        List.generate(_columnNum, (index) => pickerView(index)).toList();
 
     return Container(
       height: _pickerStyle.pickerHeight,
