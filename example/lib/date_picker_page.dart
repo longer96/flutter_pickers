@@ -164,7 +164,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
   }
 
   void _onClickItem2() {
-    Widget _cancelButton = Container(
+    Widget cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(left: 22),
       decoration: BoxDecoration(
@@ -174,7 +174,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
-    Widget _commitButton = Container(
+    Widget commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(
@@ -205,8 +205,8 @@ class _DatePickerPageState extends State<DatePickerPage> {
     );
 
     var pickerStyle = PickerStyle(
-      cancelButton: _cancelButton,
-      commitButton: _commitButton,
+      cancelButton: cancelButton,
+      commitButton: commitButton,
       headDecoration: headDecoration,
       title: title,
       textColor: Colors.white,

@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DatePickerPage extends StatefulWidget {
+  const DatePickerPage({super.key});
+
   @override
-  _DatePickerPageState createState() => _DatePickerPageState();
+  State<DatePickerPage> createState() => _DatePickerPageState();
 }
 
 class _DatePickerPageState extends State<DatePickerPage> {

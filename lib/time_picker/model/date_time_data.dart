@@ -11,17 +11,17 @@ class DateTimeData {
 
   List getListByName(DateType type) {
     switch (type) {
-      case DateType.Year:
+      case DateType.year:
         return year;
-      case DateType.Month:
+      case DateType.month:
         return month;
-      case DateType.Day:
+      case DateType.day:
         return day;
-      case DateType.Hour:
+      case DateType.hour:
         return hour;
-      case DateType.Minute:
+      case DateType.minute:
         return minute;
-      case DateType.Second:
+      case DateType.second:
         return second;
     }
   }

@@ -113,7 +113,7 @@ class _PickerState extends State<PickerContentView> {
   late PickerStyle _pickerStyle;
 
   // 选中数据
-  var _selectData;
+  dynamic _selectData;
 
   // 选中数据下标
   int _selectPosition = 0;

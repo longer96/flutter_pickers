@@ -16,10 +16,10 @@ import 'package:flutter/material.dart';
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
 ///
 class PickerStyle {
-  BuildContext? _context;
+  BuildContext? context;
 
   bool? _showTitleBar;
-  Widget? _menu;
+  Widget? menu;
   double? _pickerHeight;
   double? _pickerTitleHeight;
   double? _pickerItemHeight;
@@ -31,8 +31,8 @@ class PickerStyle {
   Decoration? _headDecoration;
   Color? _backgroundColor;
   Color? _textColor;
-  double? _textSize;
-  Widget? _itemOverlay;
+  double? textSize;
+  Widget? itemOverlay;
 
   PickerStyle({
     BuildContext? context,
@@ -51,10 +51,7 @@ class PickerStyle {
     double? textSize,
     Widget? itemOverlay,
   }) {
-    _context = context;
     _showTitleBar = showTitleBar;
-    _menu = menu;
-
     _pickerHeight = pickerHeight;
     _pickerTitleHeight = pickerTitleHeight;
     _pickerItemHeight = pickerItemHeight;
@@ -66,20 +63,11 @@ class PickerStyle {
     _headDecoration = headDecoration;
     _backgroundColor = backgroundColor;
     _textColor = textColor;
-    _textSize = textSize;
-    _itemOverlay = itemOverlay;
-  }
-
-  set context(BuildContext? value) {
-    _context = value;
+    itemOverlay = itemOverlay;
   }
 
   set menuHeight(double value) {
     _menuHeight = value;
-  }
-
-  set menu(Widget? value) {
-    _menu = value;
   }
 
   set pickerHeight(double value) {
@@ -102,10 +90,6 @@ class PickerStyle {
     _commitButton = value;
   }
 
-  set itemOverlay(Widget? value) {
-    _itemOverlay = value;
-  }
-
   set title(Widget value) {
     _title = value;
   }
@@ -122,23 +106,15 @@ class PickerStyle {
     _textColor = value;
   }
 
-  set textSize(double? value) {
-    _textSize = value;
-  }
-
   set showTitleBar(bool value) {
     _showTitleBar = value;
   }
-
-  BuildContext? get context => _context;
 
   /// 选择器背景色 默认白色
   Color get backgroundColor => _backgroundColor ?? Colors.white;
 
   Decoration get headDecoration =>
       _headDecoration ?? BoxDecoration(color: Colors.white);
-
-  Widget? get menu => _menu;
 
   double get menuHeight => _menuHeight ?? 36.0;
 
@@ -152,15 +128,11 @@ class PickerStyle {
 
   Color get textColor => _textColor ?? Colors.black87;
 
-  double? get textSize => _textSize;
-
   Widget get title => _title ?? SizedBox();
 
   Widget get commitButton => getCommitButton();
 
   Widget get cancelButton => getCancelButton();
-
-  Widget? get itemOverlay => _itemOverlay;
 
   Widget getCommitButton() {
     return _commitButton ??

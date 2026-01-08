@@ -29,17 +29,17 @@ class Suffix {
 
   String getSingle(DateType dateType) {
     switch (dateType) {
-      case DateType.Year:
+      case DateType.year:
         return years;
-      case DateType.Month:
+      case DateType.month:
         return month;
-      case DateType.Day:
+      case DateType.day:
         return days;
-      case DateType.Hour:
+      case DateType.hour:
         return hours;
-      case DateType.Minute:
+      case DateType.minute:
         return minutes;
-      case DateType.Second:
+      case DateType.second:
         return seconds;
     }
   }

@@ -76,13 +76,13 @@ class _StylePickerPageState extends State<StylePickerPage> {
 
   PickerStyle customizeStyle() {
     double menuHeight = 46.0;
-    Widget _headMenuView = Container(
+    Widget headMenuView = Container(
       color: Colors.deepPurple[400],
       height: menuHeight,
       child: Center(child: MyText('净身高', color: Colors.white)),
     );
 
-    Widget _cancelButton = Container(
+    Widget cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       margin: const EdgeInsets.only(left: 22),
       decoration: BoxDecoration(
@@ -92,7 +92,7 @@ class _StylePickerPageState extends State<StylePickerPage> {
       child: MyText('close', color: Colors.amberAccent, size: 14),
     );
 
-    Widget _commitButton = Container(
+    Widget commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(
@@ -122,13 +122,13 @@ class _StylePickerPageState extends State<StylePickerPage> {
     );
 
     return PickerStyle(
-      menu: _headMenuView,
+      menu: headMenuView,
       menuHeight: menuHeight,
       pickerHeight: 320,
       pickerTitleHeight: 60,
       pickerItemHeight: 50,
-      cancelButton: _cancelButton,
-      commitButton: _commitButton,
+      cancelButton: cancelButton,
+      commitButton: commitButton,
       headDecoration: headDecoration,
       title: title,
       textColor: Colors.amberAccent,
