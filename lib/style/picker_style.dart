@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 /// [cancelButton]  头部的取消按钮
 /// [commitButton]  头部的确认按钮
 /// [textColor]  选择器的文字颜色 默认黑色
+/// [textSize]  选择器的文字大小
 /// [backgroundColor]  选择器的背景颜色 默认白色
 /// [headDecoration] 头部Container 的Decoration   默认：BoxDecoration(color: Colors.white)
 ///
@@ -30,6 +31,7 @@ class PickerStyle {
   Decoration? _headDecoration;
   Color? _backgroundColor;
   Color? _textColor;
+  double? _textSize;
   Widget? _itemOverlay;
 
   PickerStyle({
@@ -46,6 +48,7 @@ class PickerStyle {
     Decoration? headDecoration,
     Color? backgroundColor,
     Color? textColor,
+    double? textSize,
     Widget? itemOverlay,
   }) {
     _context = context;
@@ -63,6 +66,7 @@ class PickerStyle {
     _headDecoration = headDecoration;
     _backgroundColor = backgroundColor;
     _textColor = textColor;
+    _textSize = textSize;
     _itemOverlay = itemOverlay;
   }
 
@@ -118,6 +122,10 @@ class PickerStyle {
     _textColor = value;
   }
 
+  set textSize(double? value) {
+    _textSize = value;
+  }
+
   set showTitleBar(bool value) {
     _showTitleBar = value;
   }
@@ -143,6 +151,8 @@ class PickerStyle {
   bool get showTitleBar => _showTitleBar ?? true;
 
   Color get textColor => _textColor ?? Colors.black87;
+
+  double? get textSize => _textSize;
 
   Widget get title => _title ?? SizedBox();
 

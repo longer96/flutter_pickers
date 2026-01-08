@@ -809,7 +809,7 @@ class _PickerState extends State<PickerContentView> {
                 text,
                 style: TextStyle(
                   color: _pickerStyle.textColor,
-                  fontSize: _pickerFontSize(text),
+                  fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
                 ),
                 textAlign: TextAlign.start,
               ),
