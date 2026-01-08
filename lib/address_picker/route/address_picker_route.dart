@@ -328,78 +328,71 @@ class _PickerState extends State<PickerContentView> {
                 itemBuilder: (_, index) {
                   String text = Address.provinces[index];
                   return Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        color: _pickerStyle.textColor,
-                        fontSize: _pickerFontSize(text),
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                  );
+                      alignment: Alignment.center,
+                      child: Text(text,
+                          style: TextStyle(
+                            color: _pickerStyle.textColor,
+                            fontSize:
+                                _pickerStyle.textSize ?? _pickerFontSize(text),
+                          ),
+                          textAlign: TextAlign.start));
                 },
               ),
             ),
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(8.0),
-              child: CupertinoPicker.builder(
-                scrollController: cityScrollCtrl,
-                selectionOverlay: _pickerStyle.itemOverlay,
-                itemExtent: _pickerStyle.pickerItemHeight,
-                onSelectedItemChanged: (int index) {
-                  _setCity(index);
-                },
-                childCount: cities.length,
-                itemBuilder: (_, index) {
-                  String text = cities[index]['name'];
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        color: _pickerStyle.textColor,
-                        fontSize: _pickerFontSize(text),
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                  );
-                },
-              ),
-            ),
+                padding: EdgeInsets.all(8.0),
+                child: CupertinoPicker.builder(
+                  scrollController: cityScrollCtrl,
+                  selectionOverlay: _pickerStyle.itemOverlay,
+                  itemExtent: _pickerStyle.pickerItemHeight,
+                  onSelectedItemChanged: (int index) {
+                    _setCity(index);
+                  },
+                  childCount: cities.length,
+                  itemBuilder: (_, index) {
+                    String text = cities[index]['name'];
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Text('$text',
+                          style: TextStyle(
+                            color: _pickerStyle.textColor,
+                            fontSize:
+                                _pickerStyle.textSize ?? _pickerFontSize(text),
+                          ),
+                          textAlign: TextAlign.start),
+                    );
+                  },
+                )),
           ),
           hasTown
               ? Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: CupertinoPicker.builder(
-                    scrollController: townScrollCtrl,
-                    selectionOverlay: _pickerStyle.itemOverlay,
-                    itemExtent: _pickerStyle.pickerItemHeight,
-                    onSelectedItemChanged: (int index) {
-                      _setTown(index);
-                    },
-                    childCount: towns.length,
-                    itemBuilder: (_, index) {
-                      String text = towns[index];
-                      return Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          text,
-                          style: TextStyle(
-                            color: _pickerStyle.textColor,
-                            fontSize: _pickerFontSize(text),
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              )
-              : SizedBox(),
+                  child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: CupertinoPicker.builder(
+                        scrollController: townScrollCtrl,
+                        selectionOverlay: _pickerStyle.itemOverlay,
+                        itemExtent: _pickerStyle.pickerItemHeight,
+                        onSelectedItemChanged: (int index) {
+                          _setTown(index);
+                        },
+                        childCount: towns.length,
+                        itemBuilder: (_, index) {
+                          String text = towns[index];
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Text(text,
+                                style: TextStyle(
+                                  color: _pickerStyle.textColor,
+                                  fontSize:  _pickerStyle.textSize ?? _pickerFontSize(text),
+                                ),
+                                textAlign: TextAlign.start),
+                          );
+                        },
+                      )),
+                )
+              : SizedBox()
         ],
       ),
     );

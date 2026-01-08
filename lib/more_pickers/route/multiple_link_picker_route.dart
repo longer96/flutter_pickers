@@ -416,13 +416,13 @@ class _PickerState extends State<PickerContentView> {
 
             String text = '${_columnData[position][index]}$suffix';
             return Align(
-              alignment: Alignment.center,
-              child: Text(
-                text,
-                style: TextStyle(color: _pickerStyle.textColor, fontSize: 18.0),
-                textAlign: TextAlign.start,
-              ),
-            );
+                alignment: Alignment.center,
+                child: Text(text,
+                    style: TextStyle(
+                      color: _pickerStyle.textColor,
+                      fontSize: _pickerStyle.textSize ?? 18.0,
+                    ),
+                    textAlign: TextAlign.start));
           },
         ),
       ),

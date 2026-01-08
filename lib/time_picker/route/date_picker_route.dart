@@ -804,16 +804,13 @@ class _PickerState extends State<PickerContentView> {
             String text =
                 '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix?.getSingle(dateType)}';
             return Align(
-              alignment: Alignment.center,
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: _pickerStyle.textColor,
-                  fontSize: _pickerFontSize(text),
-                ),
-                textAlign: TextAlign.start,
-              ),
-            );
+                alignment: Alignment.center,
+                child: Text(text,
+                    style: TextStyle(
+                      color: _pickerStyle.textColor,
+                      fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                    ),
+                    textAlign: TextAlign.start));
           },
         ),
       ),

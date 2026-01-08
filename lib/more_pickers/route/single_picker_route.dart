@@ -208,6 +208,7 @@ class _PickerState extends State<PickerContentView> {
     return left;
   }
 
+  /// 动态计算itemTextSize
   double _pickerFontSize(String text) {
     if (text.length <= 6) {
       return 18.0;
@@ -260,16 +261,13 @@ class _PickerState extends State<PickerContentView> {
       itemBuilder: (_, index) {
         String text = _data[index].toString();
         return Align(
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: _pickerStyle.textColor,
-              fontSize: _pickerFontSize(text),
-            ),
-            textAlign: TextAlign.start,
-          ),
-        );
+            alignment: Alignment.center,
+            child: Text(text,
+                style: TextStyle(
+                  color: _pickerStyle.textColor,
+                  fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                ),
+                textAlign: TextAlign.start));
       },
     );
 
