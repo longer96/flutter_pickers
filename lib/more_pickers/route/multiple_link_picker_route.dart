@@ -195,7 +195,7 @@ class _PickerState extends State<PickerContentView> {
     );
   }
 
-  _init(List mSelectData) {
+  void _init(List mSelectData) {
     int pindex;
     scrollCtrl.clear();
     _columnData.clear();

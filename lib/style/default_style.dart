@@ -25,14 +25,17 @@ class NoTitleStyle extends PickerStyle {
 class DefaultPickerStyle extends PickerStyle {
   DefaultPickerStyle({bool haveRadius = false, String? title}) {
     if (haveRadius) {
-      headDecoration = BoxDecoration(
+      headDecoration = const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
       );
     }
-    if (title != null && title != '') {
+    if (title != null && title.isNotEmpty) {
       this.title = Center(
-        child: Text(title, style: TextStyle(color: Colors.grey, fontSize: 14)),
+        child: Text(
+          title,
+          style: const TextStyle(color: Colors.grey, fontSize: 14),
+        ),
       );
     }
   }
@@ -42,24 +45,34 @@ class DefaultPickerStyle extends PickerStyle {
     commitButton = Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text('确定', style: TextStyle(color: Colors.white, fontSize: 16.0)),
+      child: const Text(
+        '确定',
+        style: TextStyle(color: Colors.white, fontSize: 16.0),
+      ),
     );
 
     cancelButton = Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 22, right: 12),
-      child: Text('取消', style: TextStyle(color: Colors.white, fontSize: 16.0)),
+      child: const Text(
+        '取消',
+        style: TextStyle(color: Colors.white, fontSize: 16.0),
+      ),
     );
 
     headDecoration = BoxDecoration(
       color: Colors.grey[800],
-      borderRadius:
-          !haveRadius ? null : BorderRadius.vertical(top: Radius.circular(10)),
+      borderRadius: haveRadius
+          ? const BorderRadius.vertical(top: Radius.circular(10))
+          : null,
     );
 
-    if (title != null && title != '') {
+    if (title != null && title.isNotEmpty) {
       this.title = Center(
-        child: Text(title, style: TextStyle(color: Colors.white, fontSize: 14)),
+        child: Text(
+          title,
+          style: const TextStyle(color: Colors.white, fontSize: 14),
+        ),
       );
     }
 
@@ -73,29 +86,28 @@ class ClosePickerStyle extends PickerStyle {
   /// 日间
   ClosePickerStyle({bool haveRadius = false, String? title}) {
     if (haveRadius) {
-      headDecoration = BoxDecoration(
+      headDecoration = const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
       );
     }
 
-    cancelButton = SizedBox();
-    if (title != null && title != '') {
+    cancelButton = const SizedBox();
+    if (title != null && title.isNotEmpty) {
       this.title = Padding(
         padding: const EdgeInsets.only(left: 16),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
             title,
-            style: TextStyle(color: Colors.grey, fontSize: 14),
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
           ),
         ),
       );
     }
     commitButton = Container(
-      // padding: const EdgeInsets.all(4),
       margin: const EdgeInsets.only(right: 12),
-      child: Icon(Icons.close, color: Colors.grey, size: 28),
+      child: const Icon(Icons.close, color: Colors.grey, size: 28),
     );
   }
 
@@ -103,23 +115,24 @@ class ClosePickerStyle extends PickerStyle {
   ClosePickerStyle.dark({bool haveRadius = false, String? title}) {
     headDecoration = BoxDecoration(
       color: Colors.grey[800],
-      borderRadius:
-          !haveRadius ? null : BorderRadius.vertical(top: Radius.circular(10)),
+      borderRadius: haveRadius
+          ? const BorderRadius.vertical(top: Radius.circular(10))
+          : null,
     );
 
-    cancelButton = SizedBox();
+    cancelButton = const SizedBox();
     commitButton = Container(
       margin: const EdgeInsets.only(right: 12),
-      child: Icon(Icons.close, color: Colors.white, size: 28),
+      child: const Icon(Icons.close, color: Colors.white, size: 28),
     );
-    if (title != null && title != '') {
+    if (title != null && title.isNotEmpty) {
       this.title = Padding(
         padding: const EdgeInsets.only(left: 16),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
             title,
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
         ),
       );
@@ -138,9 +151,9 @@ class RaisedPickerStyle extends PickerStyle {
     Color color = Colors.blue,
   }) {
     if (haveRadius) {
-      headDecoration = BoxDecoration(
+      headDecoration = const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
       );
     }
     commitButton = Container(
@@ -150,7 +163,10 @@ class RaisedPickerStyle extends PickerStyle {
         color: color,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text('确定', style: TextStyle(color: Colors.white, fontSize: 15.0)),
+      child: const Text(
+        '确定',
+        style: TextStyle(color: Colors.white, fontSize: 15.0),
+      ),
     );
 
     cancelButton = Container(
@@ -163,9 +179,12 @@ class RaisedPickerStyle extends PickerStyle {
       child: Text('取消', style: TextStyle(color: color, fontSize: 15.0)),
     );
 
-    if (title != null && title != '') {
+    if (title != null && title.isNotEmpty) {
       this.title = Center(
-        child: Text(title, style: TextStyle(color: Colors.grey, fontSize: 14)),
+        child: Text(
+          title,
+          style: const TextStyle(color: Colors.grey, fontSize: 14),
+        ),
       );
     }
   }
@@ -178,8 +197,9 @@ class RaisedPickerStyle extends PickerStyle {
   }) {
     headDecoration = BoxDecoration(
       color: Colors.grey[800],
-      borderRadius:
-          !haveRadius ? null : BorderRadius.vertical(top: Radius.circular(10)),
+      borderRadius: haveRadius
+          ? const BorderRadius.vertical(top: Radius.circular(10))
+          : null,
     );
 
     commitButton = Container(
@@ -189,7 +209,10 @@ class RaisedPickerStyle extends PickerStyle {
         color: color ?? Colors.blue,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text('确定', style: TextStyle(color: Colors.white, fontSize: 15.0)),
+      child: const Text(
+        '确定',
+        style: TextStyle(color: Colors.white, fontSize: 15.0),
+      ),
     );
 
     cancelButton = Container(
@@ -199,12 +222,18 @@ class RaisedPickerStyle extends PickerStyle {
         border: Border.all(color: Colors.white, width: 1),
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text('取消', style: TextStyle(color: Colors.white, fontSize: 15.0)),
+      child: const Text(
+        '取消',
+        style: TextStyle(color: Colors.white, fontSize: 15.0),
+      ),
     );
 
-    if (title != null && title != '') {
+    if (title != null && title.isNotEmpty) {
       this.title = Center(
-        child: Text(title, style: TextStyle(color: Colors.white, fontSize: 14)),
+        child: Text(
+          title,
+          style: const TextStyle(color: Colors.white, fontSize: 14),
+        ),
       );
     }
 

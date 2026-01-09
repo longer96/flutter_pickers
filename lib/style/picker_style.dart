@@ -35,9 +35,9 @@ class PickerStyle {
   Widget? itemOverlay;
 
   PickerStyle({
-    BuildContext? context,
+    this.context,
     bool? showTitleBar,
-    Widget? menu,
+    this.menu,
     double? pickerHeight,
     double? pickerTitleHeight,
     double? pickerItemHeight,
@@ -48,23 +48,19 @@ class PickerStyle {
     Decoration? headDecoration,
     Color? backgroundColor,
     Color? textColor,
-    double? textSize,
-    Widget? itemOverlay,
-  }) {
-    _showTitleBar = showTitleBar;
-    _pickerHeight = pickerHeight;
-    _pickerTitleHeight = pickerTitleHeight;
-    _pickerItemHeight = pickerItemHeight;
-    _menuHeight = menuHeight;
-
-    _cancelButton = cancelButton;
-    _commitButton = commitButton;
-    _title = title;
-    _headDecoration = headDecoration;
-    _backgroundColor = backgroundColor;
-    _textColor = textColor;
-    itemOverlay = itemOverlay;
-  }
+    this.textSize,
+    this.itemOverlay,
+  })  : _showTitleBar = showTitleBar,
+        _pickerHeight = pickerHeight,
+        _pickerTitleHeight = pickerTitleHeight,
+        _pickerItemHeight = pickerItemHeight,
+        _menuHeight = menuHeight,
+        _cancelButton = cancelButton,
+        _commitButton = commitButton,
+        _title = title,
+        _headDecoration = headDecoration,
+        _backgroundColor = backgroundColor,
+        _textColor = textColor;
 
   set menuHeight(double value) {
     _menuHeight = value;
@@ -114,7 +110,7 @@ class PickerStyle {
   Color get backgroundColor => _backgroundColor ?? Colors.white;
 
   Decoration get headDecoration =>
-      _headDecoration ?? BoxDecoration(color: Colors.white);
+      _headDecoration ?? const BoxDecoration(color: Colors.white);
 
   double get menuHeight => _menuHeight ?? 36.0;
 
@@ -128,39 +124,51 @@ class PickerStyle {
 
   Color get textColor => _textColor ?? Colors.black87;
 
-  Widget get title => _title ?? SizedBox();
+  Widget get title => _title ?? const SizedBox();
 
   Widget get commitButton => getCommitButton();
 
   Widget get cancelButton => getCancelButton();
 
   Widget getCommitButton() {
-    return _commitButton ??
-        Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(left: 12, right: 22),
-          child: Text(
-            '确定',
-            style: TextStyle(
-              color: Theme.of(context!).primaryColor,
-              fontSize: 16.0,
-            ),
-          ),
-        );
+    if (_commitButton != null) return _commitButton!;
+    
+    // 提供安全的默认值，避免 context 为 null 时崩溃
+    final primaryColor = context != null 
+        ? Theme.of(context!).primaryColor 
+        : Colors.blue;
+    
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.only(left: 12, right: 22),
+      child: Text(
+        '确定',
+        style: TextStyle(
+          color: primaryColor,
+          fontSize: 16.0,
+        ),
+      ),
+    );
   }
 
   Widget getCancelButton() {
-    return _cancelButton ??
-        Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(left: 22, right: 12),
-          child: Text(
-            '取消',
-            style: TextStyle(
-              color: Theme.of(context!).unselectedWidgetColor,
-              fontSize: 16.0,
-            ),
-          ),
-        );
+    if (_cancelButton != null) return _cancelButton!;
+    
+    // 提供安全的默认值，避免 context 为 null 时崩溃
+    final unselectedColor = context != null
+        ? Theme.of(context!).unselectedWidgetColor
+        : Colors.grey;
+    
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.only(left: 22, right: 12),
+      child: Text(
+        '取消',
+        style: TextStyle(
+          color: unselectedColor,
+          fontSize: 16.0,
+        ),
+      ),
+    );
   }
 }

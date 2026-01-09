@@ -2,3 +2,62 @@ include: package:flutter_lints/flutter.yaml
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+linter:
+  rules:
+    # 禁用一些过于严格的规则，避免对现有代码造成太多警告
+    # prefer_single_quotes: false  # 地址数据文件有大量双引号
+    # prefer_const_constructors: false  # 需要大量修改现有代码
+    
+    # 保留重要的规则
+    always_declare_return_types: true
+    annotate_overrides: true
+    avoid_empty_else: true
+    avoid_init_to_null: true
+    avoid_null_checks_in_equality_operators: true
+    avoid_relative_lib_imports: true
+    avoid_return_types_on_setters: true
+    await_only_futures: true
+    camel_case_types: true
+    cancel_subscriptions: true
+    close_sinks: true
+    empty_catches: true
+    empty_constructor_bodies: true
+    library_names: true
+    library_prefixes: true
+    non_constant_identifier_names: true
+    prefer_collection_literals: true
+    prefer_conditional_assignment: true
+    prefer_contains: true
+    prefer_final_fields: true
+    prefer_for_elements_to_map_fromIterable: true
+    prefer_if_null_operators: true
+    prefer_is_empty: true
+    prefer_is_not_empty: true
+    prefer_iterable_whereType: true
+    prefer_spread_collections: true
+    recursive_getters: true
+    type_init_formals: true
+    unnecessary_brace_in_string_interps: true
+    unnecessary_getters_setters: true
+    unnecessary_new: true
+    unnecessary_null_aware_assignments: true
+    unnecessary_null_in_if_null_operators: true
+    unnecessary_overrides: true
+    unnecessary_this: true
+    use_function_type_syntax_for_parameters: true
+    use_rethrow_when_possible: true
+    valid_regexps: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    # 地址数据文件包含大量自动生成的数据，忽略其 lint 警告
+    - "lib/address_picker/locations_data.dart"
+  errors:
+    invalid_annotation_target: ignore
+    # 将一些 info 级别的警告降级，避免干扰
+    prefer_single_quotes: ignore
+    prefer_const_constructors: ignore
+    unnecessary_parenthesis: ignore

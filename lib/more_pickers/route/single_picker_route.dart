@@ -166,7 +166,7 @@ class _PickerState extends State<PickerContentView> {
     );
   }
 
-  _init() {
+  void _init() {
     int pindex = 0;
     pindex = _data.indexWhere(
       (element) => element.toString() == _selectData.toString(),

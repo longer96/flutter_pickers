@@ -187,7 +187,7 @@ class _PickerState extends State<PickerContentView> {
     );
   }
 
-  _init() {
+  void _init() {
     Address.addAllItem = addAllItem;
     int pindex = 0;
     int cindex = 0;

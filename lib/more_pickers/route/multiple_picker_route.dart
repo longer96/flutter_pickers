@@ -169,7 +169,7 @@ class _PickerState extends State<PickerContentView> {
     );
   }
 
-  _init() {
+  void _init() {
     int pindex;
     scrollCtrl.clear();
 

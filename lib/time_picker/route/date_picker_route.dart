@@ -161,7 +161,7 @@ class _PickerState extends State<PickerContentView> {
     _init();
   }
 
-  _init() {
+  void _init() {
     scrollCtrl.clear();
 
     _dateTimeData = DateTimeData();
