@@ -85,20 +85,14 @@ class PDuration {
 
   // 若为null 返回0
   int getSingle(DateType dateType) {
-    switch (dateType) {
-      case DateType.Year:
-        return year ?? 0;
-      case DateType.Month:
-        return month ?? 0;
-      case DateType.Day:
-        return day ?? 0;
-      case DateType.Hour:
-        return hour ?? 0;
-      case DateType.Minute:
-        return minute ?? 0;
-      case DateType.Second:
-        return second ?? 0;
-    }
+    return switch (dateType) {
+      DateType.Year => year ?? 0,
+      DateType.Month => month ?? 0,
+      DateType.Day => day ?? 0,
+      DateType.Hour => hour ?? 0,
+      DateType.Minute => minute ?? 0,
+      DateType.Second => second ?? 0,
+    };
   }
 
   @override

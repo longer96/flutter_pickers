@@ -106,7 +106,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
     );
   }
 
-  void _onClickItem(model) {
+  void _onClickItem(DateMode model) {
     Pickers.showDatePicker(
       context,
       mode: model,
@@ -122,41 +122,22 @@ class _DatePickerPageState extends State<DatePickerPage> {
       onConfirm: (p) {
         debugPrint('longer >>> 返回数据：$p');
         setState(() {
-          switch (model) {
-            case DateMode.YMDHMS:
-              selectData[model] =
-                  '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
-              break;
-            case DateMode.YMDHM:
-              selectData[model] =
-                  '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}';
-              break;
-            case DateMode.YMDH:
-              selectData[model] = '${p.year}-${p.month}-${p.day} ${p.hour}';
-              break;
-            case DateMode.YMD:
-              selectData[model] = '${p.year}-${p.month}-${p.day}';
-              break;
-            case DateMode.YM:
-              selectData[model] = '${p.year}-${p.month}';
-              break;
-            case DateMode.Y:
-              selectData[model] = '${p.year}-${p.month}';
-              break;
-            case DateMode.MDHMS:
-              selectData[model] =
-                  '${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}';
-              break;
-            case DateMode.HMS:
-              selectData[model] = '${p.hour}:${p.minute}:${p.second}';
-              break;
-            case DateMode.MD:
-              selectData[model] = '${p.month}-${p.day}';
-              break;
-            case DateMode.S:
-              selectData[model] = '${p.second}';
-              break;
-          }
+          selectData[model] = switch (model) {
+            DateMode.YMDHMS =>
+              '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}',
+            DateMode.YMDHM =>
+              '${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute}',
+            DateMode.YMDH => '${p.year}-${p.month}-${p.day} ${p.hour}',
+            DateMode.YMD => '${p.year}-${p.month}-${p.day}',
+            DateMode.YM => '${p.year}-${p.month}',
+            DateMode.Y => '${p.year}-${p.month}',
+            DateMode.MDHMS =>
+              '${p.month}-${p.day} ${p.hour}:${p.minute}:${p.second}',
+            DateMode.HMS => '${p.hour}:${p.minute}:${p.second}',
+            DateMode.MD => '${p.month}-${p.day}',
+            DateMode.S => '${p.second}',
+            _ => throw UnimplementedError(),
+          };
         });
       },
       // onChanged: (p) => print(p),
