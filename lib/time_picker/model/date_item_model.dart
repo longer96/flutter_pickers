@@ -10,26 +10,32 @@ class DateItemModel {
   late bool second;
 
   DateItemModel(
-      this.year, this.month, this.day, this.hour, this.minute, this.second);
+    this.year,
+    this.month,
+    this.day,
+    this.hour,
+    this.minute,
+    this.second,
+  );
 
   DateItemModel.parse(DateMode dateMode) {
-    this.year = DateModeMap[dateMode]!.contains('年');
-    this.month = DateModeMap[dateMode]!.contains('月');
-    this.day = DateModeMap[dateMode]!.contains('日');
-    this.hour = DateModeMap[dateMode]!.contains('时');
-    this.minute = DateModeMap[dateMode]!.contains('分');
-    this.second = DateModeMap[dateMode]!.contains('秒');
+    year = DateModeMap[dateMode]!.contains('年');
+    month = DateModeMap[dateMode]!.contains('月');
+    day = DateModeMap[dateMode]!.contains('日');
+    hour = DateModeMap[dateMode]!.contains('时');
+    minute = DateModeMap[dateMode]!.contains('分');
+    second = DateModeMap[dateMode]!.contains('秒');
   }
 
   // 返回需要显示多少个picker
   int get length {
     int i = 0;
-    if (this.year) ++i;
-    if (this.month) ++i;
-    if (this.day) ++i;
-    if (this.hour) ++i;
-    if (this.minute) ++i;
-    if (this.second) ++i;
+    if (year) ++i;
+    if (month) ++i;
+    if (day) ++i;
+    if (hour) ++i;
+    if (minute) ++i;
+    if (second) ++i;
 
     return i;
   }
@@ -51,5 +57,5 @@ const DateModeMap = {
   DateMode.MS: '分秒',
   DateMode.S: '秒',
   DateMode.M: '月',
-  DateMode.H: '时'
+  DateMode.H: '时',
 };

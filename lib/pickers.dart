@@ -19,116 +19,114 @@ import 'time_picker/model/date_item_model.dart';
 /// [suffix] 后缀
 class Pickers {
   /// 单列 通用选择器
-  static void showSinglePicker(BuildContext context,
-      {required dynamic data,
-      dynamic selectData,
-      String? suffix,
-      PickerStyle? pickerStyle,
-      SingleCallback? onChanged,
-      SingleCallback? onConfirm,
-      Function(bool isCancel)? onCancel,
-      bool overlapTabBar = false}) {
-    assert((data is List) || (data is PickerDataType),
-        'params : data must List or PickerDataType');
+  static void showSinglePicker(
+    BuildContext context, {
+    required dynamic data,
+    dynamic selectData,
+    String? suffix,
+    PickerStyle? pickerStyle,
+    SingleCallback? onChanged,
+    SingleCallback? onConfirm,
+    Function(bool isCancel)? onCancel,
+    bool overlapTabBar = false,
+  }) {
+    assert(
+      (data is List) || (data is PickerDataType),
+      'params : data must List or PickerDataType',
+    );
 
-    if (pickerStyle == null) {
-      pickerStyle = DefaultPickerStyle();
-    }
-    if (pickerStyle.context == null) {
-      pickerStyle.context = context;
-    }
+    pickerStyle ??= DefaultPickerStyle();
+    pickerStyle.context ??= context;
 
-    Navigator.of(context, rootNavigator: overlapTabBar).push(SinglePickerRoute(
-      data: data,
-      suffix: suffix,
-      selectData: selectData,
-      pickerStyle: pickerStyle,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      // theme: Theme.of(context, shadowThemeOnly: true),
-      theme: Theme.of(context),
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(
+      SinglePickerRoute(
+        data: data,
+        suffix: suffix,
+        selectData: selectData,
+        pickerStyle: pickerStyle,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        // theme: Theme.of(context, shadowThemeOnly: true),
+        theme: Theme.of(context),
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      ),
+    );
   }
 
   /// 通用 多列选择器
   /// 无关联
-  static void showMultiPicker(BuildContext context,
-      {required List<List> data,
-      List? selectData,
-      List? suffix,
-      PickerStyle? pickerStyle,
-      MultipleCallback? onChanged,
-      MultipleCallback? onConfirm,
-      Function(bool isCancel)? onCancel,
-      bool overlapTabBar = false}) {
-    if (selectData == null) {
-      selectData = [];
-    }
+  static void showMultiPicker(
+    BuildContext context, {
+    required List<List> data,
+    List? selectData,
+    List? suffix,
+    PickerStyle? pickerStyle,
+    MultipleCallback? onChanged,
+    MultipleCallback? onConfirm,
+    Function(bool isCancel)? onCancel,
+    bool overlapTabBar = false,
+  }) {
+    selectData ??= [];
+    pickerStyle ??= DefaultPickerStyle();
+    pickerStyle.context ??= context;
 
-    if (pickerStyle == null) {
-      pickerStyle = DefaultPickerStyle();
-    }
-    if (pickerStyle.context == null) {
-      pickerStyle.context = context;
-    }
-
-    Navigator.of(context, rootNavigator: overlapTabBar)
-        .push(MultiplePickerRoute(
-      data: data,
-      selectData: selectData,
-      suffix: suffix,
-      pickerStyle: pickerStyle,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      // theme: Theme.of(context, shadowThemeOnly: true),
-      theme: Theme.of(context),
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(
+      MultiplePickerRoute(
+        data: data,
+        selectData: selectData,
+        suffix: suffix,
+        pickerStyle: pickerStyle,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        // theme: Theme.of(context, shadowThemeOnly: true),
+        theme: Theme.of(context),
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      ),
+    );
   }
 
   /// 通用 多列选择器
   /// 有关联
-  /// [columeNum] 最大的列数
-  static void showMultiLinkPicker(BuildContext context,
-      {required dynamic data,
-      required int columeNum,
-      List? selectData,
-      List? suffix,
-      PickerStyle? pickerStyle,
-      MultipleLinkCallback? onChanged,
-      MultipleLinkCallback? onConfirm,
-      Function(bool isCancel)? onCancel,
-      bool overlapTabBar = false}) {
+  /// [columnNum] 最大的列数
+  static void showMultiLinkPicker(
+    BuildContext context, {
+    required dynamic data,
+    required int columnNum,
+    List? selectData,
+    List? suffix,
+    PickerStyle? pickerStyle,
+    MultipleLinkCallback? onChanged,
+    MultipleLinkCallback? onConfirm,
+    Function(bool isCancel)? onCancel,
+    bool overlapTabBar = false,
+  }) {
     assert(data is Map, 'params : data must Map');
 
-    if (selectData == null) {
-      selectData = [];
-    }
+    selectData ??= [];
 
-    if (pickerStyle == null) {
-      pickerStyle = DefaultPickerStyle();
-    }
-    if (pickerStyle.context == null) {
-      pickerStyle.context = context;
-    }
+    pickerStyle ??= DefaultPickerStyle();
+    pickerStyle.context ??= context;
 
-    Navigator.of(context, rootNavigator: overlapTabBar)
-        .push(MultipleLinkPickerRoute(
-      data: data,
-      selectData: selectData,
-      columeNum: columeNum,
-      suffix: suffix,
-      pickerStyle: pickerStyle,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      // theme: Theme.of(context, shadowThemeOnly: true),
-      theme: Theme.of(context),
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(
+      MultipleLinkPickerRoute(
+        data: data,
+        selectData: selectData,
+        columnNum: columnNum,
+        suffix: suffix,
+        pickerStyle: pickerStyle,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        // theme: Theme.of(context, shadowThemeOnly: true),
+        theme: Theme.of(context),
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      ),
+    );
   }
 
   /// 自定义 地区选择器
@@ -138,35 +136,36 @@ class Pickers {
   /// [onChanged]   选择器发生变动
   /// [onConfirm]   选择器提交
   /// [addAllItem] 市、区是否添加 '全部' 选项     默认：true
-  static void showAddressPicker(BuildContext context,
-      {PickerStyle? pickerStyle,
-      String initProvince: '',
-      String initCity: '',
-      String? initTown,
-      bool addAllItem: true,
-      AddressCallback? onChanged,
-      AddressCallback? onConfirm,
-      Function(bool isCancel)? onCancel,
-      bool overlapTabBar = false}) {
-    if (pickerStyle == null) {
-      pickerStyle = DefaultPickerStyle();
-    }
-    if (pickerStyle.context == null) {
-      pickerStyle.context = context;
-    }
+  static void showAddressPicker(
+    BuildContext context, {
+    PickerStyle? pickerStyle,
+    String initProvince = '',
+    String initCity = '',
+    String? initTown,
+    bool addAllItem = true,
+    AddressCallback? onChanged,
+    AddressCallback? onConfirm,
+    Function(bool isCancel)? onCancel,
+    bool overlapTabBar = false,
+  }) {
+    pickerStyle ??= DefaultPickerStyle();
+    pickerStyle.context ??= context;
 
-    Navigator.of(context, rootNavigator: overlapTabBar).push(AddressPickerRoute(
-      pickerStyle: pickerStyle,
-      initProvince: initProvince,
-      initCity: initCity,
-      initTown: initTown,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      addAllItem: addAllItem,
-      theme: Theme.of(context),
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(
+      AddressPickerRoute(
+        pickerStyle: pickerStyle,
+        initProvince: initProvince,
+        initCity: initCity,
+        initTown: initTown,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        addAllItem: addAllItem,
+        theme: Theme.of(context),
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      ),
+    );
   }
 
   /// 时间选择器
@@ -179,36 +178,34 @@ class Pickers {
   ///     tip: 当只有单列数据，该限制不产生关联 只针对单列item限制，比如 maxDate>day = 3  minDate>day = 10,那么所有的月份都只显示3-10之间
   /// [minDate] : 最小时间 用法同上
   /// [mode] : 时间选择器所显示样式  16 种时间样式 默认：DateMode.YMD
-  static void showDatePicker(BuildContext context,
-      {DateMode mode: DateMode.YMD,
-      PDuration? selectDate,
-      PDuration? maxDate,
-      PDuration? minDate,
-      Suffix? suffix,
-      PickerStyle? pickerStyle,
-      DateCallback? onChanged,
-      DateCallback? onConfirm,
-      Function(bool isCancel)? onCancel,
-      bool overlapTabBar = false}) {
-    if (pickerStyle == null) {
-      pickerStyle = DefaultPickerStyle();
-    }
-    if (pickerStyle.context == null) {
-      pickerStyle.context = context;
-    }
+  static void showDatePicker(
+    BuildContext context, {
+    DateMode mode = DateMode.YMD,
+    PDuration? selectDate,
+    PDuration? maxDate,
+    PDuration? minDate,
+    Suffix? suffix,
+    PickerStyle? pickerStyle,
+    DateCallback? onChanged,
+    DateCallback? onConfirm,
+    Function(bool isCancel)? onCancel,
+    bool overlapTabBar = false,
+  }) {
+    pickerStyle ??= DefaultPickerStyle();
+    pickerStyle.context ??= context;
 
-    if (selectDate == null) selectDate = PDuration.now();
-    if (suffix == null) suffix = Suffix.normal();
+    selectDate ??= PDuration.now();
+    suffix ??= Suffix.normal();
 
     // 解析是否有对应数据
     DateItemModel dateItemModel = DateItemModel.parse(mode);
 
-    if (maxDate == null) maxDate = PDuration(year: 2100);
-    if (minDate == null) minDate = PDuration(year: 1900);
+    maxDate ??= PDuration(year: 2100);
+    minDate ??= PDuration(year: 1900);
 
     if ((dateItemModel.day || dateItemModel.year)) {
       if (intEmpty(selectDate.year)) {
-        print('picker  Tip >>> initDate未设置years，默认设置为now().year');
+        debugPrint('picker  Tip >>> initDate未设置years，默认设置为now().year');
         selectDate.year = DateTime.now().year;
       }
 
@@ -223,19 +220,23 @@ class Pickers {
       }
     }
 
-    Navigator.of(context, rootNavigator: overlapTabBar).push(DatePickerRoute(
-      mode: mode,
-      initDate: selectDate,
-      maxDate: maxDate,
-      minDate: minDate,
-      suffix: suffix,
-      pickerStyle: pickerStyle,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      // theme: Theme.of(context, shadowThemeOnly: true),
-      theme: Theme.of(context),
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    ));
+    Navigator.of(context, rootNavigator: overlapTabBar).push(
+      DatePickerRoute(
+            mode: mode,
+            initDate: selectDate,
+            maxDate: maxDate,
+            minDate: minDate,
+            suffix: suffix,
+            pickerStyle: pickerStyle,
+            onChanged: onChanged,
+            onConfirm: onConfirm,
+            onCancel: onCancel,
+            // theme: Theme.of(context, shadowThemeOnly: true),
+            theme: Theme.of(context),
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          )
+          as Route<Object?>,
+    );
   }
 }

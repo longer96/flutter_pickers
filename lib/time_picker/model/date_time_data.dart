@@ -2,28 +2,22 @@ import 'package:flutter_pickers/time_picker/model/date_type.dart';
 
 /// 时间选择器  item 生成的对应数据
 class DateTimeData {
-  List _year = [];
-  List _month = [];
-  List _day = [];
-  List _hour = [];
-  List _minute = [];
-  List _second = [];
+  final List _year = [];
+  final List _month = [];
+  final List _day = [];
+  final List _hour = [];
+  final List _minute = [];
+  final List _second = [];
 
   List getListByName(DateType type) {
-    switch (type) {
-      case DateType.Year:
-        return year;
-      case DateType.Month:
-        return month;
-      case DateType.Day:
-        return day;
-      case DateType.Hour:
-        return hour;
-      case DateType.Minute:
-        return minute;
-      case DateType.Second:
-        return second;
-    }
+    return switch (type) {
+      DateType.Year => year,
+      DateType.Month => month,
+      DateType.Day => day,
+      DateType.Hour => hour,
+      DateType.Minute => minute,
+      DateType.Second => second,
+    };
   }
 
   List get year => _year;

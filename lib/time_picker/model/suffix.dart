@@ -10,30 +10,31 @@ class Suffix {
   late String seconds;
 
   Suffix.normal() {
-    this.years = '年';
-    this.month = '月';
-    this.days = '日';
-    this.hours = '时';
-    this.minutes = '分';
-    this.seconds = '秒';
+    years = '年';
+    month = '月';
+    days = '日';
+    hours = '时';
+    minutes = '分';
+    seconds = '秒';
   }
 
-  Suffix({this.years: '', this.month: '', this.days: '', this.hours: '', this.minutes: '', this.seconds: ''});
+  Suffix({
+    this.years = '',
+    this.month = '',
+    this.days = '',
+    this.hours = '',
+    this.minutes = '',
+    this.seconds = '',
+  });
 
   String getSingle(DateType dateType) {
-    switch (dateType) {
-      case DateType.Year:
-        return this.years;
-      case DateType.Month:
-        return this.month;
-      case DateType.Day:
-        return this.days;
-      case DateType.Hour:
-        return this.hours;
-      case DateType.Minute:
-        return this.minutes;
-      case DateType.Second:
-        return this.seconds;
-    }
+    return switch (dateType) {
+      DateType.Year => years,
+      DateType.Month => month,
+      DateType.Day => days,
+      DateType.Hour => hours,
+      DateType.Minute => minutes,
+      DateType.Second => seconds,
+    };
   }
 }
