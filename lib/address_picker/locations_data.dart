@@ -4537,52 +4537,44 @@ class Address {
   // 是否在市、区级添加 全部选项
   static bool addAllItem = true;
 
-  static getCities(String province) {
-    var emptyData = {'name': "全部", 'cityCode': ''};
-    if (province == '全部' && addAllItem) return [emptyData];
+  static Map<String, String> getCities(String province) {
+    var emptyData = {"全部": ''};
+    if (province == '全部' && addAllItem) return emptyData;
 
-    String code = '';
-    locations['86']!.forEach((key, value) {
-      if (value == province) {
-        code = key;
-      }
-    });
+    String code =
+        locations['86']?.keys.toList()[provinces.indexOf(province)] ?? '';
 
     Map<String, String>? areaList = locations[code];
     // print('longer >>>$code 城市数据：$areaList');
-    var data = [];
-    if (areaList != null && addAllItem) data.add(emptyData);
-    areaList?.forEach((key, value) {
-      data.add({'name': value, 'cityCode': key});
-    });
+    if (areaList != null && addAllItem) emptyData.addAll(areaList);
 
-    return data;
+    return areaList!;
   }
 
-  static getTowns(cityCode) {
+  static List<String> getTowns(String cityCode) {
     if (PicketUtil.strEmpty(cityCode)) return [''];
 
-    Map? areaList = locations[cityCode];
+    Map<String, String>? areaList = locations[cityCode];
     if (PicketUtil.mapEmpty(areaList)) {
       return [''];
     } else {
-      var data = areaList!.values.toList();
+      List<String> data = areaList!.values.toList();
       if (addAllItem) data.insert(0, '全部');
       return data;
     }
   }
 
   // 拼接城市
-  static String spliceCityName({String? pname, String? cname, String? tname}) {
-    if (PicketUtil.strEmpty(pname)) return '不限';
+  static String spliceCityName({String? pName, String? cname, String? tName}) {
+    if (PicketUtil.strEmpty(pName)) return '不限';
     StringBuffer sb = StringBuffer();
-    sb.write(pname);
+    sb.write(pName);
     if (PicketUtil.strEmpty(cname)) return sb.toString();
     sb.write(' - ');
     sb.write(cname);
-    if (PicketUtil.strEmpty(tname)) return sb.toString();
+    if (PicketUtil.strEmpty(tName)) return sb.toString();
     sb.write(' - ');
-    sb.write(tname);
+    sb.write(tName);
     return sb.toString();
   }
 
@@ -4598,12 +4590,10 @@ class Address {
     List<String> cityCode = [];
 
     if (PicketUtil.strEmpty(provinceName)) return cityCode;
-    String initialProvinceCode = '';
-    locations['86']!.forEach((key, value) {
-      if (value == provinceName) {
-        initialProvinceCode = key;
-      }
-    });
+
+    String initialProvinceCode =
+        locations['86']?.keys.toList()[provinces.indexOf(provinceName ?? '')] ??
+        '';
     ///////////////////////
     if (PicketUtil.strNoEmpty(initialProvinceCode)) {
       cityCode.add(initialProvinceCode);
@@ -4669,12 +4659,7 @@ class Address {
     List<String> cityName = [];
 
     if (PicketUtil.strEmpty(provinceCode)) return cityName;
-    String provinceName = '';
-    locations['86']!.forEach((key, value) {
-      if (key == provinceCode) {
-        provinceName = value;
-      }
-    });
+    String provinceName = locations['86']?[provinceCode] ?? '';
     if (PicketUtil.strNoEmpty(provinceName)) {
       cityName.add(provinceName);
 

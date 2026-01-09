@@ -122,15 +122,12 @@ class _PickerState extends State<PickerContentView> {
   late final PickerStyle _pickerStyle;
   late String _currentProvince, _currentCity;
   String? _currentTown;
-  var cities = [];
-  var towns = [];
-  var provinces = [];
+  List<String> provinces = [];
+  ValueNotifier<Map<String, String>> cities = ValueNotifier({});
+  ValueNotifier<List<String>> towns = ValueNotifier([]);
 
   // 是否显示县级
   bool hasTown = true;
-
-  // 是否添加全部
-  late final bool addAllItem;
 
   AnimationController? controller;
   Animation<double>? animation;
@@ -145,8 +142,8 @@ class _PickerState extends State<PickerContentView> {
     _currentProvince = widget.initProvince;
     _currentCity = widget.initCity;
     _currentTown = widget.initTown;
-    addAllItem = widget.addAllItem;
     _pickerStyle = widget.pickerStyle;
+    Address.addAllItem = widget.addAllItem;
 
     provinces = Address.provinces;
     hasTown = _currentTown != null;
@@ -188,39 +185,35 @@ class _PickerState extends State<PickerContentView> {
   }
 
   _init() {
-    Address.addAllItem = addAllItem;
-    int pindex = 0;
-    int cindex = 0;
-    int tindex = 0;
-    pindex = provinces.indexWhere((p) => p == _currentProvince);
-    pindex = pindex >= 0 ? pindex : 0;
-    String? selectedProvince = provinces[pindex];
-    if (selectedProvince != null) {
-      _currentProvince = selectedProvince;
+    int pIndex = 0;
+    int cIndex = 0;
+    int tIndex = 0;
+    pIndex = provinces.indexOf(_currentProvince);
+    pIndex = pIndex >= 0 ? pIndex : 0;
+    String? selectedProvince = provinces[pIndex];
+    _currentProvince = selectedProvince;
 
-      cities = Address.getCities(selectedProvince);
+    cities.value = Address.getCities(selectedProvince);
 
-      cindex = cities.indexWhere((c) => c['name'] == _currentCity);
-      cindex = cindex >= 0 ? cindex : 0;
-      _currentCity = cities[cindex]['name'];
+    cIndex = cities.value.values.toList().indexOf(_currentCity);
+    cIndex = cIndex >= 0 ? cIndex : 0;
 
-      // debugPrint('longer >>> 外面接到的$cities');
+    // debugPrint('longer >>> 外面接到的$cities');
 
-      if (hasTown) {
-        towns = Address.getTowns(cities[cindex]['cityCode']);
-        tindex = towns.indexWhere((t) => t == _currentTown);
-        tindex = tindex >= 0 ? tindex : 0;
-        if (towns.isEmpty) {
-          _currentTown = '';
-        } else {
-          _currentTown = towns[tindex];
-        }
+    if (hasTown) {
+      towns.value = Address.getTowns(cities.value.keys.toList()[cIndex]);
+      tIndex = towns.value.indexOf(_currentTown ?? '');
+      tIndex = tIndex >= 0 ? tIndex : 0;
+      if (towns.value.isEmpty) {
+        _currentTown = '';
+      } else {
+        _currentTown = towns.value[tIndex];
       }
     }
 
-    provinceScrollCtrl = FixedExtentScrollController(initialItem: pindex);
-    cityScrollCtrl = FixedExtentScrollController(initialItem: cindex);
-    townScrollCtrl = FixedExtentScrollController(initialItem: tindex);
+    provinceScrollCtrl = FixedExtentScrollController(initialItem: pIndex);
+    cityScrollCtrl = FixedExtentScrollController(initialItem: cIndex);
+    townScrollCtrl = FixedExtentScrollController(initialItem: tIndex);
   }
 
   void _setProvince(int index) {
@@ -228,45 +221,41 @@ class _PickerState extends State<PickerContentView> {
     // debugPrint('longer >>> index:$index  _currentProvince:$_currentProvince selectedProvince:$selectedProvince ');
 
     if (_currentProvince != selectedProvince) {
-      setState(() {
-        _currentProvince = selectedProvince;
+      _currentProvince = selectedProvince;
 
-        cities = Address.getCities(selectedProvince);
-        // debugPrint('longer >>> 返回的城市数据：$cities');
+      cities.value = Address.getCities(selectedProvince);
+      // debugPrint('longer >>> 返回的城市数据：$cities');
 
-        _currentCity = cities[0]['name'];
-        cityScrollCtrl.jumpToItem(0);
-        if (hasTown) {
-          towns = Address.getTowns(cities[0]['cityCode']);
-          _currentTown = towns[0];
-          townScrollCtrl.jumpToItem(0);
-        }
-      });
+      _currentCity = cities.value.values.first;
+      cityScrollCtrl.jumpToItem(0);
+      if (hasTown) {
+        towns.value = Address.getTowns(cities.value.keys.first);
+        _currentTown = towns.value[0];
+        townScrollCtrl.jumpToItem(0);
+      }
 
       _notifyLocationChanged();
     }
   }
 
   void _setCity(int index) {
-    index = cities.length > index ? index : 0;
-    String selectedCity = cities[index]['name'];
+    index = cities.value.length > index ? index : 0;
+    String selectedCity = cities.value.values.toList()[index];
     if (_currentCity != selectedCity) {
-      setState(() {
-        _currentCity = selectedCity;
-        if (hasTown) {
-          towns = Address.getTowns(cities[index]['cityCode']);
-          _currentTown = towns.isNotEmpty ? towns[0] : '';
-          townScrollCtrl.jumpToItem(0);
-        }
-      });
+      _currentCity = selectedCity;
+      if (hasTown) {
+        towns.value = Address.getTowns(cities.value.keys.toList()[index]);
+        _currentTown = towns.value.isNotEmpty ? towns.value[0] : '';
+        townScrollCtrl.jumpToItem(0);
+      }
 
       _notifyLocationChanged();
     }
   }
 
   void _setTown(int index) {
-    index = towns.length > index ? index : 0;
-    String selectedTown = towns[index];
+    index = towns.value.length > index ? index : 0;
+    String selectedTown = towns.value[index];
     if (_currentTown != selectedTown) {
       _currentTown = selectedTown;
       _notifyLocationChanged();
@@ -275,19 +264,6 @@ class _PickerState extends State<PickerContentView> {
 
   void _notifyLocationChanged() {
     widget.route.onChanged?.call(_currentProvince, _currentCity, _currentTown);
-  }
-
-  double _pickerFontSize(String text) {
-    double ratio = hasTown ? 0.0 : 2.0;
-    if (text.length <= 6) {
-      return 18.0;
-    } else if (text.length < 9) {
-      return 16.0 + ratio;
-    } else if (text.length < 13) {
-      return 12.0 + ratio;
-    } else {
-      return 10.0 + ratio;
-    }
   }
 
   Widget _renderPickerView() {
@@ -312,87 +288,55 @@ class _PickerState extends State<PickerContentView> {
     return Container(
       height: _pickerStyle.pickerHeight,
       color: _pickerStyle.backgroundColor,
+      padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: <Widget>[
+          SizedBox(width: 8.0),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: CupertinoPicker.builder(
-                scrollController: provinceScrollCtrl,
-                selectionOverlay: _pickerStyle.itemOverlay,
-                itemExtent: _pickerStyle.pickerItemHeight,
-                onSelectedItemChanged: (int index) {
-                  _setProvince(index);
-                },
-                childCount: Address.provinces.length,
-                itemBuilder: (_, index) {
-                  String text = Address.provinces[index];
-                  return Align(
-                      alignment: Alignment.center,
-                      child: Text(text,
-                          style: TextStyle(
-                            color: _pickerStyle.textColor,
-                            fontSize:
-                                _pickerStyle.textSize ?? _pickerFontSize(text),
-                          ),
-                          textAlign: TextAlign.start));
+            child: PickerColumn(
+              scrollController: provinceScrollCtrl,
+              pickerStyle: _pickerStyle,
+              items: provinces,
+              onSettledIndexChanged: (int currentItemIndex) {
+                _setProvince(currentItemIndex);
+              },
+            ),
+          ),
+          SizedBox(width: 8.0),
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: cities,
+              builder: (context, v, _) {
+                return PickerColumn(
+                  scrollController: cityScrollCtrl,
+                  pickerStyle: _pickerStyle,
+                  items: v.values.toList(),
+                  onSettledIndexChanged: (int index) {
+                    _setCity(index);
+                  },
+                );
+              },
+            ),
+          ),
+          SizedBox(width: 8.0),
+          if (hasTown) ...[
+            Expanded(
+              child: ValueListenableBuilder(
+                valueListenable: towns,
+                builder: (context, v, _) {
+                  return PickerColumn(
+                    scrollController: townScrollCtrl,
+                    pickerStyle: _pickerStyle,
+                    items: v.cast<String>(),
+                    onSettledIndexChanged: (int index) {
+                      _setTown(index);
+                    },
+                  );
                 },
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-                padding: EdgeInsets.all(8.0),
-                child: CupertinoPicker.builder(
-                  scrollController: cityScrollCtrl,
-                  selectionOverlay: _pickerStyle.itemOverlay,
-                  itemExtent: _pickerStyle.pickerItemHeight,
-                  onSelectedItemChanged: (int index) {
-                    _setCity(index);
-                  },
-                  childCount: cities.length,
-                  itemBuilder: (_, index) {
-                    String text = cities[index]['name'];
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Text('$text',
-                          style: TextStyle(
-                            color: _pickerStyle.textColor,
-                            fontSize:
-                                _pickerStyle.textSize ?? _pickerFontSize(text),
-                          ),
-                          textAlign: TextAlign.start),
-                    );
-                  },
-                )),
-          ),
-          hasTown
-              ? Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: CupertinoPicker.builder(
-                        scrollController: townScrollCtrl,
-                        selectionOverlay: _pickerStyle.itemOverlay,
-                        itemExtent: _pickerStyle.pickerItemHeight,
-                        onSelectedItemChanged: (int index) {
-                          _setTown(index);
-                        },
-                        childCount: towns.length,
-                        itemBuilder: (_, index) {
-                          String text = towns[index];
-                          return Align(
-                            alignment: Alignment.center,
-                            child: Text(text,
-                                style: TextStyle(
-                                  color: _pickerStyle.textColor,
-                                  fontSize:  _pickerStyle.textSize ?? _pickerFontSize(text),
-                                ),
-                                textAlign: TextAlign.start),
-                          );
-                        },
-                      )),
-                )
-              : SizedBox()
+            SizedBox(width: 8.0),
+          ],
         ],
       ),
     );
@@ -467,5 +411,67 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   @override
   bool shouldRelayout(_BottomPickerLayout oldDelegate) {
     return progress != oldDelegate.progress;
+  }
+}
+
+class PickerColumn extends StatefulWidget {
+  const PickerColumn({
+    super.key,
+    required this.scrollController,
+    required this.pickerStyle,
+    required this.items,
+    required this.onSettledIndexChanged,
+  });
+
+  final FixedExtentScrollController scrollController;
+  final PickerStyle pickerStyle;
+  final List<String> items;
+  final ValueChanged<int> onSettledIndexChanged;
+
+  @override
+  State<PickerColumn> createState() => _PickerColumnState();
+}
+
+class _PickerColumnState extends State<PickerColumn> {
+  int _lastSettledIndex = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationListener<ScrollEndNotification>(
+      onNotification: (notification) {
+        final metrics = notification.metrics;
+        if (metrics is FixedExtentMetrics) {
+          final int currentItemIndex = metrics.itemIndex;
+          if (currentItemIndex != _lastSettledIndex) {
+            // https://github.com/flutter/flutter/issues/138536
+            // 官方有bug，web端ScrollEndNotification无效会多次触发，currentItemIndex != _lastSettledIndex保证web端逻辑和原来一样
+            // 移动端正常触发ScrollEndNotification
+            _lastSettledIndex = currentItemIndex;
+            widget.onSettledIndexChanged(currentItemIndex);
+          }
+        }
+        return false;
+      },
+      child: CupertinoPicker.builder(
+        scrollController: widget.scrollController,
+        selectionOverlay: widget.pickerStyle.itemOverlay,
+        itemExtent: widget.pickerStyle.pickerItemHeight,
+        onSelectedItemChanged: null,
+        childCount: widget.items.length,
+        itemBuilder: (_, index) {
+          final String text = widget.items[index];
+          return FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              text,
+              style: TextStyle(
+                color: widget.pickerStyle.textColor,
+                fontSize: widget.pickerStyle.textSize ?? 18.0,
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
