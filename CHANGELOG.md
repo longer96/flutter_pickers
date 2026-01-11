@@ -1,5 +1,8 @@
 
 
+## [2.2.0]
+* sdk update to >=2.17.0 <4.0.0
+
 ## [2.1.9]
 * feat item fontSize
 
