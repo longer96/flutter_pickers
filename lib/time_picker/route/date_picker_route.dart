@@ -161,7 +161,7 @@ class _PickerState extends State<PickerContentView> {
     _init();
   }
 
-  _init() {
+  void _init() {
     scrollCtrl.clear();
 
     _dateTimeData = DateTimeData();
@@ -182,7 +182,7 @@ class _PickerState extends State<PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.year = _dateTimeData.year[index];
-      scrollCtrl[DateType.Year] = FixedExtentScrollController(
+      scrollCtrl[DateType.year] = FixedExtentScrollController(
         initialItem: index,
       );
     }
@@ -210,7 +210,7 @@ class _PickerState extends State<PickerContentView> {
       }
       selectMonth = _dateTimeData.month[index];
       _selectData.month = selectMonth;
-      scrollCtrl[DateType.Month] = FixedExtentScrollController(
+      scrollCtrl[DateType.month] = FixedExtentScrollController(
         initialItem: index,
       );
     }
@@ -244,7 +244,7 @@ class _PickerState extends State<PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.day = _dateTimeData.day[index];
-      scrollCtrl[DateType.Day] = FixedExtentScrollController(
+      scrollCtrl[DateType.day] = FixedExtentScrollController(
         initialItem: index,
       );
     }
@@ -269,7 +269,7 @@ class _PickerState extends State<PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.hour = _dateTimeData.hour[index];
-      scrollCtrl[DateType.Hour] = FixedExtentScrollController(
+      scrollCtrl[DateType.hour] = FixedExtentScrollController(
         initialItem: index,
       );
     }
@@ -307,7 +307,7 @@ class _PickerState extends State<PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.minute = _dateTimeData.minute[index];
-      scrollCtrl[DateType.Minute] = FixedExtentScrollController(
+      scrollCtrl[DateType.minute] = FixedExtentScrollController(
         initialItem: index,
       );
     }
@@ -355,7 +355,7 @@ class _PickerState extends State<PickerContentView> {
         index = index < 0 ? 0 : index;
       }
       _selectData.second = _dateTimeData.second[index];
-      scrollCtrl[DateType.Second] = FixedExtentScrollController(
+      scrollCtrl[DateType.second] = FixedExtentScrollController(
         initialItem: index,
       );
     }
@@ -401,21 +401,21 @@ class _PickerState extends State<PickerContentView> {
     _selectData.setSingle(dateType, selectValue);
 
     switch (dateType) {
-      case DateType.Year:
+      case DateType.year:
         _setYear();
         break;
-      case DateType.Month:
+      case DateType.month:
         _setMonth();
         break;
-      case DateType.Day:
+      case DateType.day:
         break;
-      case DateType.Hour:
+      case DateType.hour:
         _setHour();
         break;
-      case DateType.Minute:
+      case DateType.minute:
         _setMinute();
         break;
-      case DateType.Second:
+      case DateType.second:
         break;
     }
     _notifyLocationChanged();
@@ -500,11 +500,11 @@ class _PickerState extends State<PickerContentView> {
         setState(() {
           if (updateMonth) {
             _dateTimeData.month = resultMonth;
-            scrollCtrl[DateType.Month]?.jumpToItem(jumpToIndexMonth);
+            scrollCtrl[DateType.month]?.jumpToItem(jumpToIndexMonth);
           }
           if (updateDay) {
             _dateTimeData.day = resultDay;
-            scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+            scrollCtrl[DateType.day]?.jumpToItem(jumpToIndexDay);
           }
 
           /// FIX:https://github.com/flutter/flutter/issues/22999
@@ -558,7 +558,7 @@ class _PickerState extends State<PickerContentView> {
     if (updateDay) {
       setState(() {
         _dateTimeData.day = resultDay;
-        scrollCtrl[DateType.Day]?.jumpToItem(jumpToIndexDay);
+        scrollCtrl[DateType.day]?.jumpToItem(jumpToIndexDay);
 
         /// FIX:https://github.com/flutter/flutter/issues/22999
         pickerItemHeight =
@@ -646,11 +646,11 @@ class _PickerState extends State<PickerContentView> {
         setState(() {
           if (updateMinute) {
             _dateTimeData.minute = resultMinute;
-            scrollCtrl[DateType.Minute]?.jumpToItem(jumpToIndexMinute);
+            scrollCtrl[DateType.minute]?.jumpToItem(jumpToIndexMinute);
           }
           if (updateSecond) {
             _dateTimeData.second = resultSecond;
-            scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+            scrollCtrl[DateType.second]?.jumpToItem(jumpToIndexSecond);
           }
 
           /// FIX:https://github.com/flutter/flutter/issues/22999
@@ -713,7 +713,7 @@ class _PickerState extends State<PickerContentView> {
     if (updateSecond) {
       setState(() {
         _dateTimeData.second = resultSecond;
-        scrollCtrl[DateType.Second]?.jumpToItem(jumpToIndexSecond);
+        scrollCtrl[DateType.second]?.jumpToItem(jumpToIndexSecond);
 
         /// FIX:https://github.com/flutter/flutter/issues/22999
         pickerItemHeight =
@@ -767,12 +767,12 @@ class _PickerState extends State<PickerContentView> {
   Widget _renderItemView() {
     // 选择器
     List<Widget> pickerList = [];
-    if (_dateItemModel.year) pickerList.add(pickerView(DateType.Year));
-    if (_dateItemModel.month) pickerList.add(pickerView(DateType.Month));
-    if (_dateItemModel.day) pickerList.add(pickerView(DateType.Day));
-    if (_dateItemModel.hour) pickerList.add(pickerView(DateType.Hour));
-    if (_dateItemModel.minute) pickerList.add(pickerView(DateType.Minute));
-    if (_dateItemModel.second) pickerList.add(pickerView(DateType.Second));
+    if (_dateItemModel.year) pickerList.add(pickerView(DateType.year));
+    if (_dateItemModel.month) pickerList.add(pickerView(DateType.month));
+    if (_dateItemModel.day) pickerList.add(pickerView(DateType.day));
+    if (_dateItemModel.hour) pickerList.add(pickerView(DateType.hour));
+    if (_dateItemModel.minute) pickerList.add(pickerView(DateType.minute));
+    if (_dateItemModel.second) pickerList.add(pickerView(DateType.second));
 
     return Container(
       height: _pickerStyle.pickerHeight,
@@ -804,13 +804,16 @@ class _PickerState extends State<PickerContentView> {
             String text =
                 '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix?.getSingle(dateType)}';
             return Align(
-                alignment: Alignment.center,
-                child: Text(text,
-                    style: TextStyle(
-                      color: _pickerStyle.textColor,
-                      fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
-                    ),
-                    textAlign: TextAlign.start));
+              alignment: Alignment.center,
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: _pickerStyle.textColor,
+                  fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                ),
+                textAlign: TextAlign.start,
+              ),
+            );
           },
         ),
       ),

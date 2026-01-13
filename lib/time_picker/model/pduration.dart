@@ -62,22 +62,22 @@ class PDuration {
 
   void setSingle(DateType dateType, var value) {
     switch (dateType) {
-      case DateType.Year:
+      case DateType.year:
         year = value;
         break;
-      case DateType.Month:
+      case DateType.month:
         month = value;
         break;
-      case DateType.Day:
+      case DateType.day:
         day = value;
         break;
-      case DateType.Hour:
+      case DateType.hour:
         hour = value;
         break;
-      case DateType.Minute:
+      case DateType.minute:
         minute = value;
         break;
-      case DateType.Second:
+      case DateType.second:
         second = value;
         break;
     }
@@ -85,14 +85,20 @@ class PDuration {
 
   // 若为null 返回0
   int getSingle(DateType dateType) {
-    return switch (dateType) {
-      DateType.Year => year ?? 0,
-      DateType.Month => month ?? 0,
-      DateType.Day => day ?? 0,
-      DateType.Hour => hour ?? 0,
-      DateType.Minute => minute ?? 0,
-      DateType.Second => second ?? 0,
-    };
+    switch (dateType) {
+      case DateType.year:
+        return year ?? 0;
+      case DateType.month:
+        return month ?? 0;
+      case DateType.day:
+        return day ?? 0;
+      case DateType.hour:
+        return hour ?? 0;
+      case DateType.minute:
+        return minute ?? 0;
+      case DateType.second:
+        return second ?? 0;
+    }
   }
 
   @override

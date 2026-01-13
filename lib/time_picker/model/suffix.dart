@@ -28,13 +28,19 @@ class Suffix {
   });
 
   String getSingle(DateType dateType) {
-    return switch (dateType) {
-      DateType.Year => years,
-      DateType.Month => month,
-      DateType.Day => days,
-      DateType.Hour => hours,
-      DateType.Minute => minutes,
-      DateType.Second => seconds,
-    };
+    switch (dateType) {
+      case DateType.year:
+        return years;
+      case DateType.month:
+        return month;
+      case DateType.day:
+        return days;
+      case DateType.hour:
+        return hours;
+      case DateType.minute:
+        return minutes;
+      case DateType.second:
+        return seconds;
+    }
   }
 }

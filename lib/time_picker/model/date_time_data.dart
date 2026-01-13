@@ -10,14 +10,20 @@ class DateTimeData {
   final List _second = [];
 
   List getListByName(DateType type) {
-    return switch (type) {
-      DateType.Year => year,
-      DateType.Month => month,
-      DateType.Day => day,
-      DateType.Hour => hour,
-      DateType.Minute => minute,
-      DateType.Second => second,
-    };
+    switch (type) {
+      case DateType.year:
+        return year;
+      case DateType.month:
+        return month;
+      case DateType.day:
+        return day;
+      case DateType.hour:
+        return hour;
+      case DateType.minute:
+        return minute;
+      case DateType.second:
+        return second;
+    }
   }
 
   List get year => _year;

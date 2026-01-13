@@ -1,1 +1,1 @@
-enum DateType { Year, Month, Day, Hour, Minute, Second }
+enum DateType { year, month, day, hour, minute, second }

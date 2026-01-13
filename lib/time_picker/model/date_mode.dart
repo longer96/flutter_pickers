@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 /// 时间选择器 所显示样式
 /// 16 种时间样式
 ///

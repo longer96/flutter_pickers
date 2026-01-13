@@ -19,12 +19,12 @@ class DateItemModel {
   );
 
   DateItemModel.parse(DateMode dateMode) {
-    year = DateModeMap[dateMode]!.contains('年');
-    month = DateModeMap[dateMode]!.contains('月');
-    day = DateModeMap[dateMode]!.contains('日');
-    hour = DateModeMap[dateMode]!.contains('时');
-    minute = DateModeMap[dateMode]!.contains('分');
-    second = DateModeMap[dateMode]!.contains('秒');
+    year = dateModeMap[dateMode]!.contains('年');
+    month = dateModeMap[dateMode]!.contains('月');
+    day = dateModeMap[dateMode]!.contains('日');
+    hour = dateModeMap[dateMode]!.contains('时');
+    minute = dateModeMap[dateMode]!.contains('分');
+    second = dateModeMap[dateMode]!.contains('秒');
   }
 
   // 返回需要显示多少个picker
@@ -41,7 +41,7 @@ class DateItemModel {
   }
 }
 
-const DateModeMap = {
+const dateModeMap = {
   DateMode.YMDHMS: "年月日时分秒",
   DateMode.YMDHM: '年月日时分',
   DateMode.YMDH: '年月日时',

@@ -96,7 +96,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
 
   Widget _checkLocation3() {
     double menuHeight = 36.0;
-    Widget _headMenuView = Container(
+    Widget headMenuView = Container(
       color: Colors.grey[700],
       height: menuHeight,
       child: Row(
@@ -108,7 +108,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
       ),
     );
 
-    Widget _cancelButton = Container(
+    Widget cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: const EdgeInsets.only(left: 22),
       decoration: BoxDecoration(
@@ -118,7 +118,7 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
-    Widget _commitButton = Container(
+    Widget commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(
@@ -148,10 +148,10 @@ class _AddressPickerPageState extends State<AddressPickerPage> {
     );
 
     var pickerStyle = PickerStyle(
-      menu: _headMenuView,
+      menu: headMenuView,
       menuHeight: menuHeight,
-      cancelButton: _cancelButton,
-      commitButton: _commitButton,
+      cancelButton: cancelButton,
+      commitButton: commitButton,
       headDecoration: headDecoration,
       title: title,
       textColor: Colors.white,

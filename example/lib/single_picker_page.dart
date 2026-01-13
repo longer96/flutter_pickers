@@ -181,13 +181,13 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
 
   void _onClickItem2() {
     double menuHeight = 36.0;
-    Widget _headMenuView = Container(
+    Widget headMenuView = Container(
       color: Colors.grey[700],
       height: menuHeight,
       child: Center(child: MyText('净身高', color: Colors.white)),
     );
 
-    Widget _cancelButton = Container(
+    Widget cancelButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       margin: const EdgeInsets.only(left: 22),
       decoration: BoxDecoration(
@@ -197,7 +197,7 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
       child: MyText('取消', color: Colors.white, size: 14),
     );
 
-    Widget _commitButton = Container(
+    Widget commitButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       margin: const EdgeInsets.only(right: 22),
       decoration: BoxDecoration(
@@ -223,10 +223,10 @@ class _SinglePickerPageState extends State<SinglePickerPage> {
     );
 
     var pickerStyle = PickerStyle(
-      menu: _headMenuView,
+      menu: headMenuView,
       menuHeight: menuHeight,
-      cancelButton: _cancelButton,
-      commitButton: _commitButton,
+      cancelButton: cancelButton,
+      commitButton: commitButton,
       headDecoration: headDecoration,
       title: title,
       textColor: Colors.white,

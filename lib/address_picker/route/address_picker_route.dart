@@ -184,11 +184,11 @@ class _PickerState extends State<PickerContentView> {
     );
   }
 
-  _init() {
+  void _init() {
     int pIndex = 0;
     int cIndex = 0;
     int tIndex = 0;
-    pIndex = provinces.indexOf(_currentProvince);
+    pIndex = provinces.indexWhere((p) => p == _currentProvince);
     pIndex = pIndex >= 0 ? pIndex : 0;
     String? selectedProvince = provinces[pIndex];
     _currentProvince = selectedProvince;
@@ -304,7 +304,7 @@ class _PickerState extends State<PickerContentView> {
           ),
           SizedBox(width: 8.0),
           Expanded(
-            child: ValueListenableBuilder(
+            child: ValueListenableBuilder<Map<String, String>>(
               valueListenable: cities,
               builder: (context, v, _) {
                 return PickerColumn(
@@ -321,7 +321,7 @@ class _PickerState extends State<PickerContentView> {
           SizedBox(width: 8.0),
           if (hasTown) ...[
             Expanded(
-              child: ValueListenableBuilder(
+              child: ValueListenableBuilder<List<String>>(
                 valueListenable: towns,
                 builder: (context, v, _) {
                   return PickerColumn(

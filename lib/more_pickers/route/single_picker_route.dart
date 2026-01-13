@@ -113,7 +113,7 @@ class _PickerState extends State<PickerContentView> {
   late PickerStyle _pickerStyle;
 
   // 选中数据
-  var _selectData;
+  dynamic _selectData;
 
   // 选中数据下标
   int _selectPosition = 0;
@@ -166,7 +166,7 @@ class _PickerState extends State<PickerContentView> {
     );
   }
 
-  _init() {
+  void _init() {
     int pindex = 0;
     pindex = _data.indexWhere(
       (element) => element.toString() == _selectData.toString(),
@@ -261,13 +261,16 @@ class _PickerState extends State<PickerContentView> {
       itemBuilder: (_, index) {
         String text = _data[index].toString();
         return Align(
-            alignment: Alignment.center,
-            child: Text(text,
-                style: TextStyle(
-                  color: _pickerStyle.textColor,
-                  fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
-                ),
-                textAlign: TextAlign.start));
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: TextStyle(
+              color: _pickerStyle.textColor,
+              fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+            ),
+            textAlign: TextAlign.start,
+          ),
+        );
       },
     );
 

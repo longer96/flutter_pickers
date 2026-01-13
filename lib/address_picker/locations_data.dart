@@ -4580,6 +4580,7 @@ class Address {
 
   /// 根据城市名 找到城市编码
   /// simple use
+  // ignore: unintended_html_in_doc_comment
   /// List<String> cityCode =  Locations.getTownsCityCode("四川省","成都市","锦江区");
   /// return [510000,510100,510104]  or  [510000,510000]  or [510000]  or  []
   static List<String> getCityCodeByName({
@@ -4649,6 +4650,7 @@ class Address {
 
   /// 通过城市code 返回城市名
   /// simple use
+  // ignore: unintended_html_in_doc_comment
   /// List<String> cityName =  Address.getCityNameByCode(provinceCode: "510000", cityCode: "510100", townCode: "510104");
   /// return [四川省, 成都市, 锦江区]  or  [四川省, 成都市]  or [四川省] or []
   static List<String> getCityNameByCode({

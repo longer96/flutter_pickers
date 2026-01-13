@@ -45,11 +45,22 @@ class TimeUtils {
 
   // 计算月份所对应天数
   static int _calcDateCount(int year, int month) {
-    return switch (month) {
-      1 || 3 || 5 || 7 || 8 || 10 || 12 => 31,
-      2 => (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 29 : 28,
-      _ => 30,
-    };
+    switch (month) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        return 31;
+      case 2:
+        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+          return 29;
+        }
+        return 28;
+    }
+    return 30;
   }
 
   String intToStr(int v) {
