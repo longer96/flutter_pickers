@@ -23,28 +23,27 @@ class _DatePickerPageState extends State<DatePickerPage> {
       appBar: MyAppBar(title: '测试demo'),
       body: ListView(
         children: [
-//          MyText(stateText ?? '内容'),
-//          RaisedButton(onPressed: () => show(context, 'yyyyMMdd', '20201112'), child: MyText('text')),
-//          Container(
-//            height: 200,
-//            color: Colors.grey[200],
-//            child: CupertinoTimerPicker(
-//                initialTimerDuration: Duration(hours: 23, minutes: 3, seconds: 56),
-//                onTimerDurationChanged: (Duration duration) {}),
-//          ),
-//          Divider(),
-//          Container(
-//            height: 200,
-//            color: Colors.grey[200],
-//            child: CupertinoDatePicker(
-//              initialDateTime: DateTime(2020,3),
-//              onDateTimeChanged: (data) {
-//                print('longer >>> $data');
-//              },
-//            ),
-//          ),
-
-          SizedBox(height: _height, child: picker())
+          //          MyText(stateText ?? '内容'),
+          //          RaisedButton(onPressed: () => show(context, 'yyyyMMdd', '20201112'), child: MyText('text')),
+          //          Container(
+          //            height: 200,
+          //            color: Colors.grey[200],
+          //            child: CupertinoTimerPicker(
+          //                initialTimerDuration: Duration(hours: 23, minutes: 3, seconds: 56),
+          //                onTimerDurationChanged: (Duration duration) {}),
+          //          ),
+          //          Divider(),
+          //          Container(
+          //            height: 200,
+          //            color: Colors.grey[200],
+          //            child: CupertinoDatePicker(
+          //              initialDateTime: DateTime(2020,3),
+          //              onDateTimeChanged: (data) {
+          //                print('longer >>> $data');
+          //              },
+          //            ),
+          //          ),
+          SizedBox(height: _height, child: picker()),
         ],
       ),
     );
@@ -75,13 +74,14 @@ class _DatePickerPageState extends State<DatePickerPage> {
           child: CupertinoPicker.builder(
             scrollController: scrollController1,
             itemExtent: 40,
-            onSelectedItemChanged: (int selectIndex) =>
-                _setPicker1(selectIndex),
+            onSelectedItemChanged:
+                (int selectIndex) => _setPicker1(selectIndex),
             childCount: date1.length,
             itemBuilder: (_, index) {
               return Align(
-                  alignment: Alignment.center,
-                  child: Text(date1[index].toString()));
+                alignment: Alignment.center,
+                child: Text(date1[index].toString()),
+              );
             },
           ),
         ),
@@ -89,13 +89,14 @@ class _DatePickerPageState extends State<DatePickerPage> {
           child: CupertinoPicker.builder(
             scrollController: scrollController2,
             itemExtent: 40,
-            onSelectedItemChanged: (int selectIndex) =>
-                _setPicker2(selectIndex),
+            onSelectedItemChanged:
+                (int selectIndex) => _setPicker2(selectIndex),
             childCount: date2.length,
             itemBuilder: (_, index) {
               return Align(
-                  alignment: Alignment.center,
-                  child: Text(date2[index].toString()));
+                alignment: Alignment.center,
+                child: Text(date2[index].toString()),
+              );
             },
           ),
         ),
@@ -107,11 +108,12 @@ class _DatePickerPageState extends State<DatePickerPage> {
             childCount: date3.length,
             itemBuilder: (_, index) {
               return Align(
-                  alignment: Alignment.center,
-                  child: Text(date3[index].toString()));
+                alignment: Alignment.center,
+                child: Text(date3[index].toString()),
+              );
             },
           ),
-        )
+        ),
       ],
     );
   }

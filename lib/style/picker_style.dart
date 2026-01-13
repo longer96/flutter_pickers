@@ -50,17 +50,17 @@ class PickerStyle {
     Color? textColor,
     this.textSize,
     this.itemOverlay,
-  })  : _showTitleBar = showTitleBar,
-        _pickerHeight = pickerHeight,
-        _pickerTitleHeight = pickerTitleHeight,
-        _pickerItemHeight = pickerItemHeight,
-        _menuHeight = menuHeight,
-        _cancelButton = cancelButton,
-        _commitButton = commitButton,
-        _title = title,
-        _headDecoration = headDecoration,
-        _backgroundColor = backgroundColor,
-        _textColor = textColor;
+  }) : _showTitleBar = showTitleBar,
+       _pickerHeight = pickerHeight,
+       _pickerTitleHeight = pickerTitleHeight,
+       _pickerItemHeight = pickerItemHeight,
+       _menuHeight = menuHeight,
+       _cancelButton = cancelButton,
+       _commitButton = commitButton,
+       _title = title,
+       _headDecoration = headDecoration,
+       _backgroundColor = backgroundColor,
+       _textColor = textColor;
 
   set menuHeight(double value) {
     _menuHeight = value;
@@ -132,42 +132,33 @@ class PickerStyle {
 
   Widget getCommitButton() {
     if (_commitButton != null) return _commitButton!;
-    
+
     // 提供安全的默认值，避免 context 为 null 时崩溃
-    final primaryColor = context != null 
-        ? Theme.of(context!).primaryColor 
-        : Colors.blue;
-    
+    final primaryColor =
+        context != null ? Theme.of(context!).primaryColor : Colors.blue;
+
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text(
-        '确定',
-        style: TextStyle(
-          color: primaryColor,
-          fontSize: 16.0,
-        ),
-      ),
+      child: Text('确定', style: TextStyle(color: primaryColor, fontSize: 16.0)),
     );
   }
 
   Widget getCancelButton() {
     if (_cancelButton != null) return _cancelButton!;
-    
+
     // 提供安全的默认值，避免 context 为 null 时崩溃
-    final unselectedColor = context != null
-        ? Theme.of(context!).unselectedWidgetColor
-        : Colors.grey;
-    
+    final unselectedColor =
+        context != null
+            ? Theme.of(context!).unselectedWidgetColor
+            : Colors.grey;
+
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 22, right: 12),
       child: Text(
         '取消',
-        style: TextStyle(
-          color: unselectedColor,
-          fontSize: 16.0,
-        ),
+        style: TextStyle(color: unselectedColor, fontSize: 16.0),
       ),
     );
   }

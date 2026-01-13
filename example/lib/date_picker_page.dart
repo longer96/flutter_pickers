@@ -106,7 +106,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
     );
   }
 
-  void _onClickItem(model) {
+  void _onClickItem(DateMode model) {
     Pickers.showDatePicker(
       context,
       mode: model,
