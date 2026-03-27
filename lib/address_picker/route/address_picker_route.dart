@@ -77,6 +77,12 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
+    // 计算安全区底部高度
+    double safeAreaBottom = 0.0;
+    if (pickerStyle.safeArea) {
+      safeAreaBottom = MediaQuery.of(context).padding.bottom;
+    }
+
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -86,6 +92,7 @@ class AddressPickerRoute<T> extends PopupRoute<T> {
         initTown: initTown,
         addAllItem: addAllItem,
         pickerStyle: pickerStyle,
+        safeAreaBottom: safeAreaBottom,
         route: this,
       ),
     );
@@ -105,6 +112,7 @@ class PickerContentView extends StatefulWidget {
     this.initTown,
     required this.pickerStyle,
     required this.addAllItem,
+    this.safeAreaBottom = 0.0,
     required this.route,
   });
 
@@ -113,6 +121,7 @@ class PickerContentView extends StatefulWidget {
   final AddressPickerRoute route;
   final bool addAllItem;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   State<PickerContentView> createState() => _PickerState();
@@ -173,6 +182,7 @@ class _PickerState extends State<PickerContentView> {
               delegate: _BottomPickerLayout(
                 widget.route.animation!.value,
                 _pickerStyle,
+                safeAreaBottom: widget.safeAreaBottom,
               ),
               child: GestureDetector(
                 child: Material(
@@ -198,7 +208,7 @@ class _PickerState extends State<PickerContentView> {
     if (selectedProvince != null) {
       _currentProvince = selectedProvince;
 
-      cities = Address.getCities(selectedProvince);
+      cities = Address.getCities(selectedProvince, context);
 
       cindex = cities.indexWhere((c) => c['name'] == _currentCity);
       cindex = cindex >= 0 ? cindex : 0;
@@ -207,7 +217,7 @@ class _PickerState extends State<PickerContentView> {
       // debugPrint('longer >>> 外面接到的$cities');
 
       if (hasTown) {
-        towns = Address.getTowns(cities[cindex]['cityCode']);
+        towns = Address.getTowns(cities[cindex]['cityCode'], context);
         tindex = towns.indexWhere((t) => t == _currentTown);
         tindex = tindex >= 0 ? tindex : 0;
         if (towns.isEmpty) {
@@ -231,13 +241,13 @@ class _PickerState extends State<PickerContentView> {
       setState(() {
         _currentProvince = selectedProvince;
 
-        cities = Address.getCities(selectedProvince);
+        cities = Address.getCities(selectedProvince, context);
         // debugPrint('longer >>> 返回的城市数据：$cities');
 
         _currentCity = cities[0]['name'];
         cityScrollCtrl.jumpToItem(0);
         if (hasTown) {
-          towns = Address.getTowns(cities[0]['cityCode']);
+          towns = Address.getTowns(cities[0]['cityCode'], context);
           _currentTown = towns[0];
           townScrollCtrl.jumpToItem(0);
         }
@@ -254,7 +264,7 @@ class _PickerState extends State<PickerContentView> {
       setState(() {
         _currentCity = selectedCity;
         if (hasTown) {
-          towns = Address.getTowns(cities[index]['cityCode']);
+          towns = Address.getTowns(cities[index]['cityCode'], context);
           _currentTown = towns.isNotEmpty ? towns[0] : '';
           townScrollCtrl.jumpToItem(0);
         }
@@ -277,19 +287,6 @@ class _PickerState extends State<PickerContentView> {
     widget.route.onChanged?.call(_currentProvince, _currentCity, _currentTown);
   }
 
-  double _pickerFontSize(String text) {
-    double ratio = hasTown ? 0.0 : 2.0;
-    if (text.length <= 6) {
-      return 18.0;
-    } else if (text.length < 9) {
-      return 16.0 + ratio;
-    } else if (text.length < 13) {
-      return 12.0 + ratio;
-    } else {
-      return 10.0 + ratio;
-    }
-  }
-
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
@@ -310,7 +307,8 @@ class _PickerState extends State<PickerContentView> {
 
   Widget _renderItemView() {
     return Container(
-      height: _pickerStyle.pickerHeight,
+      padding: EdgeInsets.only(bottom: widget.safeAreaBottom),
+      height: _pickerStyle.pickerHeight + widget.safeAreaBottom,
       color: _pickerStyle.backgroundColor,
       child: Row(
         children: <Widget>[
@@ -333,9 +331,9 @@ class _PickerState extends State<PickerContentView> {
                       text,
                       style: TextStyle(
                         color: _pickerStyle.textColor,
-                        fontSize:
-                            _pickerStyle.textSize ?? _pickerFontSize(text),
+                        fontSize: _pickerStyle.textSize ?? 18.0,
                       ),
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
                     ),
                   );
@@ -362,8 +360,9 @@ class _PickerState extends State<PickerContentView> {
                       text,
                       style: TextStyle(
                         color: _pickerStyle.textColor,
-                        fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                        fontSize: _pickerStyle.textSize ?? 18.0,
                       ),
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
                     ),
                   );
@@ -373,33 +372,34 @@ class _PickerState extends State<PickerContentView> {
           ),
           hasTown
               ? Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: CupertinoPicker.builder(
-                    scrollController: townScrollCtrl,
-                    selectionOverlay: _pickerStyle.itemOverlay,
-                    itemExtent: _pickerStyle.pickerItemHeight,
-                    onSelectedItemChanged: (int index) {
-                      _setTown(index);
-                    },
-                    childCount: towns.length,
-                    itemBuilder: (_, index) {
-                      String text = towns[index];
-                      return Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          text,
-                          style: TextStyle(
-                            color: _pickerStyle.textColor,
-                            fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: CupertinoPicker.builder(
+                      scrollController: townScrollCtrl,
+                      selectionOverlay: _pickerStyle.itemOverlay,
+                      itemExtent: _pickerStyle.pickerItemHeight,
+                      onSelectedItemChanged: (int index) {
+                        _setTown(index);
+                      },
+                      childCount: towns.length,
+                      itemBuilder: (_, index) {
+                        String text = towns[index];
+                        return Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            text,
+                            style: TextStyle(
+                              color: _pickerStyle.textColor,
+                              fontSize: _pickerStyle.textSize ?? 18.0,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
                           ),
-                          textAlign: TextAlign.start,
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              )
+                )
               : SizedBox(),
         ],
       ),
@@ -443,10 +443,15 @@ class _PickerState extends State<PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, this.pickerStyle);
+  _BottomPickerLayout(
+    this.progress,
+    this.pickerStyle, {
+    this.safeAreaBottom = 0.0,
+  });
 
   final double progress;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -457,6 +462,8 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
     if (pickerStyle.menu != null) {
       maxHeight += pickerStyle.menuHeight;
     }
+    // 添加安全区高度
+    maxHeight += safeAreaBottom;
 
     return BoxConstraints(
       minWidth: constraints.maxWidth,
@@ -474,6 +481,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress;
+    return progress != oldDelegate.progress ||
+        safeAreaBottom != oldDelegate.safeAreaBottom;
   }
 }

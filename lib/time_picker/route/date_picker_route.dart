@@ -80,6 +80,12 @@ class DatePickerRoute<T> extends PopupRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
+    // 计算安全区底部高度
+    double safeAreaBottom = 0.0;
+    if (pickerStyle?.safeArea ?? true) {
+      safeAreaBottom = MediaQuery.of(context).padding.bottom;
+    }
+
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -89,6 +95,7 @@ class DatePickerRoute<T> extends PopupRoute<T> {
         maxDate: maxDate,
         minDate: minDate,
         pickerStyle: pickerStyle!,
+        safeAreaBottom: safeAreaBottom,
         route: this,
       ),
     );
@@ -108,6 +115,7 @@ class PickerContentView extends StatefulWidget {
     required this.pickerStyle,
     required this.maxDate,
     required this.minDate,
+    this.safeAreaBottom = 0.0,
     required this.route,
   });
 
@@ -115,6 +123,7 @@ class PickerContentView extends StatefulWidget {
   final PDuration initData;
   final DatePickerRoute route;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   // 限制时间
   final PDuration maxDate;
@@ -136,17 +145,20 @@ class _PickerState extends State<PickerContentView> {
   // 选中的数据  用于回传
   late PDuration _selectData;
 
-  // 所有item 对应的数据
+  // 所有 item 对应的数据
   late DateTimeData _dateTimeData;
 
   // 限制时间
   late final PDuration maxDate;
   late final PDuration minDate;
 
+  // 国际化后缀
+  late Suffix _suffix;
+
   Animation<double>? animation;
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
-  // 选择器 高度  单独提出来，用来解决修改数据 不及时更新的BUG
+  // 选择器 高度  单独提出来，用来解决修改数据 不及时更新的 BUG
   late double pickerItemHeight;
 
   @override
@@ -157,6 +169,7 @@ class _PickerState extends State<PickerContentView> {
     minDate = widget.minDate;
     _pickerStyle = widget.pickerStyle;
     _dateItemModel = DateItemModel.parse(widget.mode);
+    _suffix = widget.route.suffix ?? Suffix.fromContext(context);
     pickerItemHeight = _pickerStyle.pickerItemHeight;
     _init();
   }
@@ -380,6 +393,7 @@ class _PickerState extends State<PickerContentView> {
               delegate: _BottomPickerLayout(
                 widget.route.animation!.value,
                 _pickerStyle,
+                safeAreaBottom: widget.safeAreaBottom,
               ),
               child: GestureDetector(
                 child: Material(
@@ -728,24 +742,6 @@ class _PickerState extends State<PickerContentView> {
     widget.route.onChanged?.call(_selectData);
   }
 
-  double _pickerFontSize(String text) {
-    if (text == '') return 18.0;
-
-    if (_dateItemModel.length == 6 && (text.length > 4 && text.length <= 6)) {
-      return 16.0;
-    }
-
-    if (text.length <= 6) {
-      return 18.0;
-    } else if (text.length < 9) {
-      return 16.0;
-    } else if (text.length < 13) {
-      return 12.0;
-    } else {
-      return 10.0;
-    }
-  }
-
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
@@ -775,7 +771,8 @@ class _PickerState extends State<PickerContentView> {
     if (_dateItemModel.second) pickerList.add(pickerView(DateType.second));
 
     return Container(
-      height: _pickerStyle.pickerHeight,
+      padding: EdgeInsets.only(bottom: widget.safeAreaBottom),
+      height: _pickerStyle.pickerHeight + widget.safeAreaBottom,
       color: _pickerStyle.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -797,20 +794,21 @@ class _PickerState extends State<PickerContentView> {
           scrollController: scrollCtrl[dateType],
           itemExtent: pickerItemHeight,
           selectionOverlay: _pickerStyle.itemOverlay,
-          onSelectedItemChanged:
-              (int selectIndex) => _setPicker(dateType, selectIndex),
+          onSelectedItemChanged: (int selectIndex) =>
+              _setPicker(dateType, selectIndex),
           childCount: _dateTimeData.getListByName(dateType).length,
           itemBuilder: (_, index) {
             String text =
-                '${_dateTimeData.getListByName(dateType)[index]}${widget.route.suffix?.getSingle(dateType)}';
+                '${_dateTimeData.getListByName(dateType)[index]}${_suffix.getSingle(dateType)}';
             return Align(
               alignment: Alignment.center,
               child: Text(
                 text,
                 style: TextStyle(
                   color: _pickerStyle.textColor,
-                  fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+                  fontSize: _pickerStyle.textSize ?? 18.0,
                 ),
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
               ),
             );
@@ -853,10 +851,15 @@ class _PickerState extends State<PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, this.pickerStyle);
+  _BottomPickerLayout(
+    this.progress,
+    this.pickerStyle, {
+    this.safeAreaBottom = 0.0,
+  });
 
   final double progress;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -867,6 +870,8 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
     if (pickerStyle.menu != null) {
       maxHeight += pickerStyle.menuHeight;
     }
+    // 添加安全区高度
+    maxHeight += safeAreaBottom;
 
     return BoxConstraints(
       minWidth: constraints.maxWidth,
@@ -884,6 +889,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress;
+    return progress != oldDelegate.progress ||
+        safeAreaBottom != oldDelegate.safeAreaBottom;
   }
 }

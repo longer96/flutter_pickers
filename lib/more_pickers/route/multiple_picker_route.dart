@@ -68,6 +68,12 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
+    // 计算安全区底部高度
+    double safeAreaBottom = 0.0;
+    if (pickerStyle.safeArea) {
+      safeAreaBottom = MediaQuery.of(context).padding.bottom;
+    }
+
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -75,6 +81,7 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
         data: data,
         selectData: selectData,
         pickerStyle: pickerStyle,
+        safeAreaBottom: safeAreaBottom,
         route: this,
       ),
     );
@@ -92,6 +99,7 @@ class PickerContentView extends StatefulWidget {
     required this.data,
     required this.pickerStyle,
     required this.selectData,
+    this.safeAreaBottom = 0.0,
     required this.route,
   });
 
@@ -99,6 +107,7 @@ class PickerContentView extends StatefulWidget {
   final List selectData;
   final MultiplePickerRoute route;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   State<PickerContentView> createState() => _PickerState();
@@ -155,6 +164,7 @@ class _PickerState extends State<PickerContentView> {
               delegate: _BottomPickerLayout(
                 widget.route.animation!.value,
                 pickerStyle: _pickerStyle,
+                safeAreaBottom: widget.safeAreaBottom,
               ),
               child: GestureDetector(
                 child: Material(
@@ -226,11 +236,14 @@ class _PickerState extends State<PickerContentView> {
 
   Widget _renderItemView() {
     // 选择器
-    List<Widget> pickerList =
-        List.generate(_data.length, (index) => pickerView(index)).toList();
+    List<Widget> pickerList = List.generate(
+      _data.length,
+      (index) => pickerView(index),
+    ).toList();
 
     return Container(
-      height: _pickerStyle.pickerHeight,
+      padding: EdgeInsets.only(bottom: widget.safeAreaBottom),
+      height: _pickerStyle.pickerHeight + widget.safeAreaBottom,
       color: _pickerStyle.backgroundColor,
       child: Row(children: pickerList),
     );
@@ -244,8 +257,8 @@ class _PickerState extends State<PickerContentView> {
           scrollController: scrollCtrl[position],
           selectionOverlay: _pickerStyle.itemOverlay,
           itemExtent: _pickerStyle.pickerItemHeight,
-          onSelectedItemChanged:
-              (int selectIndex) => _setPicker(position, selectIndex),
+          onSelectedItemChanged: (int selectIndex) =>
+              _setPicker(position, selectIndex),
           childCount: _data[position].length,
           itemBuilder: (_, index) {
             // String text = _data[position][index].toString();
@@ -260,7 +273,10 @@ class _PickerState extends State<PickerContentView> {
               alignment: Alignment.center,
               child: Text(
                 text,
-                style: TextStyle(color: _pickerStyle.textColor, fontSize: _pickerStyle.textSize ?? 18.0),
+                style: TextStyle(
+                  color: _pickerStyle.textColor,
+                  fontSize: _pickerStyle.textSize ?? 18.0,
+                ),
                 textAlign: TextAlign.start,
               ),
             );
@@ -303,10 +319,15 @@ class _PickerState extends State<PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {required this.pickerStyle});
+  _BottomPickerLayout(
+    this.progress, {
+    required this.pickerStyle,
+    this.safeAreaBottom = 0.0,
+  });
 
   final double progress;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -317,6 +338,8 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
     if (pickerStyle.menu != null) {
       maxHeight += pickerStyle.menuHeight;
     }
+    // 添加安全区高度
+    maxHeight += safeAreaBottom;
 
     return BoxConstraints(
       minWidth: constraints.maxWidth,
@@ -334,6 +357,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress;
+    return progress != oldDelegate.progress ||
+        safeAreaBottom != oldDelegate.safeAreaBottom;
   }
 }

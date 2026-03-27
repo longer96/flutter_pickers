@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/l10n/generated/app_localizations.dart';
 
 /// 基础样式
 /// [showTitleBar] 是否显示头部（选择器以上的控件） 默认：true
+/// [safeArea] 是否启用安全区（通过 padding 适配底部安全区域） 默认：true
 /// [menu] 头部和选择器之间的菜单widget,默认null 不显示
 /// [title] 头部 中间的标题  默认SizedBox() 不显示
 /// [pickerHeight] 选择器下面 picker 的整体高度  固定高度：220.0
@@ -19,6 +21,7 @@ class PickerStyle {
   BuildContext? context;
 
   bool? _showTitleBar;
+  bool? _safeArea;
   Widget? menu;
   double? _pickerHeight;
   double? _pickerTitleHeight;
@@ -37,6 +40,7 @@ class PickerStyle {
   PickerStyle({
     this.context,
     bool? showTitleBar,
+    bool? safeArea,
     this.menu,
     double? pickerHeight,
     double? pickerTitleHeight,
@@ -51,6 +55,7 @@ class PickerStyle {
     this.textSize,
     this.itemOverlay,
   })  : _showTitleBar = showTitleBar,
+        _safeArea = safeArea,
         _pickerHeight = pickerHeight,
         _pickerTitleHeight = pickerTitleHeight,
         _pickerItemHeight = pickerItemHeight,
@@ -106,6 +111,13 @@ class PickerStyle {
     _showTitleBar = value;
   }
 
+  set safeArea(bool value) {
+    _safeArea = value;
+  }
+
+  /// 是否启用安全区 默认 true
+  bool get safeArea => _safeArea ?? true;
+
   /// 选择器背景色 默认白色
   Color get backgroundColor => _backgroundColor ?? Colors.white;
 
@@ -132,42 +144,38 @@ class PickerStyle {
 
   Widget getCommitButton() {
     if (_commitButton != null) return _commitButton!;
-    
+
+    final l10n = context != null ? AppLocalizations.of(context!) : null;
+    final text = l10n?.confirm ?? '确定';
+
     // 提供安全的默认值，避免 context 为 null 时崩溃
-    final primaryColor = context != null 
-        ? Theme.of(context!).primaryColor 
-        : Colors.blue;
-    
+    final primaryColor =
+        context != null ? Theme.of(context!).primaryColor : Colors.blue;
+
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 12, right: 22),
-      child: Text(
-        '确定',
-        style: TextStyle(
-          color: primaryColor,
-          fontSize: 16.0,
-        ),
-      ),
+      child: Text(text, style: TextStyle(color: primaryColor, fontSize: 16.0)),
     );
   }
 
   Widget getCancelButton() {
     if (_cancelButton != null) return _cancelButton!;
-    
+
+    final l10n = context != null ? AppLocalizations.of(context!) : null;
+    final text = l10n?.cancel ?? '取消';
+
     // 提供安全的默认值，避免 context 为 null 时崩溃
     final unselectedColor = context != null
         ? Theme.of(context!).unselectedWidgetColor
         : Colors.grey;
-    
+
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.only(left: 22, right: 12),
       child: Text(
-        '取消',
-        style: TextStyle(
-          color: unselectedColor,
-          fontSize: 16.0,
-        ),
+        text,
+        style: TextStyle(color: unselectedColor, fontSize: 16.0),
       ),
     );
   }

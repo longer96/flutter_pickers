@@ -75,6 +75,12 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
       mData.addAll(data);
     }
 
+    // 计算安全区底部高度
+    double safeAreaBottom = 0.0;
+    if (pickerStyle.safeArea) {
+      safeAreaBottom = MediaQuery.of(context).padding.bottom;
+    }
+
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -82,6 +88,7 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
         data: mData,
         selectData: selectData,
         pickerStyle: pickerStyle,
+        safeAreaBottom: safeAreaBottom,
         route: this,
       ),
     );
@@ -97,6 +104,7 @@ class PickerContentView extends StatefulWidget {
     required this.data,
     this.selectData,
     required this.pickerStyle,
+    this.safeAreaBottom = 0.0,
     required this.route,
   });
 
@@ -104,6 +112,7 @@ class PickerContentView extends StatefulWidget {
   final dynamic selectData;
   final SinglePickerRoute route;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   State<PickerContentView> createState() => _PickerState();
@@ -152,6 +161,7 @@ class _PickerState extends State<PickerContentView> {
               delegate: _BottomPickerLayout(
                 widget.route.animation!.value,
                 pickerStyle: _pickerStyle,
+                safeAreaBottom: widget.safeAreaBottom,
               ),
               child: GestureDetector(
                 child: Material(
@@ -208,19 +218,6 @@ class _PickerState extends State<PickerContentView> {
     return left;
   }
 
-  /// 动态计算itemTextSize
-  double _pickerFontSize(String text) {
-    if (text.length <= 6) {
-      return 18.0;
-    } else if (text.length < 9) {
-      return 16.0;
-    } else if (text.length < 13) {
-      return 12.0;
-    } else {
-      return 10.0;
-    }
-  }
-
   Widget _renderPickerView() {
     Widget itemView = _renderItemView();
 
@@ -266,9 +263,11 @@ class _PickerState extends State<PickerContentView> {
             text,
             style: TextStyle(
               color: _pickerStyle.textColor,
-              fontSize: _pickerStyle.textSize ?? _pickerFontSize(text),
+              fontSize: _pickerStyle.textSize ?? 18.0,
             ),
-            textAlign: TextAlign.start,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
           ),
         );
       },
@@ -298,8 +297,12 @@ class _PickerState extends State<PickerContentView> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      height: _pickerStyle.pickerHeight,
+      padding: EdgeInsets.only(
+        left: 40,
+        right: 40,
+        bottom: widget.safeAreaBottom,
+      ),
+      height: _pickerStyle.pickerHeight + widget.safeAreaBottom,
       color: _pickerStyle.backgroundColor,
       child: view,
     );
@@ -339,10 +342,15 @@ class _PickerState extends State<PickerContentView> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {required this.pickerStyle});
+  _BottomPickerLayout(
+    this.progress, {
+    required this.pickerStyle,
+    this.safeAreaBottom = 0.0,
+  });
 
   final double progress;
   final PickerStyle pickerStyle;
+  final double safeAreaBottom;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
@@ -353,6 +361,8 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
     if (pickerStyle.menu != null) {
       maxHeight += pickerStyle.menuHeight;
     }
+    // 添加安全区高度
+    maxHeight += safeAreaBottom;
 
     return BoxConstraints(
       minWidth: constraints.maxWidth,
@@ -370,6 +380,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress;
+    return progress != oldDelegate.progress ||
+        safeAreaBottom != oldDelegate.safeAreaBottom;
   }
 }

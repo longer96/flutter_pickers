@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
+// 注意：预设样式（如 DefaultPickerStyle.dark、RaisedPickerStyle 等）
+// 中的按钮文本为固定中文，不支持国际化。
+// 如需国际化，请使用默认样式或自定义 PickerStyle。
+
 // 日间圆角
 final headDecorationLight = BoxDecoration(
   color: Colors.white,

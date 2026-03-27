@@ -1,0 +1,181 @@
+{
+  "@@locale": "en",
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  "year": "Year",
+  "@year": {
+    "description": "Year unit"
+  },
+  "month": "Month",
+  "@month": {
+    "description": "Month unit"
+  },
+  "day": "Day",
+  "@day": {
+    "description": "Day unit"
+  },
+  "hour": "Hour",
+  "@hour": {
+    "description": "Hour unit"
+  },
+  "minute": "Minute",
+  "@minute": {
+    "description": "Minute unit"
+  },
+  "second": "Second",
+  "@second": {
+    "description": "Second unit"
+  },
+  "all": "All",
+  "@all": {
+    "description": "All option in address picker"
+  },
+  
+  "sexAny": "Any",
+  "@sexAny": {
+    "description": "Any gender option"
+  },
+  "sexMale": "Male",
+  "@sexMale": {
+    "description": "Male gender option"
+  },
+  "sexFemale": "Female",
+  "@sexFemale": {
+    "description": "Female gender option"
+  },
+  
+  "educationBelowHighSchool": "Below High School",
+  "@educationBelowHighSchool": {
+    "description": "Education level below high school"
+  },
+  "educationHighSchool": "High School",
+  "@educationHighSchool": {
+    "description": "High school education"
+  },
+  "educationAssociate": "Associate",
+  "@educationAssociate": {
+    "description": "Associate degree"
+  },
+  "educationBachelor": "Bachelor",
+  "@educationBachelor": {
+    "description": "Bachelor degree"
+  },
+  "educationMaster": "Master",
+  "@educationMaster": {
+    "description": "Master degree"
+  },
+  "educationPhd": "PhD",
+  "@educationPhd": {
+    "description": "Doctorate degree"
+  },
+  "educationPostdoc": "Postdoc",
+  "@educationPostdoc": {
+    "description": "Postdoctoral"
+  },
+  "educationOther": "Other",
+  "@educationOther": {
+    "description": "Other education"
+  },
+  
+  "subjectChinese": "Chinese",
+  "subjectMath": "Math",
+  "subjectEnglish": "English",
+  "subjectPhysics": "Physics",
+  "subjectChemistry": "Chemistry",
+  "subjectBiology": "Biology",
+  "subjectPolitics": "Politics",
+  "subjectGeography": "Geography",
+  "subjectHistory": "History",
+  
+  "constellationAquarius": "Aquarius",
+  "constellationPisces": "Pisces",
+  "constellationAries": "Aries",
+  "constellationTaurus": "Taurus",
+  "constellationGemini": "Gemini",
+  "constellationCancer": "Cancer",
+  "constellationLeo": "Leo",
+  "constellationVirgo": "Virgo",
+  "constellationLibra": "Libra",
+  "constellationScorpio": "Scorpio",
+  "constellationSagittarius": "Sagittarius",
+  "constellationCapricorn": "Capricorn",
+  
+  "zodiacRat": "Rat",
+  "zodiacOx": "Ox",
+  "zodiacTiger": "Tiger",
+  "zodiacRabbit": "Rabbit",
+  "zodiacDragon": "Dragon",
+  "zodiacSnake": "Snake",
+  "zodiacHorse": "Horse",
+  "zodiacGoat": "Goat",
+  "zodiacMonkey": "Monkey",
+  "zodiacRooster": "Rooster",
+  "zodiacDog": "Dog",
+  "zodiacPig": "Pig",
+  
+  "ethnicityHan": "Han",
+  "ethnicityMongol": "Mongol",
+  "ethnicityHui": "Hui",
+  "ethnicityTibetan": "Tibetan",
+  "ethnicityUygur": "Uygur",
+  "ethnicityMiao": "Miao",
+  "ethnicityYi": "Yi",
+  "ethnicityZhuang": "Zhuang",
+  "ethnicityBouyei": "Bouyei",
+  "ethnicityKorean": "Korean",
+  "ethnicityManchu": "Manchu",
+  "ethnicityDong": "Dong",
+  "ethnicityYao": "Yao",
+  "ethnicityBai": "Bai",
+  "ethnicityTujia": "Tujia",
+  "ethnicityHani": "Hani",
+  "ethnicityKazak": "Kazak",
+  "ethnicityDai": "Dai",
+  "ethnicityLi": "Li",
+  "ethnicityLisu": "Lisu",
+  "ethnicityVa": "Va",
+  "ethnicityShe": "She",
+  "ethnicityGaoshan": "Gaoshan",
+  "ethnicityLahu": "Lahu",
+  "ethnicityShui": "Shui",
+  "ethnicityDongxiang": "Dongxiang",
+  "ethnicityNaxi": "Naxi",
+  "ethnicityJingpo": "Jingpo",
+  "ethnicityKirgiz": "Kirgiz",
+  "ethnicityTu": "Tu",
+  "ethnicityDaur": "Daur",
+  "ethnicityMulao": "Mulao",
+  "ethnicityQiang": "Qiang",
+  "ethnicityBlang": "Blang",
+  "ethnicitySalar": "Salar",
+  "ethnicityMaonan": "Maonan",
+  "ethnicityGelao": "Gelao",
+  "ethnicityXibe": "Xibe",
+  "ethnicityAchang": "Achang",
+  "ethnicityPumi": "Pumi",
+  "ethnicityTajik": "Tajik",
+  "ethnicityNu": "Nu",
+  "ethnicityUzbek": "Uzbek",
+  "ethnicityRussian": "Russian",
+  "ethnicityEwenki": "Ewenki",
+  "ethnicityDeang": "Deang",
+  "ethnicityBonan": "Bonan",
+  "ethnicityYugur": "Yugur",
+  "ethnicityGin": "Gin",
+  "ethnicityTatar": "Tatar",
+  "ethnicityDerung": "Derung",
+  "ethnicityOroqen": "Oroqen",
+  "ethnicityHezhen": "Hezhen",
+  "ethnicityMonba": "Monba",
+  "ethnicityLhoba": "Lhoba",
+  "ethnicityJino": "Jino",
+  "ethnicityOther": "Other",
+  "ethnicityForeignBornChinese": "Foreign-born Chinese"
+}
