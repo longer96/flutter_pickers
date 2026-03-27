@@ -337,16 +337,19 @@ class _PickerState extends State<PickerContentView> {
                 childCount: Address.provinces.length,
                 itemBuilder: (_, index) {
                   String text = Address.provinces[index];
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        color: _pickerStyle.textColor,
-                        fontSize: _pickerStyle.textSize ?? 18.0,
+                  return Semantics(
+                    label: text,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          color: _pickerStyle.textColor,
+                          fontSize: _pickerStyle.textSize ?? 18.0,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
                     ),
                   );
                 },
@@ -366,16 +369,19 @@ class _PickerState extends State<PickerContentView> {
                 childCount: cities.length,
                 itemBuilder: (_, index) {
                   String text = cities[index]['name'];
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        color: _pickerStyle.textColor,
-                        fontSize: _pickerStyle.textSize ?? 18.0,
+                  return Semantics(
+                    label: text,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          color: _pickerStyle.textColor,
+                          fontSize: _pickerStyle.textSize ?? 18.0,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
                     ),
                   );
                 },
@@ -396,16 +402,19 @@ class _PickerState extends State<PickerContentView> {
                       childCount: towns.length,
                       itemBuilder: (_, index) {
                         String text = towns[index];
-                        return Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            text,
-                            style: TextStyle(
-                              color: _pickerStyle.textColor,
-                              fontSize: _pickerStyle.textSize ?? 18.0,
+                        return Semantics(
+                          label: text,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              text,
+                              style: TextStyle(
+                                color: _pickerStyle.textColor,
+                                fontSize: _pickerStyle.textSize ?? 18.0,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
                           ),
                         );
                       },

@@ -269,15 +269,18 @@ class _PickerState extends State<PickerContentView> {
             }
 
             String text = '${_data[position][index]}$suffix';
-            return Align(
-              alignment: Alignment.center,
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: _pickerStyle.textColor,
-                  fontSize: _pickerStyle.textSize ?? 18.0,
+            return Semantics(
+              label: text,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: _pickerStyle.textColor,
+                    fontSize: _pickerStyle.textSize ?? 18.0,
+                  ),
+                  textAlign: TextAlign.start,
                 ),
-                textAlign: TextAlign.start,
               ),
             );
           },

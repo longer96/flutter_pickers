@@ -4563,14 +4563,16 @@ class Address {
   }
 
   static getTowns(String cityCode, BuildContext context) {
-    if (PicketUtil.strEmpty(cityCode)) return [''];
+    // 返回有意义的占位文本，避免空字符串导致 CupertinoPicker 语义问题
+    final placeholder = getAllText(context);
+    if (PicketUtil.strEmpty(cityCode)) return [placeholder];
 
     Map? areaList = locations[cityCode];
     if (PicketUtil.mapEmpty(areaList)) {
-      return [''];
+      return [placeholder];
     } else {
       var data = areaList!.values.toList();
-      if (addAllItem) data.insert(0, getAllText(context));
+      if (addAllItem) data.insert(0, placeholder);
       return data;
     }
   }

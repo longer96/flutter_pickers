@@ -812,16 +812,19 @@ class _PickerState extends State<PickerContentView> {
           itemBuilder: (_, index) {
             String text =
                 '${_dateTimeData.getListByName(dateType)[index]}${_suffix.getSingle(dateType)}';
-            return Align(
-              alignment: Alignment.center,
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: _pickerStyle.textColor,
-                  fontSize: _pickerStyle.textSize ?? 18.0,
+            return Semantics(
+              label: text,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: _pickerStyle.textColor,
+                    fontSize: _pickerStyle.textSize ?? 18.0,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
                 ),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
               ),
             );
           },

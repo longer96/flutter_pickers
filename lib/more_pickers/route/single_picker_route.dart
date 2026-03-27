@@ -257,17 +257,20 @@ class _PickerState extends State<PickerContentView> {
       childCount: _data.length,
       itemBuilder: (_, index) {
         String text = _data[index].toString();
-        return Align(
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: _pickerStyle.textColor,
-              fontSize: _pickerStyle.textSize ?? 18.0,
+        return Semantics(
+          label: text,
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: TextStyle(
+                color: _pickerStyle.textColor,
+                fontSize: _pickerStyle.textSize ?? 18.0,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
           ),
         );
       },
