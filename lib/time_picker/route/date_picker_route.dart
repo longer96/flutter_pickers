@@ -155,6 +155,9 @@ class _PickerState extends State<PickerContentView> {
   // 国际化后缀
   late Suffix _suffix;
 
+  // 标记是否已初始化（防止 didChangeDependencies 重复调用）
+  bool _isInitialized = false;
+
   Animation<double>? animation;
   Map<DateType, FixedExtentScrollController> scrollCtrl = {};
 
@@ -169,9 +172,18 @@ class _PickerState extends State<PickerContentView> {
     minDate = widget.minDate;
     _pickerStyle = widget.pickerStyle;
     _dateItemModel = DateItemModel.parse(widget.mode);
-    _suffix = widget.route.suffix ?? Suffix.fromContext(context);
     pickerItemHeight = _pickerStyle.pickerItemHeight;
-    _init();
+    // _suffix 和 _init() 移到 didChangeDependencies() 中执行，因为需要 context
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      _isInitialized = true;
+      _suffix = widget.route.suffix ?? Suffix.fromContext(context);
+      _init();
+    }
   }
 
   void _init() {

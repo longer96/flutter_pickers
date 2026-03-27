@@ -141,6 +141,9 @@ class _PickerState extends State<PickerContentView> {
   // 是否添加全部
   late final bool addAllItem;
 
+  // 标记是否已初始化（防止 didChangeDependencies 重复调用）
+  bool _isInitialized = false;
+
   AnimationController? controller;
   Animation<double>? animation;
 
@@ -159,7 +162,16 @@ class _PickerState extends State<PickerContentView> {
 
     provinces = Address.provinces;
     hasTown = _currentTown != null;
-    _init();
+    // _init() 移到 didChangeDependencies() 中执行，因为需要 context
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      _isInitialized = true;
+      _init();
+    }
   }
 
   @override
