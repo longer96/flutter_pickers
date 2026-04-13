@@ -62,6 +62,12 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget buildPage(
     BuildContext context,
     Animation<double> animation,
