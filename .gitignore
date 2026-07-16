@@ -83,3 +83,9 @@ build/
 /web/.idea/vcs.xml
 /web/.idea/web.iml
 /web/.idea/
+.agents
+.claude
+.vscode
+AGENTS.md
+CONTEXT.md
+skills-lock.json

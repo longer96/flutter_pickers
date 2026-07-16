@@ -242,6 +242,8 @@ Widget _demo() {
 | onChanged     | 选择器发生变动 return (List data, List<int> position)  | null|
 | onConfirm     | 选择器提交 return (List data, List<int> position)| null|
 | onCancel      | 选择器取消 return (bool isCancel) 是否通过点击取消按钮关闭 | null|
+| editorBuilder | 选择器下方的自定义编辑区，调用 `updateSelection` 可与各列双向联动 | null|
+| editorHeight  | 自定义编辑区高度 | 56.0|
 
 <br>
 

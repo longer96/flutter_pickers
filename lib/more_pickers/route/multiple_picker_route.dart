@@ -1,22 +1,38 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_pickers/src/route/picker_popup_route.dart';
+import 'package:flutter_pickers/src/route/picker_sheet.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef MultipleCallback = Function(List res, List<int> position);
 
+/// 将编辑区解析出的值同步回每一列；全部值都能匹配数据源时返回 true。
+typedef MultiplePickerSelectionUpdater = bool Function(List selection);
+
+/// 构建选择器下方的自定义编辑区。
+///
+/// [selection] 是当前各列选中值的只读快照。编辑内容解析为完整选项后，
+/// 调用 [updateSelection] 即可驱动各列滚轮同步更新。
+typedef MultiplePickerEditorBuilder = Widget Function(
+  BuildContext context,
+  List selection,
+  MultiplePickerSelectionUpdater updateSelection,
+);
+
 /// 多项选择器
 /// 无关联
-class MultiplePickerRoute<T> extends PopupRoute<T> {
+class MultiplePickerRoute<T> extends PickerPopupRoute<T> {
   MultiplePickerRoute({
-    required this.pickerStyle,
+    required super.pickerStyle,
     required this.data,
     required this.selectData,
     this.suffix,
     this.onChanged,
     this.onConfirm,
-    this.onCancel,
-    this.theme,
-    this.barrierLabel,
+    super.onCancel,
+    this.editorBuilder,
+    this.editorHeight = 56.0,
+    super.theme,
+    super.barrierLabel,
     super.settings,
   });
 
@@ -25,71 +41,22 @@ class MultiplePickerRoute<T> extends PopupRoute<T> {
   final List? suffix;
   final MultipleCallback? onChanged;
   final MultipleCallback? onConfirm;
-  final Function(bool isCancel)? onCancel;
-  final ThemeData? theme;
-
-  final PickerStyle pickerStyle;
+  final MultiplePickerEditorBuilder? editorBuilder;
+  final double editorHeight;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 200);
-
-  @override
-  bool get barrierDismissible => true;
-
-  @override
-  bool didPop(T? result) {
-    if (result == null) {
-      onCancel?.call(false);
-    } else if (!(result as bool)) {
-      onCancel?.call(true);
-    }
-    return super.didPop(result);
-  }
-
-  @override
-  final String? barrierLabel;
-
-  @override
-  Color get barrierColor => Colors.black54;
-
-  late AnimationController _animationController;
-
-  @override
-  AnimationController createAnimationController() {
-    _animationController = BottomSheet.createAnimationController(
-      navigator!.overlay!,
-    );
-    return _animationController;
-  }
-
-  @override
-  Widget buildPage(
+  Widget buildPickerContent(
     BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
+    PickerStyle resolvedStyle,
+    double safeAreaBottom,
   ) {
-    // 计算安全区底部高度
-    double safeAreaBottom = 0.0;
-    if (pickerStyle.safeArea) {
-      safeAreaBottom = MediaQuery.of(context).padding.bottom;
-    }
-
-    Widget bottomSheet = MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: PickerContentView(
-        data: data,
-        selectData: selectData,
-        pickerStyle: pickerStyle,
-        safeAreaBottom: safeAreaBottom,
-        route: this,
-      ),
+    return PickerContentView(
+      data: data,
+      selectData: selectData,
+      pickerStyle: resolvedStyle,
+      safeAreaBottom: safeAreaBottom,
+      route: this,
     );
-    if (theme != null) {
-      bottomSheet = Theme(data: theme!, child: bottomSheet);
-    }
-
-    return bottomSheet;
   }
 }
 
@@ -118,9 +85,6 @@ class _PickerState extends State<PickerContentView> {
   late List _selectData;
   late List<int> _selectDataPosition;
   late List<List> _data;
-
-  AnimationController? controller;
-  Animation<double>? animation;
 
   List<FixedExtentScrollController> scrollCtrl = [];
 
@@ -155,25 +119,27 @@ class _PickerState extends State<PickerContentView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: AnimatedBuilder(
+    final keyboardInset = MediaQuery.of(context).viewInsets.bottom;
+    final editor = widget.route.editorBuilder?.call(
+      context,
+      List.unmodifiable(_selectData),
+      _updateSelectionFromEditor,
+    );
+
+    return AnimatedPadding(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOutCubic,
+      padding: EdgeInsets.only(bottom: keyboardInset),
+      child: PickerSheet(
         animation: widget.route.animation!,
-        builder: (BuildContext context, Widget? child) {
-          return ClipRect(
-            child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(
-                widget.route.animation!.value,
-                pickerStyle: _pickerStyle,
-                safeAreaBottom: widget.safeAreaBottom,
-              ),
-              child: GestureDetector(
-                child: Material(
-                  color: Colors.transparent,
-                  child: _renderPickerView(),
-                ),
-              ),
-            ),
-          );
+        style: _pickerStyle,
+        safeAreaBottom: widget.safeAreaBottom,
+        body: _renderItemView(),
+        footer: editor,
+        footerHeight: editor == null ? 0.0 : widget.route.editorHeight,
+        onConfirm: () {
+          FocusScope.of(context).unfocus();
+          widget.route.onConfirm?.call(_selectData, _selectDataPosition);
         },
       ),
     );
@@ -202,36 +168,62 @@ class _PickerState extends State<PickerContentView> {
   void _setPicker(int index, int selectIndex) {
     var selectedName = _data[index][selectIndex];
 
-    // if (_selectData[index].toString() != selectedName.toString()) {
-    //   setState(() {
-    //   });
-    // }
-    _selectData[index] = selectedName;
-    _selectDataPosition[index] = selectIndex;
+    if (_selectDataPosition[index] == selectIndex &&
+        _selectData[index].toString() == selectedName.toString()) {
+      return;
+    }
+
+    void updateSelection() {
+      _selectData[index] = selectedName;
+      _selectDataPosition[index] = selectIndex;
+    }
+
+    if (widget.route.editorBuilder == null) {
+      updateSelection();
+    } else {
+      setState(updateSelection);
+    }
 
     _notifyLocationChanged();
   }
 
-  void _notifyLocationChanged() {
-    widget.route.onChanged?.call(_selectData, _selectDataPosition);
+  bool _updateSelectionFromEditor(List selection) {
+    if (selection.length != _data.length) {
+      return false;
+    }
+
+    final positions = <int>[];
+    for (var column = 0; column < _data.length; column++) {
+      final position = _data[column].indexWhere(
+        (item) => item.toString() == selection[column].toString(),
+      );
+      if (position < 0) {
+        return false;
+      }
+      positions.add(position);
+    }
+
+    final changed = positions.asMap().entries.any(
+          (entry) => _selectDataPosition[entry.key] != entry.value,
+        );
+    if (!changed) {
+      return true;
+    }
+
+    setState(() {
+      for (var column = 0; column < _data.length; column++) {
+        final position = positions[column];
+        _selectData[column] = _data[column][position];
+        _selectDataPosition[column] = position;
+        scrollCtrl[column].jumpToItem(position);
+      }
+    });
+    _notifyLocationChanged();
+    return true;
   }
 
-  Widget _renderPickerView() {
-    Widget itemView = _renderItemView();
-
-    if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
-      return itemView;
-    }
-    List<Widget> viewList = <Widget>[];
-    if (_pickerStyle.showTitleBar) {
-      viewList.add(_titleView());
-    }
-    if (_pickerStyle.menu != null) {
-      viewList.add(_pickerStyle.menu!);
-    }
-    viewList.add(itemView);
-
-    return Column(children: viewList);
+  void _notifyLocationChanged() {
+    widget.route.onChanged?.call(_selectData, _selectDataPosition);
   }
 
   Widget _renderItemView() {
@@ -241,12 +233,7 @@ class _PickerState extends State<PickerContentView> {
       (index) => pickerView(index),
     ).toList();
 
-    return Container(
-      padding: EdgeInsets.only(bottom: widget.safeAreaBottom),
-      height: _pickerStyle.pickerHeight + widget.safeAreaBottom,
-      color: _pickerStyle.backgroundColor,
-      child: Row(children: pickerList),
-    );
+    return Row(children: pickerList);
   }
 
   Widget pickerView(int position) {
@@ -287,80 +274,5 @@ class _PickerState extends State<PickerContentView> {
         ),
       ),
     );
-  }
-
-  // 选择器上面的view
-  Widget _titleView() {
-    return Container(
-      height: _pickerStyle.pickerTitleHeight,
-      decoration: _pickerStyle.headDecoration,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          /// 取消按钮
-          InkWell(
-            onTap: () => Navigator.pop(context, false),
-            child: _pickerStyle.cancelButton,
-          ),
-
-          /// 标题
-          Expanded(child: _pickerStyle.title),
-
-          /// 确认按钮
-          InkWell(
-            onTap: () {
-              widget.route.onConfirm?.call(_selectData, _selectDataPosition);
-              Navigator.pop(context, true);
-            },
-            child: _pickerStyle.commitButton,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(
-    this.progress, {
-    required this.pickerStyle,
-    this.safeAreaBottom = 0.0,
-  });
-
-  final double progress;
-  final PickerStyle pickerStyle;
-  final double safeAreaBottom;
-
-  @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = pickerStyle.pickerHeight;
-    if (pickerStyle.showTitleBar) {
-      maxHeight += pickerStyle.pickerTitleHeight;
-    }
-    if (pickerStyle.menu != null) {
-      maxHeight += pickerStyle.menuHeight;
-    }
-    // 添加安全区高度
-    maxHeight += safeAreaBottom;
-
-    return BoxConstraints(
-      minWidth: constraints.maxWidth,
-      maxWidth: constraints.maxWidth,
-      minHeight: 0.0,
-      maxHeight: maxHeight,
-    );
-  }
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    double height = size.height - childSize.height * progress;
-    return Offset(0.0, height);
-  }
-
-  @override
-  bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress ||
-        safeAreaBottom != oldDelegate.safeAreaBottom;
   }
 }

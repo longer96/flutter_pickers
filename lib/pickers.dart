@@ -5,6 +5,7 @@ import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/more_pickers/route/multiple_link_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/route/multiple_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/route/single_picker_route.dart';
+import 'package:flutter_pickers/src/style/resolved_picker_style.dart';
 import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
@@ -83,6 +84,8 @@ class Pickers {
   /// [onChanged] 选择器发生变动时的回调
   /// [onConfirm] 选择器确认时的回调
   /// [onCancel] 选择器取消时的回调
+  /// [editorBuilder] 选择器下方的自定义编辑区，可通过 updateSelection 与滚轮双向联动
+  /// [editorHeight] 自定义编辑区高度
   /// [overlapTabBar] 是否覆盖 TabBar
   static void showMultiPicker(
     BuildContext context, {
@@ -93,8 +96,11 @@ class Pickers {
     MultipleCallback? onChanged,
     MultipleCallback? onConfirm,
     Function(bool isCancel)? onCancel,
+    MultiplePickerEditorBuilder? editorBuilder,
+    double editorHeight = 56.0,
     bool overlapTabBar = false,
   }) {
+    assert(editorHeight >= 0, 'editorHeight must not be negative');
     final style = _initPickerStyle(pickerStyle, context);
 
     Navigator.of(context, rootNavigator: overlapTabBar).push(
@@ -106,6 +112,8 @@ class Pickers {
         onChanged: onChanged,
         onConfirm: onConfirm,
         onCancel: onCancel,
+        editorBuilder: editorBuilder,
+        editorHeight: editorHeight,
         theme: Theme.of(context),
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -282,8 +290,7 @@ class Pickers {
     BuildContext context,
   ) {
     final style = pickerStyle ?? DefaultPickerStyle();
-    style.context ??= context;
-    return style;
+    return resolvePickerStyle(style, context);
   }
 
   /// 获取国际化后的内置数据

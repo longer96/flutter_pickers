@@ -1,21 +1,23 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show ThemeData;
 import 'package:flutter_pickers/more_pickers/init_data.dart';
+import 'package:flutter_pickers/src/route/picker_popup_route.dart';
+import 'package:flutter_pickers/src/route/picker_sheet.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 
 typedef SingleCallback = Function(dynamic data, int position);
 
-class SinglePickerRoute<T> extends PopupRoute<T> {
+class SinglePickerRoute<T> extends PickerPopupRoute<T> {
   SinglePickerRoute({
     required this.data,
     this.selectData,
     this.suffix,
     this.onChanged,
     this.onConfirm,
-    this.onCancel,
-    required this.theme,
-    this.barrierLabel,
-    required this.pickerStyle,
+    super.onCancel,
+    required super.theme,
+    super.barrierLabel,
+    required super.pickerStyle,
     super.settings,
   });
 
@@ -23,55 +25,17 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
   final dynamic data;
   final SingleCallback? onChanged;
   final SingleCallback? onConfirm;
-  final Function(bool isCancel)? onCancel;
-  final ThemeData theme;
 
   final String? suffix;
-  final PickerStyle pickerStyle;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 200);
+  ThemeData get theme => super.theme!;
 
   @override
-  bool get barrierDismissible => true;
-
-  @override
-  final String? barrierLabel;
-
-  @override
-  bool didPop(T? result) {
-    if (result == null) {
-      onCancel?.call(false);
-    } else if (!(result as bool)) {
-      onCancel?.call(true);
-    }
-    return super.didPop(result);
-  }
-
-  @override
-  Color get barrierColor => Colors.black54;
-
-  late AnimationController _animationController;
-
-  @override
-  AnimationController createAnimationController() {
-    _animationController = BottomSheet.createAnimationController(
-      navigator!.overlay!,
-    );
-    return _animationController;
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget buildPage(
+  Widget buildPickerContent(
     BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
+    PickerStyle resolvedStyle,
+    double safeAreaBottom,
   ) {
     List mData = [];
     // 初始化数据
@@ -81,26 +45,13 @@ class SinglePickerRoute<T> extends PopupRoute<T> {
       mData.addAll(data);
     }
 
-    // 计算安全区底部高度
-    double safeAreaBottom = 0.0;
-    if (pickerStyle.safeArea) {
-      safeAreaBottom = MediaQuery.of(context).padding.bottom;
-    }
-
-    Widget bottomSheet = MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: PickerContentView(
-        data: mData,
-        selectData: selectData,
-        pickerStyle: pickerStyle,
-        safeAreaBottom: safeAreaBottom,
-        route: this,
-      ),
+    return PickerContentView(
+      data: mData,
+      selectData: selectData,
+      pickerStyle: resolvedStyle,
+      safeAreaBottom: safeAreaBottom,
+      route: this,
     );
-    bottomSheet = Theme(data: theme, child: bottomSheet);
-
-    return bottomSheet;
   }
 }
 
@@ -158,27 +109,15 @@ class _PickerState extends State<PickerContentView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: AnimatedBuilder(
-        animation: widget.route.animation!,
-        builder: (BuildContext context, Widget? child) {
-          return ClipRect(
-            child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(
-                widget.route.animation!.value,
-                pickerStyle: _pickerStyle,
-                safeAreaBottom: widget.safeAreaBottom,
-              ),
-              child: GestureDetector(
-                child: Material(
-                  color: Colors.transparent,
-                  child: _renderPickerView(),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+    return PickerSheet(
+      animation: widget.route.animation!,
+      style: _pickerStyle,
+      safeAreaBottom: widget.safeAreaBottom,
+      bodyPadding: const EdgeInsets.symmetric(horizontal: 40),
+      body: _renderItemView(),
+      onConfirm: () {
+        widget.route.onConfirm?.call(_selectData, _selectPosition);
+      },
     );
   }
 
@@ -222,24 +161,6 @@ class _PickerState extends State<PickerContentView> {
       left = left + text.length * 12;
     }
     return left;
-  }
-
-  Widget _renderPickerView() {
-    Widget itemView = _renderItemView();
-
-    if (!_pickerStyle.showTitleBar && _pickerStyle.menu == null) {
-      return itemView;
-    }
-    List<Widget> viewList = <Widget>[];
-    if (_pickerStyle.showTitleBar) {
-      viewList.add(_titleView());
-    }
-    if (_pickerStyle.menu != null) {
-      viewList.add(_pickerStyle.menu!);
-    }
-    viewList.add(itemView);
-
-    return Column(children: viewList);
   }
 
   Widget _renderItemView() {
@@ -305,91 +226,6 @@ class _PickerState extends State<PickerContentView> {
       view = cPicker;
     }
 
-    return Container(
-      padding: EdgeInsets.only(
-        left: 40,
-        right: 40,
-        bottom: widget.safeAreaBottom,
-      ),
-      height: _pickerStyle.pickerHeight + widget.safeAreaBottom,
-      color: _pickerStyle.backgroundColor,
-      child: view,
-    );
-  }
-
-  // 选择器上面的view
-  Widget _titleView() {
-    return Container(
-      height: _pickerStyle.pickerTitleHeight,
-      decoration: _pickerStyle.headDecoration,
-      child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          /// 取消按钮
-          InkWell(
-            onTap: () => Navigator.pop(context, false),
-            child: _pickerStyle.cancelButton,
-          ),
-
-          /// 标题
-          Expanded(child: _pickerStyle.title),
-
-          /// 确认按钮
-          InkWell(
-            onTap: () {
-              debugPrint('longer   _selectPosition >>> $_selectPosition');
-              widget.route.onConfirm?.call(_selectData, _selectPosition);
-              Navigator.pop(context, true);
-            },
-            child: _pickerStyle.commitButton,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(
-    this.progress, {
-    required this.pickerStyle,
-    this.safeAreaBottom = 0.0,
-  });
-
-  final double progress;
-  final PickerStyle pickerStyle;
-  final double safeAreaBottom;
-
-  @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = pickerStyle.pickerHeight;
-    if (pickerStyle.showTitleBar) {
-      maxHeight += pickerStyle.pickerTitleHeight;
-    }
-    if (pickerStyle.menu != null) {
-      maxHeight += pickerStyle.menuHeight;
-    }
-    // 添加安全区高度
-    maxHeight += safeAreaBottom;
-
-    return BoxConstraints(
-      minWidth: constraints.maxWidth,
-      maxWidth: constraints.maxWidth,
-      minHeight: 0.0,
-      maxHeight: maxHeight,
-    );
-  }
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    double height = size.height - childSize.height * progress;
-    return Offset(0.0, height);
-  }
-
-  @override
-  bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress ||
-        safeAreaBottom != oldDelegate.safeAreaBottom;
+    return view;
   }
 }
