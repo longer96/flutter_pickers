@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pickers/address_picker/route/address_picker_route.dart';
+import 'package:flutter_pickers/l10n/generated/app_localizations.dart';
 import 'package:flutter_pickers/more_pickers/init_data.dart';
 import 'package:flutter_pickers/more_pickers/route/multiple_link_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/route/multiple_picker_route.dart';
 import 'package:flutter_pickers/more_pickers/route/single_picker_route.dart';
+import 'package:flutter_pickers/src/style/resolved_picker_style.dart';
 import 'package:flutter_pickers/style/default_style.dart';
 import 'package:flutter_pickers/style/picker_style.dart';
 import 'package:flutter_pickers/time_picker/model/date_mode.dart';
@@ -11,6 +13,9 @@ import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:flutter_pickers/time_picker/model/suffix.dart';
 import 'package:flutter_pickers/time_picker/route/date_picker_route.dart';
 import 'time_picker/model/date_item_model.dart';
+
+export 'pickers_locale.dart';
+export 'l10n/generated/app_localizations.dart';
 
 /// Flutter 选择器工具类
 ///
@@ -23,6 +28,7 @@ import 'time_picker/model/date_item_model.dart';
 class Pickers {
   // 私有构造函数，防止实例化
   Pickers._();
+
   /// 单列通用选择器
   ///
   /// [context] 上下文
@@ -78,6 +84,8 @@ class Pickers {
   /// [onChanged] 选择器发生变动时的回调
   /// [onConfirm] 选择器确认时的回调
   /// [onCancel] 选择器取消时的回调
+  /// [editorBuilder] 选择器下方的自定义编辑区，可通过 updateSelection 与滚轮双向联动
+  /// [editorHeight] 自定义编辑区高度
   /// [overlapTabBar] 是否覆盖 TabBar
   static void showMultiPicker(
     BuildContext context, {
@@ -88,8 +96,11 @@ class Pickers {
     MultipleCallback? onChanged,
     MultipleCallback? onConfirm,
     Function(bool isCancel)? onCancel,
+    MultiplePickerEditorBuilder? editorBuilder,
+    double editorHeight = 56.0,
     bool overlapTabBar = false,
   }) {
+    assert(editorHeight >= 0, 'editorHeight must not be negative');
     final style = _initPickerStyle(pickerStyle, context);
 
     Navigator.of(context, rootNavigator: overlapTabBar).push(
@@ -101,6 +112,8 @@ class Pickers {
         onChanged: onChanged,
         onConfirm: onConfirm,
         onCancel: onCancel,
+        editorBuilder: editorBuilder,
+        editorHeight: editorHeight,
         theme: Theme.of(context),
         barrierLabel:
             MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -277,7 +290,146 @@ class Pickers {
     BuildContext context,
   ) {
     final style = pickerStyle ?? DefaultPickerStyle();
-    style.context ??= context;
-    return style;
+    return resolvePickerStyle(style, context);
+  }
+
+  /// 获取国际化后的内置数据
+  ///
+  /// [type] 数据类型
+  /// [context] BuildContext，用于获取本地化实例
+  /// 返回 `List<String>` 类型的数据列表
+  /// 如果 context 无法获取 AppLocalizations，返回中文数据
+  static List<String> getData(PickerDataType type, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return _getDefaultData(type);
+    }
+    return _getLocalizedData(type, l10n);
+  }
+
+  static List<String> _getDefaultData(PickerDataType type) {
+    return pickerData[type] ?? [];
+  }
+
+  static List<String> _getLocalizedData(
+      PickerDataType type, AppLocalizations l10n) {
+    switch (type) {
+      case PickerDataType.sex:
+        return [l10n.sexAny, l10n.sexMale, l10n.sexFemale];
+      case PickerDataType.education:
+        return [
+          l10n.educationBelowHighSchool,
+          l10n.educationHighSchool,
+          l10n.educationAssociate,
+          l10n.educationBachelor,
+          l10n.educationMaster,
+          l10n.educationPhd,
+          l10n.educationPostdoc,
+          l10n.educationOther,
+        ];
+      case PickerDataType.subject:
+        return [
+          l10n.subjectChinese,
+          l10n.subjectMath,
+          l10n.subjectEnglish,
+          l10n.subjectPhysics,
+          l10n.subjectChemistry,
+          l10n.subjectBiology,
+          l10n.subjectPolitics,
+          l10n.subjectGeography,
+          l10n.subjectHistory,
+        ];
+      case PickerDataType.constellation:
+        return [
+          l10n.constellationAquarius,
+          l10n.constellationPisces,
+          l10n.constellationAries,
+          l10n.constellationTaurus,
+          l10n.constellationGemini,
+          l10n.constellationCancer,
+          l10n.constellationLeo,
+          l10n.constellationVirgo,
+          l10n.constellationLibra,
+          l10n.constellationScorpio,
+          l10n.constellationSagittarius,
+          l10n.constellationCapricorn,
+        ];
+      case PickerDataType.zodiac:
+        return [
+          l10n.zodiacRat,
+          l10n.zodiacOx,
+          l10n.zodiacTiger,
+          l10n.zodiacRabbit,
+          l10n.zodiacDragon,
+          l10n.zodiacSnake,
+          l10n.zodiacHorse,
+          l10n.zodiacGoat,
+          l10n.zodiacMonkey,
+          l10n.zodiacRooster,
+          l10n.zodiacDog,
+          l10n.zodiacPig,
+        ];
+      case PickerDataType.ethnicity:
+        return [
+          l10n.ethnicityHan,
+          l10n.ethnicityMongol,
+          l10n.ethnicityHui,
+          l10n.ethnicityTibetan,
+          l10n.ethnicityUygur,
+          l10n.ethnicityMiao,
+          l10n.ethnicityYi,
+          l10n.ethnicityZhuang,
+          l10n.ethnicityBouyei,
+          l10n.ethnicityKorean,
+          l10n.ethnicityManchu,
+          l10n.ethnicityDong,
+          l10n.ethnicityYao,
+          l10n.ethnicityBai,
+          l10n.ethnicityTujia,
+          l10n.ethnicityHani,
+          l10n.ethnicityKazak,
+          l10n.ethnicityDai,
+          l10n.ethnicityLi,
+          l10n.ethnicityLisu,
+          l10n.ethnicityVa,
+          l10n.ethnicityShe,
+          l10n.ethnicityGaoshan,
+          l10n.ethnicityLahu,
+          l10n.ethnicityShui,
+          l10n.ethnicityDongxiang,
+          l10n.ethnicityNaxi,
+          l10n.ethnicityJingpo,
+          l10n.ethnicityKirgiz,
+          l10n.ethnicityTu,
+          l10n.ethnicityDaur,
+          l10n.ethnicityMulao,
+          l10n.ethnicityQiang,
+          l10n.ethnicityBlang,
+          l10n.ethnicitySalar,
+          l10n.ethnicityMaonan,
+          l10n.ethnicityGelao,
+          l10n.ethnicityXibe,
+          l10n.ethnicityAchang,
+          l10n.ethnicityPumi,
+          l10n.ethnicityTajik,
+          l10n.ethnicityNu,
+          l10n.ethnicityUzbek,
+          l10n.ethnicityRussian,
+          l10n.ethnicityEwenki,
+          l10n.ethnicityDeang,
+          l10n.ethnicityBonan,
+          l10n.ethnicityYugur,
+          l10n.ethnicityGin,
+          l10n.ethnicityTatar,
+          l10n.ethnicityDerung,
+          l10n.ethnicityOroqen,
+          l10n.ethnicityHezhen,
+          l10n.ethnicityMonba,
+          l10n.ethnicityLhoba,
+          l10n.ethnicityJino,
+          l10n.ethnicityOther,
+          l10n.ethnicityForeignBornChinese,
+        ];
+    }
   }
 }

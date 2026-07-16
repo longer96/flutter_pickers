@@ -15,6 +15,12 @@ class MultiplePickerPage extends StatefulWidget {
 class _MultiplePickerPageState extends State<MultiplePickerPage> {
   var hourse = 13;
   String minute = '58';
+  final weightController = TextEditingController(text: '60.0');
+  List<int> selectedWeight = [60, 0];
+  final weightData = [
+    List.generate(81, (index) => index + 40),
+    List.generate(10, (index) => index),
+  ];
 
   // 时间多列  选中的数据
   var listTime = [];
@@ -54,10 +60,109 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
           _item2('时间(多列)'),
           _item3('时间段'),
           _item4('自定义样式'),
+          _editableWeightItem(),
           ElevatedButton(onPressed: _showDemo, child: Text('Demo')),
           SizedBox(height: 80),
         ],
       ),
+    );
+  }
+
+  @override
+  void dispose() {
+    weightController.dispose();
+    super.dispose();
+  }
+
+  Widget _editableWeightItem() {
+    return Column(
+      children: [
+        Material(
+          color: Colors.white,
+          child: ListTile(
+            title: const Text('体重（滚轮与输入框双向联动）'),
+            onTap: _showEditableWeightPicker,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MyText(
+                  '${selectedWeight[0]}.${selectedWeight[1]} kg',
+                  color: Colors.grey,
+                  rightpadding: 18,
+                ),
+                rightIcon,
+              ],
+            ),
+          ),
+        ),
+        divider,
+      ],
+    );
+  }
+
+  void _showEditableWeightPicker() {
+    Pickers.showMultiPicker(
+      context,
+      data: weightData,
+      selectData: selectedWeight,
+      suffix: const ['', ''],
+      editorHeight: 64,
+      editorBuilder: (context, selection, updateSelection) {
+        final value = '${selection[0]}.${selection[1]}';
+        if (weightController.text != value) {
+          weightController.value = TextEditingValue(
+            text: value,
+            selection: TextSelection.collapsed(offset: value.length),
+          );
+        }
+
+        return Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 76,
+                child: TextField(
+                  controller: weightController,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.only(bottom: 4),
+                  ),
+                  onChanged: (value) {
+                    final match = RegExp(r'^(\d+)\.(\d)$').firstMatch(value);
+                    if (match == null) return;
+                    updateSelection([
+                      int.parse(match.group(1)!),
+                      int.parse(match.group(2)!),
+                    ]);
+                  },
+                ),
+              ),
+              const Text(
+                ' kg',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Icon(Icons.edit, size: 20, color: Colors.grey),
+              ),
+            ],
+          ),
+        );
+      },
+      onConfirm: (selection, positions) {
+        setState(() {
+          selectedWeight = [selection[0] as int, selection[1] as int];
+        });
+      },
     );
   }
 
@@ -77,7 +182,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   Widget _item(title) {
     return Column(
       children: [
-        Container(
+        Material(
           color: Colors.white,
           child: ListTile(
             title: Text(title),
@@ -103,7 +208,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   Widget _item2(title) {
     return Column(
       children: [
-        Container(
+        Material(
           color: Colors.white,
           child: ListTile(
             title: Text(title),
@@ -129,7 +234,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   Widget _item3(title) {
     return Column(
       children: [
-        Container(
+        Material(
           color: Colors.white,
           child: ListTile(
             title: Text(title),
@@ -155,7 +260,7 @@ class _MultiplePickerPageState extends State<MultiplePickerPage> {
   Widget _item4(title) {
     return Column(
       children: [
-        Container(
+        Material(
           color: Colors.white,
           child: ListTile(
             title: Text(title),

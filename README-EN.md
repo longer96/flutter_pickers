@@ -253,6 +253,8 @@ void _showDemo(){
 | pickerStyle | See [Styles](#styles) | DefaultPickerStyle()|
 | onChanged   | Callback when picker changes, returns (List data, List<int> position) | null|
 | onConfirm   | Callback when picker confirms, returns (List data, List<int> position)| null|
+| editorBuilder | Custom editor below the wheels; call `updateSelection` for two-way synchronization | null|
+| editorHeight | Custom editor height | 56.0|
 | onCancel    | Callback when picker cancels, returns (bool isCancel) whether closed by cancel button | null|
 
 <br>

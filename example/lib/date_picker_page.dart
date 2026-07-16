@@ -75,7 +75,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
   Widget _item(title, model) {
     return Column(
       children: [
-        Container(
+        Material(
           color: Colors.white,
           child: ListTile(
             title: Text(title),
